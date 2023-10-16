@@ -85,7 +85,7 @@ export default () => {
                             </div>
                         </Link>
                     </div>
-                    <SkeletonCardsSweiper />
+                    {/* <SkeletonCardsSweiper /> */}
                 </SwiperSlide>
             ))}
 
