@@ -13,7 +13,7 @@ export const BookingAppRouter = () => {
         <Routes>
             <Route path="/" element={<BookingLayout />}>
                 <Route index element={<Home />}></Route>
-                <Route path="city" element={<CityBikes />} />
+                <Route path="/city" element={<CityBikes />} />
                 <Route path="electric" element={<EBikes />} />
                 <Route path="kids" element={<KidsBikes />} />
                 <Route path="mountain" element={<MountainBikes />} />

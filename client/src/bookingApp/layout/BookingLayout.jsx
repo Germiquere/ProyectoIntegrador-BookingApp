@@ -8,7 +8,6 @@ export const BookingLayout = () => {
         <>
             <Header />
             <main>
-                HOLA
                 <Outlet />
             </main>
             <Footer />
