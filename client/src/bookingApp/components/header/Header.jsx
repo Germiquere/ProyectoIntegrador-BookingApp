@@ -10,7 +10,7 @@ export const Header = () => {
   ];
   let [open, setOpen] = useState(false);
   return (
-    <header className='pr-8 pl-8 pt-4 pb-4 flex items-center justify-around border-b shadow-lg top-0 w-full  sticky z-50'>
+    <header className='px-[5%] lg:px-[2%] flex items-center justify-around border-b shadow-lg top-0 w-full bg-white sticky z-50'>
       <div className='flex w-full justify-between md:pl-[20px] '>
         <div>
           <a href='/'>
