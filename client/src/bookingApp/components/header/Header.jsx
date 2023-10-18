@@ -1,45 +1,68 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { FaBars } from "react-icons/fa";
 
 export const Header = () => {
+  let Links = [
+    { name: "HOME", link: "/" },
+    { name: "PRODUCTS", link: "/" },
+    { name: "CATEGORIES", link: "/" },
+    { name: "CONTACT", link: "/" },
+  ];
+  let [open, setOpen] = useState(false);
   return (
-    <header className='pr-8 pl-8 pt-4 pb-4 flex items-center justify-around border-b shadow-lg top-0 w-full sticky bg-stone-200'>
-      <div>
-        <a href='/'>
-          <img className='w-30 h-20 ' src='/src/assets/bike.png' alt='' />
-        </a>
-        <h2 className='font-bold'>BikeMeNow</h2>
-      </div>
+    <header className='pr-8 pl-8 pt-4 pb-4 flex items-center justify-around border-b shadow-lg top-0 w-full  sticky z-50'>
+      <div className='flex w-full justify-between md:pl-[20px] '>
+        <div>
+          <a href='/'>
+            <img
+              className='w-30 h-20 '
+              src='/src/assets/BikeMeNow_BlueAlpha.png'
+              alt=''
+            />
+          </a>
+        </div>
 
-      <div className='visibility: hidden lg:flex gap-5 font-bold text-xl'>
-        <div>
-          <Link to='/'>Bikes</Link>
+        <div
+          onClick={() => setOpen(!open)}
+          className=' text-3xl absolute right-8 cursor-pointer lg:hidden h-full flex top-10 text-sky-600'
+        >
+          <FaBars name={open ? "close" : "menu"}></FaBars>
         </div>
-        <div>
-          <Link to='/'>Productos</Link>
-        </div>
-        <div>
-          <Link to='/'>Categorias</Link>
-        </div>
-        <div>
-          <Link to='/'>Ayuda</Link>
-        </div>
-      </div>
 
-      <div className='space-x-4 flex items-center justify-center '>
-        <button
-          className='middle none center mr-3 rounded-lg border border-blue-500 py-3 px-6 font-sans text-xs font-bold uppercase text-blue-500 transition-all hover:opacity-75 focus:ring focus:ring-blue-200 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none '
-          data-ripple-dark='true'
+        <ul
+          className={`lg:flex lg:items-center lg:pb-0 pb-6 absolute lg:static  bg-white lg:z-auto lg:gap-4  z-50 left-0 w-full lg:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
+            open ? "top-[113px] " : "top-[-490px]"
+          }`}
         >
-          Login
-        </button>
-        <button
-          className='middle none center mr-3 rounded-lg border border-blue-500 py-3 px-6 font-sans text-xs font-bold uppercase text-blue-500 transition-all hover:opacity-75 focus:ring focus:ring-blue-200 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none  '
-          data-ripple-dark='true'
-        >
-          Register
-        </button>
+          {Links.map((link) => (
+            <li
+              key={link.name}
+              className='lg:ml-2 text-l lg:my-0 my-6 font-bold '
+            >
+              <a
+                href={link.link}
+                className='text-sky-700 hover:text-gray-400 duration-500 '
+              >
+                {link.name}
+              </a>
+            </li>
+          ))}
+          <button
+            className='mr-2 middle none center  rounded-lg bg-gradient-to-tr from-sky-600 to-sky-400 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-sky-500/20 transition-all hover:shadow-lg hover:shadow-sky-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none '
+            data-ripple-light='true'
+          >
+            Login
+          </button>
+          <button
+            className='mr-2 middle none center rounded-lg bg-gradient-to-tr from-sky-600 to-sky-400 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-sky-500/20 transition-all hover:shadow-lg hover:shadow-sky-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none '
+            data-ripple-light='true'
+          >
+            Register
+          </button>
+        </ul>
       </div>
     </header>
   );
 };
+
+export default Header;
