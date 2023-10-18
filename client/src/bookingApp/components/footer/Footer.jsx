@@ -3,7 +3,7 @@ import { FaFacebookF, FaInstagram, FaYoutube, FaTiktok } from "react-icons/fa";
 
 export const Footer = () => {
   return (
-    <footer className='flex flex-col items-center bg-sky-100 '>
+    <footer className='flex flex-col items-center bg-tertiary '>
       <div className='flex flex-col p-2 gap-4 md:flex-row items-center w-full justify-evenly lg:w-2/3'>
         <div className='flex flex-col items-center'>
           <a href='/'>
@@ -15,7 +15,7 @@ export const Footer = () => {
           </a>
         </div>
 
-        <div className='flex flex-row justify-evenly gap-8 font-bold text-sky-600 lg:text-l '>
+        <div className='flex flex-row justify-evenly gap-8 font-bold text-primary lg:text-l '>
           <nav>
             <ul className='hover:text-gray-400 duration-500'>
               <Link to='/'>Home</Link>
@@ -40,7 +40,7 @@ export const Footer = () => {
           </nav>
         </div>
 
-        <div className='flex gap-6 pr-4 justify-center text-[30px] text-sky-700'>
+        <div className='flex gap-6 pr-4 justify-center text-[30px] text-primary'>
           <a
             href='https://www.facebook.com/'
             target='_blank'
@@ -71,7 +71,7 @@ export const Footer = () => {
           </a>
         </div>
       </div>
-      <div className='flex items-center justify-center bg-sky-700 w-full  text-white text-xs text-center h-10  font-bold  md:text-sm'>
+      <div className='flex items-center justify-center bg-primary w-full  text-white text-xs text-center h-10  font-bold  md:text-sm'>
         © Copyright 2023 BikeMeNow. All Rights Reserved
       </div>
     </footer>

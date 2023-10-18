@@ -10,7 +10,7 @@ export const Header = () => {
   ];
   let [open, setOpen] = useState(false);
   return (
-    <header className='px-[5%] lg:px-[2%] flex items-center justify-around border-b shadow-lg top-0 w-full bg-white sticky z-50'>
+    <header className='px-[5%] lg:px-[2%] flex items-center justify-around border-b shadow-lg top-0 w-full bg-white sticky z-30'>
       <div className='flex w-full justify-between md:pl-[20px] '>
         <div>
           <a href='/'>
@@ -24,7 +24,7 @@ export const Header = () => {
 
         <div
           onClick={() => setOpen(!open)}
-          className=' text-3xl absolute right-8 cursor-pointer lg:hidden h-full flex top-10 text-sky-600'
+          className=' text-3xl absolute right-8 cursor-pointer lg:hidden h-full flex top-10 text-primary'
         >
           <FaBars name={open ? "close" : "menu"}></FaBars>
         </div>
@@ -41,20 +41,20 @@ export const Header = () => {
             >
               <a
                 href={link.link}
-                className='text-sky-700 hover:text-gray-400 duration-500 '
+                className='text-neutral-800 hover:text-primary duration-500 '
               >
                 {link.name}
               </a>
             </li>
           ))}
           <button
-            className='mr-2 middle none center  rounded-lg bg-gradient-to-tr from-sky-600 to-sky-400 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-sky-500/20 transition-all hover:shadow-lg hover:shadow-sky-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none '
-            data-ripple-light='true'
+            className='middle none center mr-2 rounded-full border border-primary py-3 px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-tertiary active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'
+            data-ripple-dark='true'
           >
             Login
           </button>
           <button
-            className='mr-2 middle none center rounded-lg bg-gradient-to-tr from-sky-600 to-sky-400 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-sky-500/20 transition-all hover:shadow-lg hover:shadow-sky-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none '
+            className='middle none center mr-2 rounded-full bg-primary py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm  transition-all  hover:shadow-secondary  active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'
             data-ripple-light='true'
           >
             Register
