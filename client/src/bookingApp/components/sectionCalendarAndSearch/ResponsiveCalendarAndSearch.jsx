@@ -7,14 +7,9 @@ export const ResponsiveCalendarAndSearch = () => {
     const { handleOpenCalendarAndSearch, openCalendarAndSearch } = useContext(
         CalendarAndSearchContext
     );
-    console.log(openCalendarAndSearch);
     return (
         <form
-            className={` absolute z-40 h-full transform ${
-                openCalendarAndSearch
-                    ? "translate-y-0"
-                    : "o translate-y-[-100%]"
-            } w-full bg-gray-100 sm:hidden p-3 transition-all duration-500`}
+            className={`absolute z-40 h-full transform  w-full bg-gray-100 sm:hidden p-3 transition-all duration-500`}
         >
             <div className="flex flex-col justify-center h-full gap-3">
                 <div>
