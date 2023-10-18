@@ -15,3 +15,16 @@
     background-color: lightgray;
     border-radius: 10px;
 }
+
+.swiper-pagination {
+    position: relative !important;
+    padding: 15px;
+}
+.swiper-pagination-bullet-active {
+    background-color: #0274ae !important;
+}
+@media (min-width: 640px) {
+    .swiper-pagination {
+        display: none !important;
+    }
+}

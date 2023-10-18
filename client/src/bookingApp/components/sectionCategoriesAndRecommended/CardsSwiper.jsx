@@ -1,15 +1,17 @@
 // import Swiper core and required modules
-import { Navigation } from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
     BsFillArrowLeftCircleFill,
     BsFillArrowRightCircleFill,
 } from "react-icons/bs";
+import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 import { Link } from "react-router-dom";
-import { SkeletonCardsSweiper } from "./SkeletonCardsSweiper";
+
 // DATA HARCODEADA
 export const data = [
     {
@@ -48,10 +50,18 @@ export default () => {
     return (
         <Swiper
             className="relative"
-            modules={[Navigation]}
+            modules={[Navigation, Pagination]}
+            // esto es para poder ponerle una clase a cualquier elemnto y que tenga la funcionalidad de siguiente y previo
             navigation={{
-                nextEl: ".button-next-slide",
-                prevEl: ".button-prev-slide",
+                nextEl: ".next-slide",
+                prevEl: ".prev-slide",
+            }}
+            // es para que sea infinito
+            // loop
+            // es para que aparezcan las pelotitas de la paginacion
+            pagination={{
+                // para que pueda  clickear en las pelotitas
+                clickable: true,
             }}
             breakpoints={{
                 640: {
@@ -70,15 +80,15 @@ export default () => {
         >
             {data.map((item) => (
                 <SwiperSlide key={item.id}>
-                    <div className="cursor-pointer rounded-2xl overflow-hidden">
+                    <div className="cursor-pointer rounded-2xl overflow-hidden mx-10 group ">
                         <Link to={item.category}>
                             <img
                                 src={item.img}
                                 alt="imagende un gato"
                                 //  cambiar el tamanio a gusto
-                                className="w-full h-40 object-cover object-center "
+                                className="w-full h-40 object-cover object-center transition-transform group-hover:scale-105 ease-in-out duration-200"
                             />
-                            <div className=" bg-indigo-400 h-12 flex justify-center  items-center">
+                            <div className=" bg-neutral-800 h-12 flex justify-center  items-center text-white group-hover:bg-primary ease-in-out duration-200">
                                 <h3 className="text-lg font-medium">
                                     {item.name}
                                 </h3>
@@ -88,10 +98,16 @@ export default () => {
                     {/* <SkeletonCardsSweiper /> */}
                 </SwiperSlide>
             ))}
+            <div
+                className="flex gap-2 w-full justify-center mt-5
+            "
+            >
+                {/* <IoIosArrowDropleft className="prev-slide text-2xl sm:text-3xl text-neutral-800 hover:text-primary cursor-pointer ease-in-out duration-200 hidden sm:block" />
+                <IoIosArrowDropright className="next-slide text-2xl sm:text-3xl text-neutral-800 hover:text-primary cursor-pointer ease-in-out duration-200 hidden sm:block" /> */}
+            </div>
+            <IoIosArrowDropleft className="absolute prev-slide cursor-pointer text-neutral-800 hover:text-primary top-1/2 z-10 left-2 text-2xl  transform -translate-y-1/2 ease-in-out duration-200 hidden sm:block" />
 
-            <BsFillArrowLeftCircleFill className="absolute button-prev-slide cursor-pointer text-indigo-400 hover:text-indigo-600 top-1/2 z-10 left-2 text-2xl sm:text-3xl transform -translate-y-1/2" />
-
-            <BsFillArrowRightCircleFill className="absolute button-next-slide cursor-pointer text-indigo-400 hover:text-indigo-600 z-10 top-1/2 right-2 text-2xl sm:text-3xl transform -translate-y-1/2" />
+            <IoIosArrowDropright className="absolute next-slide cursor-pointer text-neutral-800 hover:text-primary z-10 top-1/2 right-2 text-2xl  transform -translate-y-1/2 ease-in-out duration-200 hidden sm:block" />
         </Swiper>
     );
 };
