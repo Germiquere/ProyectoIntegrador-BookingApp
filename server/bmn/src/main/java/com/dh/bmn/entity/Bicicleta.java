@@ -18,6 +18,8 @@ public class Bicicleta {
     private String nombre;
     @Column
     private String descripcion;
+    @Column
+    private double precioPorDia;
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private CategoriaBicicleta categoria;
@@ -25,9 +27,10 @@ public class Bicicleta {
     @CollectionTable(name = "bicicleta_imagenes", joinColumns = @JoinColumn(name = "bicicleta_id"))
     private List<Imagen> imagenes = new ArrayList<Imagen>();
 
-    public Bicicleta(String nombre, String descripcion, CategoriaBicicleta categoria, List<Imagen> imagenes) {
+    public Bicicleta(String nombre, String descripcion, double precioPorDia, CategoriaBicicleta categoria, List<Imagen> imagenes) {
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.precioPorDia = precioPorDia;
         this.categoria = categoria;
         this.imagenes = imagenes;
     }
@@ -40,7 +43,9 @@ public class Bicicleta {
                 "id=" + bicicleta_id +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
-                ", imagen='" + imagenes + '\'' +
+                ", precioPorDia=" + precioPorDia +
+                ", categoria=" + categoria +
+                ", imagenes=" + imagenes +
                 '}';
     }
 
@@ -53,7 +58,7 @@ public class Bicicleta {
 
     @Override
     public int hashCode() {
-        return Objects.hash(bicicleta_id, nombre, descripcion, categoria, imagenes);
+        return Objects.hash(bicicleta_id, nombre, descripcion, precioPorDia, categoria, imagenes);
     }
 
     public Integer getBicicleta_id() {
@@ -78,6 +83,14 @@ public class Bicicleta {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public double getPrecioPorDia() {
+        return precioPorDia;
+    }
+
+    public void setPrecioPorDia(double precioPorDia) {
+        this.precioPorDia = precioPorDia;
     }
 
     public CategoriaBicicleta getCategoria() {

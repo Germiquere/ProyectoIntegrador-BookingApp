@@ -14,7 +14,7 @@ public class CategoriaBicicleta {
     private String nombre;
     @Column
     private String descripcion;
-    @Column
+    @Column (length = 500)
     private String imagen;
 
     public CategoriaBicicleta(String nombre, String descripcion, String imagen) {

@@ -10,13 +10,15 @@ public class BicicletaDto {
     private Integer bicicleta_id;
     private String nombre;
     private String descripcion;
+    private double precioPorDia;
     private CategoriaBicicleta categoria;
     private List<Imagen> imagenes = new ArrayList<Imagen>();
 
-    public BicicletaDto(Integer bicicleta_id, String nombre, String descripcion, CategoriaBicicleta categoria, List<Imagen> imagenes) {
+    public BicicletaDto(Integer bicicleta_id, String nombre, String descripcion, double precioPorDia, CategoriaBicicleta categoria, List<Imagen> imagenes) {
         this.bicicleta_id = bicicleta_id;
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.precioPorDia = precioPorDia;
         this.categoria = categoria;
         this.imagenes = imagenes;
     }
@@ -30,6 +32,7 @@ public class BicicletaDto {
                 "id=" + bicicleta_id +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
+                ", precioPorDia=" + precioPorDia +
                 ", categoria=" + categoria +
                 ", imagenes=" + imagenes +
                 '}';
@@ -57,6 +60,14 @@ public class BicicletaDto {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public double getPrecioPorDia() {
+        return precioPorDia;
+    }
+
+    public void setPrecioPorDia(double precioPorDia) {
+        this.precioPorDia = precioPorDia;
     }
 
     public CategoriaBicicleta getCategoria() {
