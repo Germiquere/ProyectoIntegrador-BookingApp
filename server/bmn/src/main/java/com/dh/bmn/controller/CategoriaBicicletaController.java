@@ -1,8 +1,8 @@
 package com.dh.bmn.controller;
 
-import com.dh.bmn.dto.CategoriaBicicletaDto;
+import com.dh.bmn.dto.requests.CategoriaBicicletaRequestDto;
 import com.dh.bmn.entity.CategoriaBicicleta;
-import com.dh.bmn.service.CategoriaBicicletaService;
+import com.dh.bmn.service.impl.CategoriaBicicletaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class CategoriaBicicletaController {
     }
 
     @GetMapping("/{id}")
-    public Optional<CategoriaBicicletaDto> obtenerCategoriaBicicletaPorId (@PathVariable Integer id) throws Exception {
+    public Optional<CategoriaBicicletaRequestDto> obtenerCategoriaBicicletaPorId (@PathVariable Integer id) throws Exception {
         return categoriaBicicletaService.buscarPorId(id);
     }
 
@@ -40,7 +40,7 @@ public class CategoriaBicicletaController {
     }
 
     @GetMapping
-    public Set<CategoriaBicicletaDto> listaDeCategoriasBicicletas () throws Exception {
+    public Set<CategoriaBicicletaRequestDto> listaDeCategoriasBicicletas () throws Exception {
         return categoriaBicicletaService.listarTodos();
     }
 
