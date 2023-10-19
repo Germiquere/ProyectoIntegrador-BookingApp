@@ -1,14 +1,22 @@
-/*package com.dh.bmn.entity;
+package com.dh.bmn.entity;
+
 
 import com.dh.bmn.security.Rol;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.Set;
+import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,11 +27,31 @@ public class Usuario {
     @Column
     private String apellido;
 
-    // Otros campos de usuario
+    @Column (nullable = false)
+    private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Rol> roles;
+    @Column (nullable = false)
+    private String password;
 
+    @Enumerated(EnumType.STRING)
+    private Rol rol;
 
+    @ManyToMany
+    @JoinTable(name = "usuario_bicicleta",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "bicicleta_id")
+    )
+    private List<Bicicleta> bicicletas;
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", rol=" + rol +
+                '}';
+    }
 }
-*/
