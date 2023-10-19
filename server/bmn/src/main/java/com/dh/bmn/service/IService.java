@@ -15,7 +15,7 @@ public interface IService <Entity, Dto>{
 
     public void borrarPorId(Integer id) throws Exception;
 
-    public Set<BicicletaDto> listarTodos() throws Exception;
+    public Set<Dto> listarTodos() throws Exception;
 
 }
 

@@ -18,14 +18,17 @@ public class Bicicleta {
     private String nombre;
     @Column
     private String descripcion;
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private CategoriaBicicleta categoria;
     @ElementCollection
     @CollectionTable(name = "bicicleta_imagenes", joinColumns = @JoinColumn(name = "bicicleta_id"))
     private List<Imagen> imagenes = new ArrayList<Imagen>();
 
-    public Bicicleta(Integer bicicleta_id, String nombre, String descripcion, List<Imagen> imagenes) {
-        this.bicicleta_id = bicicleta_id;
+    public Bicicleta(String nombre, String descripcion, CategoriaBicicleta categoria, List<Imagen> imagenes) {
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.categoria = categoria;
         this.imagenes = imagenes;
     }
 
@@ -45,12 +48,12 @@ public class Bicicleta {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Bicicleta bicicleta)) return false;
-        return bicicleta_id.equals(bicicleta.bicicleta_id) && nombre.equals(bicicleta.nombre) && descripcion.equals(bicicleta.descripcion) && imagenes.equals(bicicleta.imagenes);
+        return bicicleta_id.equals(bicicleta.bicicleta_id) && nombre.equals(bicicleta.nombre) && descripcion.equals(bicicleta.descripcion) && categoria.equals(bicicleta.categoria) && imagenes.equals(bicicleta.imagenes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bicicleta_id, nombre, descripcion, imagenes);
+        return Objects.hash(bicicleta_id, nombre, descripcion, categoria, imagenes);
     }
 
     public Integer getBicicleta_id() {
@@ -75,6 +78,14 @@ public class Bicicleta {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public CategoriaBicicleta getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(CategoriaBicicleta categoria) {
+        this.categoria = categoria;
     }
 
     public List<Imagen> getImagenes() {
