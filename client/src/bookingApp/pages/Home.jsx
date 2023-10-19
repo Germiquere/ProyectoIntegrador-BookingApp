@@ -1,8 +1,11 @@
-import React from "react";
-import { Componentes } from "../../ui/Componentes";
-import Section from "../components/Section";
 import { CategoriesAndRecommended } from "../components/sectionCategoriesAndRecommended/CategoriesAndRecommended";
+import { CalendarAndSearch } from "../components/sectionCalendarAndSearch/CalendarAndSearch";
 
 export const Home = () => {
-    return <CategoriesAndRecommended />;
+    return (
+        <>
+            <CalendarAndSearch />
+            <CategoriesAndRecommended />
+        </>
+    );
 };

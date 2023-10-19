@@ -1,0 +1,16 @@
+.rdrDateRangeWrapper {
+    border-radius: 20px !important;
+    overflow: hidden;
+}
+.rdrMonthAndYearWrapper {
+    background-color: #0274ae;
+}
+.rdrMonthAndYearPickers select {
+    color: white;
+}
+/* .rdrDayToday {
+    color: red !important;
+} */
+.rdrDayToday .rdrDayNumber span:after {
+    background: #0274ae;
+}
