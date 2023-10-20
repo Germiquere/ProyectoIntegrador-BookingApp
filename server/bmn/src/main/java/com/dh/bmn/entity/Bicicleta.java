@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,7 +36,10 @@ public class Bicicleta {
     @JoinColumn(name = "categoria_id")
     private CategoriaBicicleta categoria;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bicicletas", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bicicleta", cascade = CascadeType.ALL)
+
+    @ElementCollection
+    @CollectionTable(name = "bicicleta_imagenes", joinColumns = @JoinColumn(name = "bicicleta_id"))
     private List<Imagen> imagenes;
 
 

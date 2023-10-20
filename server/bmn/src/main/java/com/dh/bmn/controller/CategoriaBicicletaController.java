@@ -1,52 +1,51 @@
 package com.dh.bmn.controller;
 
 import com.dh.bmn.dto.requests.CategoriaBicicletaRequestDto;
-import com.dh.bmn.entity.CategoriaBicicleta;
-import com.dh.bmn.service.impl.CategoriaBicicletaService;
+import com.dh.bmn.dto.responses.CategoriaBicicletaResponseDto;
+import com.dh.bmn.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
-import java.util.Set;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/categorias-bicicletas")
+@RequestMapping("/bike-me-now/categorias")
 public class CategoriaBicicletaController {
 
-    @Autowired
-    private final CategoriaBicicletaService categoriaBicicletaService;
+    private final IService<CategoriaBicicletaResponseDto, CategoriaBicicletaRequestDto> categoriaBicicletaService;;
 
-    public CategoriaBicicletaController(CategoriaBicicletaService categoriaBicicletaService) {
+    @Autowired
+    public CategoriaBicicletaController(IService<CategoriaBicicletaResponseDto, CategoriaBicicletaRequestDto> categoriaBicicletaService) {
         this.categoriaBicicletaService = categoriaBicicletaService;
     }
 
     @GetMapping("/{id}")
-    public Optional<CategoriaBicicletaRequestDto> obtenerCategoriaBicicletaPorId (@PathVariable Integer id) throws Exception {
-        return categoriaBicicletaService.buscarPorId(id);
+    public ResponseEntity<CategoriaBicicletaResponseDto> obtenerCategoriaPorId (@PathVariable Long id) throws Exception {
+        return new ResponseEntity<>(categoriaBicicletaService.buscarPorId(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> registrarCategoriaBicicleta (@RequestBody CategoriaBicicleta nuevaCategoriaBicicleta) throws Exception {
-        categoriaBicicletaService.guardar(nuevaCategoriaBicicleta);
+    public ResponseEntity<?> registrarCategoria (@RequestBody CategoriaBicicletaRequestDto categoriaBicicletaRequestDto) throws Exception {
+        categoriaBicicletaService.guardar(categoriaBicicletaRequestDto);
         return ResponseEntity.ok("Nueva categoría de bicicleta registrada.");
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarCategoriaBicicletaPorId (@PathVariable Integer id) throws Exception {
+    public ResponseEntity<?> eliminarCategoriaPorId (@PathVariable Long id) throws Exception {
         categoriaBicicletaService.borrarPorId(id);
         return ResponseEntity.ok("Categoría de bicicleta eliminada.");
     }
 
     @GetMapping
-    public Set<CategoriaBicicletaRequestDto> listaDeCategoriasBicicletas () throws Exception {
-        return categoriaBicicletaService.listarTodos();
+    public ResponseEntity<List<CategoriaBicicletaResponseDto>> listaDeCategorias() throws Exception {
+        return new ResponseEntity<>(categoriaBicicletaService.listarTodas(), HttpStatus.OK);
     }
 
     @PutMapping()
-    public ResponseEntity<?> actualizarCategoriaBicicleta (@RequestBody CategoriaBicicleta categoriaBicicletaActualizada) throws Exception {
-        categoriaBicicletaService.actualizar(categoriaBicicletaActualizada);
+    public ResponseEntity<?> actualizarCategoria (@RequestBody CategoriaBicicletaRequestDto categoriaBicicletaRequestDto) throws Exception {
+        categoriaBicicletaService.actualizar(categoriaBicicletaRequestDto);
         return ResponseEntity.ok("Categoría de bicicleta actualizada.");
     }
 

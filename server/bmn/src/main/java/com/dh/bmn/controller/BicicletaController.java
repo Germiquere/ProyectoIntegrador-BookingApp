@@ -2,7 +2,7 @@ package com.dh.bmn.controller;
 
 import com.dh.bmn.dto.requests.BicicletaRequestDto;
 import com.dh.bmn.dto.responses.BicicletaResponseDto;
-import com.dh.bmn.service.impl.BicicletaService;
+import com.dh.bmn.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/bicicletas")
+@RequestMapping("/bike-me-now/bicicletas")
 public class BicicletaController {
 
-    @Autowired
-    private final BicicletaService bicicletaService;
 
-    public BicicletaController(BicicletaService bicicletaService) {
+    private final IService<BicicletaResponseDto, BicicletaRequestDto> bicicletaService;
+
+    @Autowired
+    public BicicletaController(IService<BicicletaResponseDto, BicicletaRequestDto> bicicletaService) {
         this.bicicletaService = bicicletaService;
     }
 
@@ -39,7 +40,7 @@ public class BicicletaController {
 
     @GetMapping
     public ResponseEntity<List<BicicletaResponseDto>> listarBicicletas () throws Exception {
-        return new ResponseEntity<>(bicicletaService.listarTodos(),HttpStatus.OK);
+        return new ResponseEntity<>(bicicletaService.listarTodas(),HttpStatus.OK);
     }
 
     @PutMapping()

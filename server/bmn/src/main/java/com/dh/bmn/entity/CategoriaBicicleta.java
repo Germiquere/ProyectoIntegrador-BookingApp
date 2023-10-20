@@ -26,7 +26,9 @@ public class CategoriaBicicleta {
     @Column
     private String descripcion;
 
-    @Column(length = 500)
-    private Imagen imagen;
+//    @OneToOne(cascade = CascadeType.ALL)
+////    @Column(length = 500)
+//    @JoinColumn(name = "imagen_id", referencedColumnName = "imagen_id")
+    private String imagen;
 
 }

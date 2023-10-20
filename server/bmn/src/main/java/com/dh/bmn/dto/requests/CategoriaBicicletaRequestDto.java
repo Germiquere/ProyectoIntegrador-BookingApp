@@ -14,6 +14,6 @@ public class CategoriaBicicletaRequestDto {
     private Long categoriaId;
     private String nombre;
     private String descripcion;
-    private Imagen imagen;
+    private String imagen;
 
 }
