@@ -34,8 +34,6 @@ public class Bicicleta {
     @JoinColumn(name = "categoria_id")
     private CategoriaBicicleta categoria;
 
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bicicleta", cascade = CascadeType.ALL)
-
     @ElementCollection
     @CollectionTable(name = "bicicleta_imagenes", joinColumns = @JoinColumn(name = "bicicleta_id"))
     private List<Imagen> imagenes;
