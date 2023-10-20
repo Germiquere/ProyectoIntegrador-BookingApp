@@ -1,6 +1,5 @@
 package com.dh.bmn.entity;
 
-import com.dh.bmn.embeddable.Imagen;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

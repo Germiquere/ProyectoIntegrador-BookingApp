@@ -1,8 +1,9 @@
-package com.dh.bmn.service;
+package com.dh.bmn.service.impl;
 
 import com.dh.bmn.dto.UsuarioDto;
 import com.dh.bmn.entity.Usuario;
 import com.dh.bmn.repository.IUsuarioRepository;
+import com.dh.bmn.service.IService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class UsuarioService implements IService<Usuario, UsuarioDto>{
+public class UsuarioService implements IService<Usuario, UsuarioDto> {
 
     @Autowired
     private final IUsuarioRepository usuarioRepository;

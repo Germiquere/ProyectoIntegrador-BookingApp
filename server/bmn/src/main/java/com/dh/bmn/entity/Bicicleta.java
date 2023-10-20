@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -15,10 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
+
 @Table(name = "bicicletas")
 public class Bicicleta {
 

@@ -2,7 +2,7 @@ package com.dh.bmn.controller;
 
 import com.dh.bmn.dto.ReservaDto;
 import com.dh.bmn.entity.Reserva;
-import com.dh.bmn.service.ReservaService;
+import com.dh.bmn.service.impl.ReservaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

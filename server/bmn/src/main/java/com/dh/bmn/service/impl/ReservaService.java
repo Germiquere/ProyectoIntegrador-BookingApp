@@ -1,8 +1,9 @@
-package com.dh.bmn.service;
+package com.dh.bmn.service.impl;
 
 import com.dh.bmn.entity.Reserva;
 import com.dh.bmn.dto.ReservaDto;
 import com.dh.bmn.repository.IReservaRepository;
+import com.dh.bmn.service.IService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.LogManager;
