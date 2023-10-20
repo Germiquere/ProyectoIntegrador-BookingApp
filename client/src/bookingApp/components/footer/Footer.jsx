@@ -4,43 +4,18 @@ import { FaFacebookF, FaInstagram, FaYoutube, FaTiktok } from "react-icons/fa";
 export const Footer = () => {
   return (
     <footer className='flex flex-col items-center bg-tertiary '>
-      <div className='flex flex-col p-2 gap-4 md:flex-row items-center w-full justify-evenly lg:w-2/3'>
+      <div className='flex flex-col p-2 gap-4 md:flex-row items-center max-w-[450px] mx-auto justify-evenly lg:w-2/3'>
         <div className='flex flex-col items-center'>
-          <a href='/'>
+          <Link to='/'>
             <img
-              className='w-[220px] h-[100px] md:w-[200px] h-[80px]'
+              className='w-[220px] h-[100px] md:w-[200px] md:h-[80px]'
               src='/src/assets/BikeMeNow_BlueAlpha.png'
               alt=''
             />
-          </a>
+          </Link>
         </div>
 
-        <div className='flex flex-row justify-evenly gap-8 font-bold text-primary lg:text-l '>
-          <nav>
-            <ul className='hover:text-gray-400 duration-500'>
-              <Link to='/'>Home</Link>
-            </ul>
-            <ul className='hover:text-gray-400 duration-500'>
-              <Link to='/'>Categories</Link>
-            </ul>
-            <ul className='hover:text-gray-400 duration-500'>
-              <Link to='/'>Products</Link>
-            </ul>
-          </nav>
-          <nav>
-            <ul className='hover:text-gray-400 duration-500'>
-              <Link to='/'>About Us</Link>
-            </ul>
-            <ul className='hover:text-gray-400 duration-500'>
-              <Link to='/'>Community</Link>
-            </ul>
-            <ul className='hover:text-gray-400 duration-500'>
-              <Link to='/'>Privacy Policy</Link>
-            </ul>
-          </nav>
-        </div>
-
-        <div className='flex gap-6 pr-4 justify-center text-[30px] text-primary'>
+        <div className='flex gap-4 pr-4 justify-center text-[30px] text-primary'>
           <a
             href='https://www.facebook.com/'
             target='_blank'
