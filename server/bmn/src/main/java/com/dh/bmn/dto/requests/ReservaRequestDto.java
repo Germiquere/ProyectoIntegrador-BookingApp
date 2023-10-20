@@ -14,13 +14,8 @@ import java.time.LocalDate;
 @Setter
 @Getter
 public class ReservaRequestDto {
-<<<<<<< HEAD
-    private Long reservaId;
-=======
-
     private Long reservaId;
 
->>>>>>> 9c9bbdd5138d4d98b3958af2ff7ccbebc0f7e8f6
     private Usuario usuario;
 
     private Bicicleta bicicleta;

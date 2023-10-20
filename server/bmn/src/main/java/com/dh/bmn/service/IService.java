@@ -7,7 +7,7 @@ public interface IService <T, E>{
 
     public void actualizar(E e) throws Exception;
 
-    public Optional<T> buscarPorId(Long id) throws Exception;
+    public T buscarPorId(Long id) throws Exception;
 
     public void guardar(E e) throws Exception;
 

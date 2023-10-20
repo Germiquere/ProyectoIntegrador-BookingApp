@@ -23,11 +23,8 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
-<<<<<<< HEAD
-=======
     private static final Logger LOGGER = LogManager.getLogger(BicicletaService.class);
 
->>>>>>> 9c9bbdd5138d4d98b3958af2ff7ccbebc0f7e8f6
     public BicicletaService(IBicicletaRepository bicicletaRepository) {
         this.bicicletaRepository = bicicletaRepository;
     }
@@ -39,7 +36,6 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
     @Override
     public BicicletaResponseDto buscarPorId(Long id) throws Exception {
-
         Bicicleta bicicleta = bicicletaRepository.findById(id).orElseThrow(RuntimeException::new);
         return objectMapper.convertValue(bicicleta, BicicletaResponseDto.class);
     }

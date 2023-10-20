@@ -23,7 +23,7 @@ public class BicicletaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<BicicletaResponseDto>> obtenerBicicletaPorId (@PathVariable Long id) throws Exception {
+    public ResponseEntity<BicicletaResponseDto> obtenerBicicletaPorId (@PathVariable Long id) throws Exception {
         return new ResponseEntity<>(bicicletaService.buscarPorId(id), HttpStatus.OK);
     }
 

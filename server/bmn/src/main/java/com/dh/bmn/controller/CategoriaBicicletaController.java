@@ -22,7 +22,7 @@ public class CategoriaBicicletaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<CategoriaBicicletaResponseDto>> obtenerCategoriaPorId (@PathVariable Long id) throws Exception {
+    public ResponseEntity<CategoriaBicicletaResponseDto> obtenerCategoriaPorId (@PathVariable Long id) throws Exception {
         return new ResponseEntity<>(categoriaBicicletaService.buscarPorId(id), HttpStatus.OK);
     }
 

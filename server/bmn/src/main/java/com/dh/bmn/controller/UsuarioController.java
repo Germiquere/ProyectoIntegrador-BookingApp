@@ -1,13 +1,8 @@
 package com.dh.bmn.controller;
 
 import com.dh.bmn.dto.requests.UsuarioRequestDto;
-<<<<<<< HEAD
 import com.dh.bmn.dto.responses.UsuarioResponseDto;
 import com.dh.bmn.service.IService;
-=======
-import com.dh.bmn.entity.Usuario;
-import com.dh.bmn.service.impl.UsuarioService;
->>>>>>> 9c9bbdd5138d4d98b3958af2ff7ccbebc0f7e8f6
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +23,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-<<<<<<< HEAD
-    public ResponseEntity<Optional<UsuarioResponseDto>> obtenerUsuarioPorId (@PathVariable Long id) throws Exception {
+    public ResponseEntity<UsuarioResponseDto> obtenerUsuarioPorId (@PathVariable Long id) throws Exception {
         return new ResponseEntity<>(usuarioService.buscarPorId(id), HttpStatus.OK);
-=======
-    public Optional<UsuarioRequestDto> obtenerUsuarioPorId (@PathVariable Integer id) throws Exception{
-        return usuarioService.buscarPorId(id);
->>>>>>> 9c9bbdd5138d4d98b3958af2ff7ccbebc0f7e8f6
     }
 
     @PostMapping
@@ -50,13 +40,8 @@ public class UsuarioController {
     }
 
     @GetMapping
-<<<<<<< HEAD
     public ResponseEntity<List<UsuarioResponseDto>> listarUsuarios () throws Exception {
         return new ResponseEntity<>(usuarioService.listarTodas(),HttpStatus.OK);
-=======
-    public Set<UsuarioRequestDto> listaDeUsuarios () throws Exception {
-        return usuarioService.listarTodos();
->>>>>>> 9c9bbdd5138d4d98b3958af2ff7ccbebc0f7e8f6
     }
 
     @PutMapping()

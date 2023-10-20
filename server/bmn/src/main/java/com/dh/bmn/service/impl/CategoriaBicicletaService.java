@@ -39,11 +39,8 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
 
     @Override
     public CategoriaBicicletaResponseDto buscarPorId(Long id) throws Exception {
-
         CategoriaBicicleta categoriaBicicleta = categoriaBicicletaRepository.findById(id).orElseThrow(RuntimeException::new);
-
         return objectMapper.convertValue(categoriaBicicleta, CategoriaBicicletaResponseDto.class);
-
     }
 
     @Override

@@ -19,12 +19,8 @@ public class Reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reserva_id")
-<<<<<<< HEAD
     private Long reservaId;
-=======
-    private Integer reservaId;
 
->>>>>>> 9c9bbdd5138d4d98b3958af2ff7ccbebc0f7e8f6
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
