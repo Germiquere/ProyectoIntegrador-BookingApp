@@ -18,7 +18,7 @@ export const BikesProvider = ({ children }) => {
             // LLAMO A LA FUNCION GET DEL ARCHIVO categories.js
             const data = await getBikes();
             // TENER EN CUENTA COMO VIENE MI DATA
-            setBikesData(data.results);
+            setBikesData(data);
         } catch (err) {
             setError(err);
         } finally {
@@ -43,7 +43,7 @@ export const BikesProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        // fetchData();
+        fetchData();
     }, []);
 
     return (

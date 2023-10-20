@@ -3,10 +3,7 @@ export const getBikes = async () => {
         // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
 
         // const res = await fetch(import.meta.env.VITE_URL + "/");
-        const res = await fetch(
-            "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0"
-        );
-
+        const res = await fetch("http://localhost:8080/bike-me-now/bicicletas");
         if (!res.ok) {
             throw new Error("Error en la solicitud GET de las bicicletas");
         }

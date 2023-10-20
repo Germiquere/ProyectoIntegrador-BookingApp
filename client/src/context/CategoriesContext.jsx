@@ -20,7 +20,7 @@ export const CategoriesProvider = ({ children }) => {
             // LLAMO A LA FUNCION GET DEL ARCHIVO categories.js
             const data = await getCategories();
             // TENER EN CUENTA COMO VIENE MI DATA
-            setCategoriesData(data.results);
+            setCategoriesData(data);
         } catch (err) {
             setError(err);
         } finally {

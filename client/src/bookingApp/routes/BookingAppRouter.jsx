@@ -24,7 +24,7 @@ export const BookingAppRouter = () => {
                 <Route path="mountain" element={<MountainBikes />} />
                 <Route path="road" element={<RoadBikes />} />
                 {/* TEST */}
-                <Route path="bulbasaur" element={<Categories />} />
+                <Route path="ruta" element={<Categories />} />
 
                 {/*----- */}
 

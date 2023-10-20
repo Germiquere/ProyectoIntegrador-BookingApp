@@ -3,10 +3,12 @@ import { useLocation } from "react-router-dom";
 import { useCategoriesContext } from "../../context/CategoriesContext";
 import { SkeletonCardsSweiper } from "../components/sectionCategoriesAndRecommended/SkeletonCardsSweiper";
 import Section from "../components/Section";
+import { useBikesContext } from "../../context/BikesContext";
 
 export const Categories = () => {
-    //TRAIGO EL HOOK PERSONALIZADO PARA TRAER LAS CATEGORIAS DESDE EL CONTEXT
-    const { categoriesData, loading } = useCategoriesContext();
+    //TRAIGO EL HOOK PERSONALIZADO PARA TRAER LAS BICIS DESDE EL CONTEXT
+    const { bikesData, loading } = useBikesContext();
+    console.log(bikesData);
     const { pathname } = useLocation();
     // QUITAR LA BARRA  DEL COMIENZO DEL PATHNAME
     const currentPath = pathname.substring(1);
@@ -16,10 +18,12 @@ export const Categories = () => {
         if (!arr) {
             return [];
         }
-        const res = arr.filter((item) => item.name === bikeCategory);
+        const res = arr.filter(
+            (item) => item.nombre.toLowerCase() === bikeCategory
+        );
         return res;
     };
-    const filteredBikes = filterBikes(categoriesData, currentPath);
+    const filteredBikes = filterBikes(bikesData, currentPath);
     return (
         <Section>
             <div className="max-w-[1200px] mx-auto mt-3">
@@ -30,9 +34,8 @@ export const Categories = () => {
                     </div>
                 ) : (
                     filteredBikes.map((item) => (
-                        <div className="" key={item.name}>
-                            item.id
-                            {item.name}
+                        <div className="" key={item.nombre}>
+                            {item.nombre}
                         </div>
                     ))
                 )}
