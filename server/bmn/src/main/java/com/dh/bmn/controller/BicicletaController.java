@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/bike-me-now/bicicletas")
@@ -22,7 +23,7 @@ public class BicicletaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BicicletaResponseDto> obtenerBicicletaPorId (@PathVariable Long id) throws Exception {
+    public ResponseEntity<Optional<BicicletaResponseDto>> obtenerBicicletaPorId (@PathVariable Long id) throws Exception {
         return new ResponseEntity<>(bicicletaService.buscarPorId(id), HttpStatus.OK);
     }
 

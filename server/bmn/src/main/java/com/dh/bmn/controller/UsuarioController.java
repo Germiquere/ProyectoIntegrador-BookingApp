@@ -1,6 +1,5 @@
 package com.dh.bmn.controller;
 
-import com.dh.bmn.dto.UsuarioDto;
 import com.dh.bmn.entity.Usuario;
 import com.dh.bmn.service.impl.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;

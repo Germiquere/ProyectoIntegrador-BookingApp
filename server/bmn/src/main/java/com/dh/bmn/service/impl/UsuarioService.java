@@ -1,6 +1,5 @@
 package com.dh.bmn.service.impl;
 
-import com.dh.bmn.dto.UsuarioDto;
 import com.dh.bmn.entity.Usuario;
 import com.dh.bmn.repository.IUsuarioRepository;
 import com.dh.bmn.service.IService;

@@ -37,14 +37,14 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
     }
 
     @Override
-    public CategoriaBicicletaResponseDto buscarPorId(Long id) throws Exception {
-       //    Optional<CategoriaBicicleta> categoriaBicicleta = categoriaBicicletaRepository.findById(id);
-       // if(categoriaBicicleta.isPresent()) {
-       //     return categoriaBicicleta.stream().map(cb-> mapper.convertValue(cb, CategoriaBicicletaDto.class)).findFirst();
-       // } else {
-       //     throw new RuntimeException();
+    public Optional<CategoriaBicicletaResponseDto> buscarPorId(Long id) throws Exception {
+       Optional<CategoriaBicicleta> categoriaBicicleta = categoriaBicicletaRepository.findById(id);
+       if(categoriaBicicleta.isPresent()) {
+            return categoriaBicicleta.stream().map(cb-> objectMapper.convertValue(cb, CategoriaBicicletaResponseDto.class)).findFirst();
+       } else {
+            throw new RuntimeException();
        //throw new NotFoundException("Código 201", "No se encontró el paciente con el ID: " + id);
-       // }
+       }
     }
 
     @Override

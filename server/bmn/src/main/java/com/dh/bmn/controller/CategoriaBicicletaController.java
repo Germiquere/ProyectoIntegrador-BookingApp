@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/bike-me-now/categorias")
@@ -21,7 +22,7 @@ public class CategoriaBicicletaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoriaBicicletaResponseDto> obtenerCategoriaPorId (@PathVariable Long id) throws Exception {
+    public ResponseEntity<Optional<CategoriaBicicletaResponseDto>> obtenerCategoriaPorId (@PathVariable Long id) throws Exception {
         return new ResponseEntity<>(categoriaBicicletaService.buscarPorId(id), HttpStatus.OK);
     }
 
