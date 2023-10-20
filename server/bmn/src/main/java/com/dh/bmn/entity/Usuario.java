@@ -43,7 +43,7 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "bicicleta_id")
     )
     private List<Bicicleta> bicicletas;*/
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "usuario")
-    private List<Reserva> reservas;
+    //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "usuario")
+    //private List<Reserva> reservas;
 
 }

@@ -15,3 +15,9 @@
 [2023-10-19 17:12.38] [INFO ] [UsuarioService:56] Se creó un nuevo usuario: Usuario{id=1, nombre='Pepe', apellido='Milanesa', email='pepe@milanesa.com', password='1234', rol=USER}
 [2023-10-19 17:12.42] [INFO ] [UsuarioService:49] Se creó una nueva reserva: Reserva{id=1, usuario=Usuario{id=1, nombre='null', apellido='null', email='null', password='null', rol=null}, bicicleta=Bicicleta{id=1, nombre='null', descripcion='null', precioPorDia=0.0, categoria=null, imagenes=[]}, fechaInicio=2023-10-20, fechaFin=2023-10-25}
 [2023-10-19 17:21.17] [INFO ] [UsuarioService:57] Se eliminó la reserva con el ID: 1
+[2023-10-20 01:16.46] [INFO ] [UsuarioService:56] Se creó un nuevo usuario: com.dh.bmn.entity.Usuario@4024b8e8
+[2023-10-20 01:24.14] [INFO ] [UsuarioService:56] Se creó un nuevo usuario: com.dh.bmn.entity.Usuario@2cbd3d9a
+[2023-10-20 01:27.47] [INFO ] [UsuarioService:56] Se creó un nuevo usuario: com.dh.bmn.entity.Usuario@65a21c57
+[2023-10-20 01:27.50] [INFO ] [UsuarioService:51] Se creó una nueva reserva: com.dh.bmn.entity.Reserva@182c7fc9
+[2023-10-20 01:29.53] [INFO ] [UsuarioService:56] Se creó un nuevo usuario: com.dh.bmn.entity.Usuario@151fd3a1
+[2023-10-20 01:29.56] [INFO ] [UsuarioService:51] Se creó una nueva reserva: com.dh.bmn.entity.Reserva@72028366
