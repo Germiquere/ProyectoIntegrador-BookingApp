@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-
 @Table(name = "bicicletas")
 public class Bicicleta {
 
@@ -39,17 +38,5 @@ public class Bicicleta {
     @CollectionTable(name = "bicicleta_imagenes", joinColumns = @JoinColumn(name = "bicicleta_id"))
     private List<Imagen> imagenes;
 
-
-//    @Override
-//    public String toString() {
-//        return "Bicicleta{" +
-//                "id=" + bicicleta_id +
-//                ", nombre='" + nombre + '\'' +
-//                ", descripcion='" + descripcion + '\'' +
-//                ", precioPorDia=" + precioPorDia +
-//                ", categoria=" + categoria +
-//                ", imagenes=" + imagenes +
-//                '}';
-//    }
 
 }

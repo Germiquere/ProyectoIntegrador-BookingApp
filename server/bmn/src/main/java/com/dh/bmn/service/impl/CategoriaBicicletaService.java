@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,14 +38,12 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
     }
 
     @Override
-    public Optional<CategoriaBicicletaResponseDto> buscarPorId(Long id) throws Exception {
-       Optional<CategoriaBicicleta> categoriaBicicleta = categoriaBicicletaRepository.findById(id);
-       if(categoriaBicicleta.isPresent()) {
-            return categoriaBicicleta.stream().map(cb-> objectMapper.convertValue(cb, CategoriaBicicletaResponseDto.class)).findFirst();
-       } else {
-            throw new RuntimeException();
-       //throw new NotFoundException("Código 201", "No se encontró el paciente con el ID: " + id);
-       }
+    public CategoriaBicicletaResponseDto buscarPorId(Long id) throws Exception {
+
+        CategoriaBicicleta categoriaBicicleta = categoriaBicicletaRepository.findById(id).orElseThrow(RuntimeException::new);
+
+        return objectMapper.convertValue(categoriaBicicleta, CategoriaBicicletaResponseDto.class);
+
     }
 
     @Override
