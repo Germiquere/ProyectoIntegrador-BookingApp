@@ -1,14 +1,13 @@
-package com.dh.bmn.controller;
+package com.dh.bmn.controllers;
 
-import com.dh.bmn.dto.requests.CategoriaBicicletaRequestDto;
-import com.dh.bmn.dto.responses.CategoriaBicicletaResponseDto;
-import com.dh.bmn.service.IService;
+import com.dh.bmn.dtos.requests.CategoriaBicicletaRequestDto;
+import com.dh.bmn.dtos.responses.CategoriaBicicletaResponseDto;
+import com.dh.bmn.services.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/bike-me-now/categorias")
@@ -29,24 +28,24 @@ public class CategoriaBicicletaController {
     @PostMapping
     public ResponseEntity<?> registrarCategoria (@RequestBody CategoriaBicicletaRequestDto categoriaBicicletaRequestDto) throws Exception {
         categoriaBicicletaService.guardar(categoriaBicicletaRequestDto);
-        return ResponseEntity.ok("Nueva categoría de bicicleta registrada.");
+        return new ResponseEntity<>("Nueva categoría de bicicleta registrada.", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarCategoriaPorId (@PathVariable Long id) throws Exception {
         categoriaBicicletaService.borrarPorId(id);
-        return ResponseEntity.ok("Categoría de bicicleta eliminada.");
+        return new ResponseEntity<>("Categoría de bicicleta eliminada.", HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<CategoriaBicicletaResponseDto>> listaDeCategorias() throws Exception {
-        return new ResponseEntity<>(categoriaBicicletaService.listarTodas(), HttpStatus.OK);
+        return new ResponseEntity<>(categoriaBicicletaService.listarTodos(), HttpStatus.OK);
     }
 
     @PutMapping()
     public ResponseEntity<?> actualizarCategoria (@RequestBody CategoriaBicicletaRequestDto categoriaBicicletaRequestDto) throws Exception {
         categoriaBicicletaService.actualizar(categoriaBicicletaRequestDto);
-        return ResponseEntity.ok("Categoría de bicicleta actualizada.");
+        return new ResponseEntity<>("Categoría de bicicleta actualizada.", HttpStatus.OK);
     }
 
 }

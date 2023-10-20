@@ -1,14 +1,13 @@
-package com.dh.bmn.controller;
+package com.dh.bmn.controllers;
 
-import com.dh.bmn.dto.requests.BicicletaRequestDto;
-import com.dh.bmn.dto.responses.BicicletaResponseDto;
-import com.dh.bmn.service.IService;
+import com.dh.bmn.dtos.requests.BicicletaRequestDto;
+import com.dh.bmn.dtos.responses.BicicletaResponseDto;
+import com.dh.bmn.services.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/bike-me-now/bicicletas")
@@ -41,7 +40,7 @@ public class BicicletaController {
 
     @GetMapping
     public ResponseEntity<List<BicicletaResponseDto>> listarBicicletas () throws Exception {
-        return new ResponseEntity<>(bicicletaService.listarTodas(),HttpStatus.OK);
+        return new ResponseEntity<>(bicicletaService.listarTodos(),HttpStatus.OK);
     }
 
     @PutMapping()

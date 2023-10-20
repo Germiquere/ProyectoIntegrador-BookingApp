@@ -1,4 +1,4 @@
-package com.dh.bmn.repository;
+package com.dh.bmn.repositories;
 
 import com.dh.bmn.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;

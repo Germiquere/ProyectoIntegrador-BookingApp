@@ -1,8 +1,6 @@
-package com.dh.bmn.service;
+package com.dh.bmn.services;
 
 import java.util.List;
-import java.util.Optional;
-
 public interface IService <T, E>{
 
     public void actualizar(E e) throws Exception;
@@ -13,7 +11,7 @@ public interface IService <T, E>{
 
     public void borrarPorId(Long id) throws Exception;
 
-    public List<T> listarTodas() throws Exception;
+    public List<T> listarTodos() throws Exception;
 
 }
 

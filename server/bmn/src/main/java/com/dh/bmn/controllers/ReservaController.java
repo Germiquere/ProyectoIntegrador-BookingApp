@@ -1,15 +1,13 @@
-package com.dh.bmn.controller;
+package com.dh.bmn.controllers;
 
-import com.dh.bmn.dto.requests.ReservaRequestDto;
-import com.dh.bmn.dto.responses.ReservaResponseDto;
-import com.dh.bmn.service.IService;
+import com.dh.bmn.dtos.requests.ReservaRequestDto;
+import com.dh.bmn.dtos.responses.ReservaResponseDto;
+import com.dh.bmn.services.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/bike-me-now/reservas")
@@ -41,7 +39,7 @@ public class ReservaController {
 
     @GetMapping
     public ResponseEntity<List<ReservaResponseDto>> listarReservas () throws Exception {
-        return new ResponseEntity<>(reservaService.listarTodas(),HttpStatus.OK);
+        return new ResponseEntity<>(reservaService.listarTodos(),HttpStatus.OK);
     }
 
     @PutMapping()

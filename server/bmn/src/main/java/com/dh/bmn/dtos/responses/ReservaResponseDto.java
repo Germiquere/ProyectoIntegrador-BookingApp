@@ -1,4 +1,4 @@
-package com.dh.bmn.dto.responses;
+package com.dh.bmn.dtos.responses;
 
 import com.dh.bmn.entity.Bicicleta;
 import com.dh.bmn.entity.Usuario;

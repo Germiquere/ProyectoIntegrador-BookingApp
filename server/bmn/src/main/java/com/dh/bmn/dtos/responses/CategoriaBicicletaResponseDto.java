@@ -1,19 +1,15 @@
-package com.dh.bmn.dto.requests;
+package com.dh.bmn.dtos.responses;
 
-import com.dh.bmn.embeddable.Imagen;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
-@Setter
-public class CategoriaBicicletaRequestDto {
-    private Long categoriaId;
+public class CategoriaBicicletaResponseDto {
+
     private String nombre;
     private String descripcion;
     private String imagen;
-
 }
