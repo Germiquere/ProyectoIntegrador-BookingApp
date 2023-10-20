@@ -12,6 +12,7 @@ import java.util.List;
 @Getter
 public class BicicletaResponseDto {
 
+    private Long bicicletaId;
     private String nombre;
     private String descripcion;
     private Integer precioAlquilerPorDia;

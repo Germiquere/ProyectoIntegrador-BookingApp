@@ -12,6 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class UsuarioResponseDto {
+
+    private Long usuarioId;
     private String nombre;
     private String apellido;
     private String email;

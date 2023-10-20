@@ -12,6 +12,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 public class ReservaResponseDto {
+
+    private Long reservaId;
     private Usuario usuario;
     private Bicicleta bicicleta;
     private LocalDate fechaInicio;
