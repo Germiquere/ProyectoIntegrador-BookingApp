@@ -23,11 +23,11 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
+    private static final Logger LOGGER = LogManager.getLogger(BicicletaService.class);
+
     public BicicletaService(IBicicletaRepository bicicletaRepository) {
         this.bicicletaRepository = bicicletaRepository;
     }
-
-    private static final Logger LOGGER = LogManager.getLogger(BicicletaService.class);
 
     @Override
     public void actualizar(BicicletaRequestDto bicicletaRequestDto) throws Exception {
@@ -36,13 +36,9 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
     @Override
     public BicicletaResponseDto buscarPorId(Long id) throws Exception {
-        // Optional<Bicicleta> bicicleta = bicicletaRepository.findById(id);
-        //if(bicicleta.isPresent()) {
-        //    return bicicleta.stream().map(b-> mapper.convertValue(b, BicicletaDto.class)).findFirst();
-        //} else {
-        //    throw new RuntimeException();
-        //throw new NotFoundException("Código 201", "No se encontró el paciente con el ID: " + id);
-        }
+
+        Bicicleta bicicleta = bicicletaRepository.findById(id).orElseThrow(RuntimeException::new);
+        return objectMapper.convertValue(bicicleta, BicicletaResponseDto.class);
     }
 
     @Override

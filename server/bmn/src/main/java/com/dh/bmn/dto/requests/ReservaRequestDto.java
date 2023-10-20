@@ -1,4 +1,4 @@
-package com.dh.bmn.dto;
+package com.dh.bmn.dto.requests;
 
 import com.dh.bmn.entity.Bicicleta;
 import com.dh.bmn.entity.Usuario;
@@ -13,9 +13,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Setter
 @Getter
-public class ReservaDto {
+public class ReservaRequestDto {
 
-    private Integer reservaId;
+    private Long reservaId;
 
     private Usuario usuario;
 

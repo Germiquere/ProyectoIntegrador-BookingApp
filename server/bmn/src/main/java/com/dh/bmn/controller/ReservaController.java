@@ -1,6 +1,6 @@
 package com.dh.bmn.controller;
 
-import com.dh.bmn.dto.ReservaDto;
+import com.dh.bmn.dto.requests.ReservaRequestDto;
 import com.dh.bmn.entity.Reserva;
 import com.dh.bmn.service.impl.ReservaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +28,7 @@ public class ReservaController {
     }
 
     @GetMapping("/{id}")
-    public Optional<ReservaDto> obtenerReservaPorId (@PathVariable Integer id) throws Exception{
+    public Optional<ReservaRequestDto> obtenerReservaPorId (@PathVariable Integer id) throws Exception{
         return reservaService.buscarPorId(id);
     }
 
@@ -45,7 +45,7 @@ public class ReservaController {
     }
 
     @GetMapping
-    public Set<ReservaDto> listaDeReservas () throws Exception {
+    public Set<ReservaRequestDto> listaDeReservas () throws Exception {
         return reservaService.listarTodos();
     }
 

@@ -1,6 +1,6 @@
 package com.dh.bmn.controller;
 
-import com.dh.bmn.dto.UsuarioDto;
+import com.dh.bmn.dto.requests.UsuarioRequestDto;
 import com.dh.bmn.entity.Usuario;
 import com.dh.bmn.service.impl.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public Optional<UsuarioDto> obtenerUsuarioPorId (@PathVariable Integer id) throws Exception{
+    public Optional<UsuarioRequestDto> obtenerUsuarioPorId (@PathVariable Integer id) throws Exception{
         return usuarioService.buscarPorId(id);
     }
 
@@ -40,7 +40,7 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public Set<UsuarioDto> listaDeUsuarios () throws Exception {
+    public Set<UsuarioRequestDto> listaDeUsuarios () throws Exception {
         return usuarioService.listarTodos();
     }
 

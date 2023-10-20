@@ -1,9 +1,10 @@
 package com.dh.bmn.service.impl;
 
 import com.dh.bmn.entity.Reserva;
-import com.dh.bmn.dto.ReservaDto;
+import com.dh.bmn.dto.requests.ReservaRequestDto;
 import com.dh.bmn.repository.IReservaRepository;
 import com.dh.bmn.service.IService;
+import com.dh.bmn.util.MapperClass;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.LogManager;
@@ -18,12 +19,15 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class ReservaService implements IService<Reserva, ReservaDto> {
+public class ReservaService implements IService<Reserva, ReservaRequestDto> {
 
     @Autowired
     private final IReservaRepository reservaRepository;
-    @Autowired
-    private final ObjectMapper mapper;
+
+//    @Autowired
+//    private final ObjectMapper mapper;
+
+    private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
     private static final Logger LOGGER = LogManager.getLogger(UsuarioService.class);
 
@@ -33,10 +37,10 @@ public class ReservaService implements IService<Reserva, ReservaDto> {
     }
 
     @Override
-    public Optional<ReservaDto> buscarPorId(Integer id) throws Exception {
+    public Optional<ReservaRequestDto> buscarPorId(Integer id) throws Exception {
         Optional<Reserva> reserva = reservaRepository.findById(id);
         if(reserva.isPresent()) {
-            return reserva.stream().map(r-> mapper.convertValue(r, ReservaDto.class)).findFirst();
+            return reserva.stream().map(r-> objectMapper.convertValue(r, ReservaRequestDto.class)).findFirst();
         } else {
             throw new RuntimeException();
             //throw new NotFoundException("Código 201", "No se encontró el paciente con el ID: " + id);
@@ -63,8 +67,8 @@ public class ReservaService implements IService<Reserva, ReservaDto> {
     }
 
     @Override
-    public Set<ReservaDto> listarTodos() throws Exception {
+    public Set<ReservaRequestDto> listarTodas() throws Exception {
         List<Reserva> reservas = reservaRepository.findAll();
-        return reservas.stream().map(r-> mapper.convertValue(r, ReservaDto.class)).collect(Collectors.toSet());
+        return reservas.stream().map(r-> objectMapper.convertValue(r, ReservaRequestDto.class)).collect(Collectors.toSet());
     }
 }

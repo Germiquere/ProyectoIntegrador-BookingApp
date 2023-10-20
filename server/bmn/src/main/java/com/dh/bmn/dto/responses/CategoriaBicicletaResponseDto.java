@@ -12,5 +12,5 @@ public class CategoriaBicicletaResponseDto {
 
     private String nombre;
     private String descripcion;
-    private Imagen imagen;
+    private String imagen;
 }

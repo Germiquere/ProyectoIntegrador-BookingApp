@@ -1,6 +1,6 @@
 package com.dh.bmn.service.impl;
 
-import com.dh.bmn.dto.UsuarioDto;
+import com.dh.bmn.dto.requests.UsuarioRequestDto;
 import com.dh.bmn.entity.Usuario;
 import com.dh.bmn.repository.IUsuarioRepository;
 import com.dh.bmn.service.IService;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class UsuarioService implements IService<Usuario, UsuarioDto> {
+public class UsuarioService implements IService<Usuario, UsuarioRequestDto> {
 
     @Autowired
     private final IUsuarioRepository usuarioRepository;
@@ -33,10 +33,10 @@ public class UsuarioService implements IService<Usuario, UsuarioDto> {
     }
 
     @Override
-    public Optional<UsuarioDto> buscarPorId(Integer id) throws Exception {
+    public Optional<UsuarioRequestDto> buscarPorId(Integer id) throws Exception {
         Optional<Usuario> usuario = usuarioRepository.findById(id);
         if(usuario.isPresent()) {
-            return usuario.stream().map(u-> mapper.convertValue(u, UsuarioDto.class)).findFirst();
+            return usuario.stream().map(u-> mapper.convertValue(u, UsuarioRequestDto.class)).findFirst();
         } else {
             throw new RuntimeException();
             //throw new NotFoundException("Código 201", "No se encontró el paciente con el ID: " + id);
@@ -70,8 +70,8 @@ public class UsuarioService implements IService<Usuario, UsuarioDto> {
     }
 
     @Override
-    public Set<UsuarioDto> listarTodos() throws Exception {
+    public Set<UsuarioRequestDto> listarTodos() throws Exception {
         List<Usuario> usuarios = usuarioRepository.findAll();
-        return usuarios.stream().map(u-> mapper.convertValue(u, UsuarioDto.class)).collect(Collectors.toSet());
+        return usuarios.stream().map(u-> mapper.convertValue(u, UsuarioRequestDto.class)).collect(Collectors.toSet());
     }
 }

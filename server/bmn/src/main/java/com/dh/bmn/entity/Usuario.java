@@ -46,15 +46,4 @@ public class Usuario {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "usuario")
     private List<Reserva> reservas;
 
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "id=" + usuarioId +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", rol=" + rol +
-                '}';
-    }
 }
