@@ -3,6 +3,7 @@ package com.dh.bmn.controller;
 import com.dh.bmn.dto.BicicletaDto;
 import com.dh.bmn.entity.Bicicleta;
 import com.dh.bmn.service.BicicletaService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,12 @@ public class BicicletaController {
     @Autowired
     private final BicicletaService bicicletaService;
 
-    public BicicletaController(BicicletaService bicicletaService) {
+    @Autowired
+    private final ObjectMapper mapper;
+
+    public BicicletaController(BicicletaService bicicletaService, ObjectMapper mapper) {
         this.bicicletaService = bicicletaService;
+        this.mapper = mapper;
     }
 
     @GetMapping("/{id}")

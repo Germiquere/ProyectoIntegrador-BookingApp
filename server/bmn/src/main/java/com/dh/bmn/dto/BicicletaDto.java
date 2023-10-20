@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BicicletaDto {
-    private Integer bicicleta_id;
+    private Integer bicicletaId;
     private String nombre;
     private String descripcion;
     private double precioPorDia;
     private CategoriaBicicleta categoria;
     private List<Imagen> imagenes = new ArrayList<Imagen>();
 
-    public BicicletaDto(Integer bicicleta_id, String nombre, String descripcion, double precioPorDia, CategoriaBicicleta categoria, List<Imagen> imagenes) {
-        this.bicicleta_id = bicicleta_id;
+    public BicicletaDto(Integer bicicletaId, String nombre, String descripcion, double precioPorDia, CategoriaBicicleta categoria, List<Imagen> imagenes) {
+        this.bicicletaId = bicicletaId;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precioPorDia = precioPorDia;
@@ -29,7 +29,7 @@ public class BicicletaDto {
     @Override
     public String toString() {
         return "BicicletaDto{" +
-                "id=" + bicicleta_id +
+                "id=" + bicicletaId +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", precioPorDia=" + precioPorDia +
@@ -38,12 +38,12 @@ public class BicicletaDto {
                 '}';
     }
 
-    public Integer getBicicleta_id() {
-        return bicicleta_id;
+    public Integer getBicicletaId() {
+        return bicicletaId;
     }
 
-    public void setBicicleta_id(Integer bicicleta_id) {
-        this.bicicleta_id = bicicleta_id;
+    public void setBicicletaId(Integer bicicletaId) {
+        this.bicicletaId = bicicletaId;
     }
 
     public String getNombre() {

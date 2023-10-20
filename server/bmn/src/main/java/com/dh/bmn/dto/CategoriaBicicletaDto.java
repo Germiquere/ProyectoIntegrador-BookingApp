@@ -1,13 +1,13 @@
 package com.dh.bmn.dto;
 
 public class CategoriaBicicletaDto {
-    private Integer categoria_id;
+    private Integer categoriaId;
     private String nombre;
     private String descripcion;
     private String imagen;
 
-    public CategoriaBicicletaDto(Integer categoria_id, String nombre, String descripcion, String imagen) {
-        this.categoria_id = categoria_id;
+    public CategoriaBicicletaDto(Integer categoriaId, String nombre, String descripcion, String imagen) {
+        this.categoriaId = categoriaId;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.imagen = imagen;
@@ -19,19 +19,19 @@ public class CategoriaBicicletaDto {
     @Override
     public String toString() {
         return "CategoriaBicicleta{" +
-                "id=" + categoria_id +
+                "id=" + categoriaId +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", imagen='" + imagen + '\'' +
                 '}';
     }
 
-    public Integer getCategoria_id() {
-        return categoria_id;
+    public Integer getCategoriaId() {
+        return categoriaId;
     }
 
-    public void setCategoria_id(Integer categoria_id) {
-        this.categoria_id = categoria_id;
+    public void setCategoriaId(Integer categoriaId) {
+        this.categoriaId = categoriaId;
     }
 
     public String getNombre() {

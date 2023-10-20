@@ -4,8 +4,8 @@ import com.dh.bmn.dto.CategoriaBicicletaDto;
 import com.dh.bmn.entity.CategoriaBicicleta;
 import com.dh.bmn.repository.ICategoriaBicicletaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,17 +36,19 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicleta, C
 
     @Override
     public Optional<CategoriaBicicletaDto> buscarPorId(Integer id) throws Exception {
-        return Optional.empty();
+        Optional<CategoriaBicicleta> categoriaBicicleta = categoriaBicicletaRepository.findById(id);
+        if(categoriaBicicleta.isPresent()) {
+            return categoriaBicicleta.stream().map(cb-> mapper.convertValue(cb, CategoriaBicicletaDto.class)).findFirst();
+        } else {
+            throw new RuntimeException();
+            //throw new NotFoundException("Código 201", "No se encontró el paciente con el ID: " + id);
+        }
     }
 
     @Override
     public void guardar(CategoriaBicicleta nuevaCategoriaBicicleta) throws Exception {
-        String inicialNombre = nuevaCategoriaBicicleta.getNombre().substring(0, 1);
-        String restoNombre = nuevaCategoriaBicicleta.getNombre().substring(1);
-        nuevaCategoriaBicicleta.setNombre(inicialNombre.toUpperCase() + restoNombre.toLowerCase());
-
         categoriaBicicletaRepository.save(nuevaCategoriaBicicleta);
-        //LOGGER.info("Se creó una nueva bicicleta: " + nuevoBicicleta.toString());
+        LOGGER.info("Se creó una nueva bicicleta: " + nuevaCategoriaBicicleta.toString());
     }
 
     @Override
@@ -54,7 +56,7 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicleta, C
         Optional<CategoriaBicicleta> optionalCategoriaBicicleta = categoriaBicicletaRepository.findById(id);
         if (optionalCategoriaBicicleta.isPresent()) {
             categoriaBicicletaRepository.deleteById(id);
-            //LOGGER.info("Se eliminó la bicicleta con el ID: " + id);
+            LOGGER.info("Se eliminó la categoría de bicicleta con el ID: " + id);
         } else {
             throw new RuntimeException();
             //throw new NotFoundException("Código 201", "No se encontró la bicicleta con el ID: " + id);
