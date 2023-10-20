@@ -5,12 +5,13 @@ import { Link } from "react-router-dom";
 export const Header = () => {
   let [open, setOpen] = useState(false);
   return (
-    <header className='px-[5%] lg:px-[2%] flex items-center justify-around border-b shadow-lg top-0 w-full bg-white sticky z-30'>
-      <div className='flex w-full justify-between md:pl-[20px] '>
+    <header className='px-[5%] lg:px-[2%] shadow-lg top-0 w-full bg-white sticky z-30 overflow-hidden'>
+      {/* <div className='absolute bottom-0  w-full shadow-2xl shadow-secondary border-b-2 border-primary animate-borderAnimation'></div> */}
+      <div className='flex items-center justify-between max-w-[1200px] mx-auto  '>
         <div>
           <Link to='/'>
             <img
-              className='w-[130px] h-[70px] '
+              className='w-full h-[50px] '
               src='/src/assets/BikeMeNow_BlueAlpha.png'
               alt=''
             />
@@ -19,14 +20,14 @@ export const Header = () => {
 
         <div
           onClick={() => setOpen(!open)}
-          className=' text-3xl absolute right-8 cursor-pointer lg:hidden h-full flex top-5 text-primary'
+          className=' text-3xl  cursor-pointer lg:hidden h-full flex  text-primary'
         >
           <FaBars name={open ? "close" : "menu"}></FaBars>
         </div>
 
         <div
           className={`flex flex-col items-start lg:flex lg:flex-row  pb-6 lg:items-center lg:pb-2 pt-4 absolute lg:static  bg-white lg:z-auto gap-4  left-0 w-full  lg:w-auto md:pl-2 pl-9 transition-all duration-500 ease-in ${
-            open ? "top-[70px] " : "top-[-490px]"
+            open ? "top-[50px] " : "top-[-490px]"
           }`}
         >
           <button
