@@ -19,7 +19,7 @@ export const getBikeById = async (id) => {
 
         // const res = await fetch(import.meta.env.VITE_URL + "/");
         const res = await fetch(
-            `https://pokeapi.co/api/v2/pokemon?limit=20&offset=0/${id}`
+            `http://localhost:8080/bike-me-now/bicicletas/${id}`
         );
 
         if (!res.ok) {
