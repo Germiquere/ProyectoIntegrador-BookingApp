@@ -3,8 +3,9 @@ import { SearchBar } from "./SearchBar";
 import { Calendar } from "./Calendar/Calendar";
 import { BsXCircle } from "react-icons/bs";
 import { CalendarAndSearchContext } from "../../../context/CalendarSearchContext";
+import { Link } from "react-router-dom";
 export const ResponsiveCalendarAndSearch = () => {
-    const { handleOpenCalendarAndSearch, openCalendarAndSearch } = useContext(
+    const { handleOpenCalendarAndSearch } = useContext(
         CalendarAndSearchContext
     );
     return (
@@ -24,13 +25,18 @@ export const ResponsiveCalendarAndSearch = () => {
                     </h2>
                     <Calendar />
                 </div>
-                <div className="flex justify-center">
-                    <button
-                        className="h-11 middle none center rounded-full sm:rounded-l-none rounded-r-full bg-primary py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40  active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                        data-ripple-light="true"
-                    >
-                        Buscar
-                    </button>
+                <div className="flex justify-center w-full">
+                    <div className="w-full">
+                        <Link to={`description/1`}>
+                            <button
+                                className="w-full h-11 middle none center  rounded-full bg-primary py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm transition-all  hover:shadow-secondary active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                                data-ripple-light="true"
+                                onClick={handleOpenCalendarAndSearch}
+                            >
+                                Buscar
+                            </button>
+                        </Link>
+                    </div>
                 </div>
             </div>
             <BsXCircle

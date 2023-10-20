@@ -12,6 +12,16 @@ export default {
                 graySecondary: "#555555",
                 grayTertiary: "#343434",
             },
+
+            keyframes: {
+                borderAnimation: {
+                    "0%": { transform: "translateX(-100%)" },
+                    "100%": { transform: "translateX(100%)" },
+                },
+            },
+            animation: {
+                borderAnimation: "borderAnimation 1s ease-in-out infinite",
+            },
         },
     },
     plugins: [],
