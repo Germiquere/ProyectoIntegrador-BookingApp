@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 export const Header = () => {
   let [open, setOpen] = useState(false);
   return (
-    <header className='px-[5%] lg:px-[2%] shadow-lg top-0 w-full bg-white sticky z-30 overflow-hidden'>
-      {/* <div className='absolute bottom-0  w-full shadow-2xl shadow-secondary border-b-2 border-primary animate-borderAnimation'></div> */}
+    <header className='px-[5%] lg:px-[2%] shadow-lg top-0 w-full bg-white sticky z-30'>
       <div className='flex items-center justify-between max-w-[1200px] mx-auto  '>
         <div>
           <Link to='/'>
@@ -26,7 +25,7 @@ export const Header = () => {
         </div>
 
         <div
-          className={`flex flex-col items-start lg:flex lg:flex-row  pb-6 lg:items-center lg:pb-2 pt-4 absolute lg:static  bg-white lg:z-auto gap-4  left-0 w-full  lg:w-auto md:pl-2 pl-9 transition-all duration-500 ease-in ${
+          className={`flex flex-col items-start lg:flex lg:flex-row  pb-6 lg:items-center lg:pb-2 pt-4 absolute lg:static  bg-white lg:z-50 gap-4  left-0 w-full  lg:w-auto md:pl-2 pl-9 transition-all duration-500 ease-in ${
             open ? "top-[50px] " : "top-[-490px]"
           }`}
         >
