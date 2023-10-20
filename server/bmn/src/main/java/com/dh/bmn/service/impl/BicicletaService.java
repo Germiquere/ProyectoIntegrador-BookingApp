@@ -23,7 +23,7 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
-    public BicicletaService(IBicicletaRepository bicicletaRepository, ObjectMapper objectMapper) {
+    public BicicletaService(IBicicletaRepository bicicletaRepository) {
         this.bicicletaRepository = bicicletaRepository;
     }
 

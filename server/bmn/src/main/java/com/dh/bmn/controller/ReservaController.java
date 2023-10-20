@@ -1,57 +1,52 @@
 package com.dh.bmn.controller;
 
-import com.dh.bmn.dto.ReservaDto;
-import com.dh.bmn.entity.Reserva;
-import com.dh.bmn.service.impl.ReservaService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.dh.bmn.dto.requests.ReservaRequestDto;
+import com.dh.bmn.dto.responses.ReservaResponseDto;
+import com.dh.bmn.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/reservas")
+@RequestMapping("/bike-me-now/reservas")
 public class ReservaController {
 
-    @Autowired
-    private final ReservaService reservaService;
+    private final IService<ReservaResponseDto, ReservaRequestDto> reservaService;
 
     @Autowired
-    private final ObjectMapper mapper;
-
-    public ReservaController(ReservaService reservaService, ObjectMapper mapper) {
+    public ReservaController(IService<ReservaResponseDto, ReservaRequestDto> reservaService) {
         this.reservaService = reservaService;
-        this.mapper = mapper;
     }
 
     @GetMapping("/{id}")
-    public Optional<ReservaDto> obtenerReservaPorId (@PathVariable Integer id) throws Exception{
-        return reservaService.buscarPorId(id);
+    public ResponseEntity<Optional<ReservaResponseDto>> obtenerReservaPorId (@PathVariable Long id) throws Exception {
+        return new ResponseEntity<>(reservaService.buscarPorId(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> registrarReserva (@RequestBody Reserva nuevaReserva) throws Exception {
-        reservaService.guardar(nuevaReserva);
-        return ResponseEntity.ok("Nueva reserva registradoa.");
+    public ResponseEntity<?> registrarReserva (@RequestBody ReservaRequestDto reservaRequestDto) throws Exception {
+        reservaService.guardar(reservaRequestDto);
+        return new ResponseEntity<>("Nueva reserva registrada", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarReservaPorId(@PathVariable Integer id) throws Exception {
+    public ResponseEntity<?> eliminarReservaPorId (@PathVariable Long id) throws Exception {
         reservaService.borrarPorId(id);
-        return ResponseEntity.ok("Reserva eliminada.");
+        return new ResponseEntity<>("Reserva eliminada exitosamente", HttpStatus.OK);
     }
 
     @GetMapping
-    public Set<ReservaDto> listaDeReservas () throws Exception {
-        return reservaService.listarTodos();
+    public ResponseEntity<List<ReservaResponseDto>> listarReservas () throws Exception {
+        return new ResponseEntity<>(reservaService.listarTodas(),HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarReserva(@RequestBody Reserva reservaActualizada) throws Exception {
-        reservaService.actualizar(reservaActualizada);
-        return ResponseEntity.ok("Reserva actualizada.");
+    @PutMapping()
+    public ResponseEntity<?> actualizarReserva (@RequestBody ReservaRequestDto reservaRequestDto) throws Exception {
+        reservaService.actualizar(reservaRequestDto);
+        return new ResponseEntity<>("Reserva actualizada exitosamente", HttpStatus.OK);
     }
 }

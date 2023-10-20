@@ -19,7 +19,7 @@ public class Reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reserva_id")
-    private Integer reservaId;
+    private Long reservaId;
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;

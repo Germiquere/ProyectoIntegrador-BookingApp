@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class ReservaRequestDto {
-    private Integer reservaId;
+    private Long reservaId;
     private Usuario usuario;
     private Bicicleta bicicleta;
     private LocalDate fechaInicio;

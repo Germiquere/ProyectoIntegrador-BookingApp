@@ -1,11 +1,12 @@
 package com.dh.bmn.service.impl;
 
+import com.dh.bmn.dto.requests.ReservaRequestDto;
+import com.dh.bmn.dto.responses.ReservaResponseDto;
 import com.dh.bmn.entity.Reserva;
-import com.dh.bmn.dto.ReservaDto;
 import com.dh.bmn.repository.IReservaRepository;
 import com.dh.bmn.service.IService;
+import com.dh.bmn.util.MapperClass;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,30 +14,32 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Service
-public class ReservaService implements IService<Reserva, ReservaDto> {
+public class ReservaService implements IService<ReservaResponseDto, ReservaRequestDto> {
 
     @Autowired
     private final IReservaRepository reservaRepository;
-    @Autowired
-    private final ObjectMapper mapper;
+
+    private static final ObjectMapper objectMapper = MapperClass.objectMapper();
+
+    public ReservaService(IReservaRepository reservaRepository) {
+        this.reservaRepository = reservaRepository;
+    }
 
     private static final Logger LOGGER = LogManager.getLogger(UsuarioService.class);
 
     @Override
-    public void actualizar(Reserva reserva) throws Exception {
+    public void actualizar(ReservaRequestDto reservaRequestDto) throws Exception {
 
     }
 
     @Override
-    public Optional<ReservaDto> buscarPorId(Integer id) throws Exception {
+    public Optional<ReservaResponseDto> buscarPorId(Long id) throws Exception {
         Optional<Reserva> reserva = reservaRepository.findById(id);
         if(reserva.isPresent()) {
-            return reserva.stream().map(r-> mapper.convertValue(r, ReservaDto.class)).findFirst();
+            return reserva.stream().map(r-> objectMapper.convertValue(r, ReservaResponseDto.class)).findFirst();
         } else {
             throw new RuntimeException();
             //throw new NotFoundException("Código 201", "No se encontró el paciente con el ID: " + id);
@@ -44,14 +47,15 @@ public class ReservaService implements IService<Reserva, ReservaDto> {
     }
 
     @Override
-    public void guardar(Reserva nuevaReserva) throws Exception {
+    public void guardar(ReservaRequestDto reservaRequestDto) throws Exception {
 
-        reservaRepository.save(nuevaReserva);
-        LOGGER.info("Se creó una nueva reserva: " + nuevaReserva.toString());
+        Reserva reserva = objectMapper.convertValue(reservaRequestDto, Reserva.class);
+        reservaRepository.save(reserva);
+        LOGGER.info("Se creó una nueva reserva: " + reserva.toString());
     }
 
     @Override
-    public void borrarPorId(Integer id) throws Exception {
+    public void borrarPorId(Long id) throws Exception {
         Optional<Reserva> optionalReserva = reservaRepository.findById(id);
         if (optionalReserva.isPresent()) {
             reservaRepository.deleteById(id);
@@ -63,8 +67,8 @@ public class ReservaService implements IService<Reserva, ReservaDto> {
     }
 
     @Override
-    public Set<ReservaDto> listarTodos() throws Exception {
+    public List<ReservaResponseDto> listarTodas() throws Exception {
         List<Reserva> reservas = reservaRepository.findAll();
-        return reservas.stream().map(r-> mapper.convertValue(r, ReservaDto.class)).collect(Collectors.toSet());
+        return reservas.stream().map(r -> objectMapper.convertValue(r, ReservaResponseDto.class)).collect(Collectors.toList());
     }
 }
