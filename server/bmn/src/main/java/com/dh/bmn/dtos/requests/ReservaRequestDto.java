@@ -1,13 +1,13 @@
 package com.dh.bmn.dtos.requests;
 
-import com.dh.bmn.entity.Bicicleta;
-import com.dh.bmn.entity.Usuario;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,11 +16,13 @@ import java.time.LocalDate;
 public class ReservaRequestDto {
     private Long reservaId;
 
-    private Usuario usuario;
+    private UsuarioRequestDto usuario;
 
-    private Bicicleta bicicleta;
+    private BicicletaRequestDto bicicleta;
 
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     private LocalDate fechaInicio;
 
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     private LocalDate fechaFin;
 }

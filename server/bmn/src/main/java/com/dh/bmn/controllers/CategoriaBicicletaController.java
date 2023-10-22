@@ -27,7 +27,7 @@ public class CategoriaBicicletaController {
 
     @PostMapping
     public ResponseEntity<?> registrarCategoria (@RequestBody CategoriaBicicletaRequestDto categoriaBicicletaRequestDto) throws Exception {
-        categoriaBicicletaService.guardar(categoriaBicicletaRequestDto);
+        categoriaBicicletaService.crear(categoriaBicicletaRequestDto);
         return new ResponseEntity<>("Nueva categoría de bicicleta registrada.", HttpStatus.CREATED);
     }
 

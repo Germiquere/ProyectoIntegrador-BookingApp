@@ -1,12 +1,11 @@
 package com.dh.bmn.dtos.requests;
 
-import com.dh.bmn.embeddable.Imagen;
 import com.dh.bmn.entity.CategoriaBicicleta;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.List;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +17,7 @@ public class BicicletaRequestDto {
     private String descripcion;
     private Integer precioAlquilerPorDia;
     private CategoriaBicicleta categoria;
-    private List<Imagen> imagenes;
+
 
 }
 

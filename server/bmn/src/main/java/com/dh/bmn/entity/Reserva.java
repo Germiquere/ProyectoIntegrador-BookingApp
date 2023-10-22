@@ -1,5 +1,6 @@
 package com.dh.bmn.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,18 +22,20 @@ public class Reserva {
     @Column(name = "reserva_id")
     private Long reservaId;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @ManyToOne()
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @ManyToOne
-    @JoinColumn(name = "bicicleta_id")
+    @ManyToOne()
+    @JoinColumn(name = "bicicleta_id", nullable = false)
     private Bicicleta bicicleta;
 
     @Column
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     private LocalDate fechaInicio;
 
     @Column
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     private LocalDate fechaFin;
 
 }

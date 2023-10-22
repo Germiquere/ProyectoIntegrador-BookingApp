@@ -3,6 +3,7 @@ package com.dh.bmn.services.impl;
 import com.dh.bmn.dtos.requests.UsuarioRequestDto;
 import com.dh.bmn.dtos.responses.UsuarioResponseDto;
 import com.dh.bmn.entity.Usuario;
+import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IUsuarioRepository;
 import com.dh.bmn.services.IService;
@@ -46,16 +47,23 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
     }
 
     @Override
-    public void guardar(UsuarioRequestDto usuarioRequestDto) {
-        String inicialNombre = usuarioRequestDto.getNombre().substring(0, 1);
-        String restoNombre = usuarioRequestDto.getNombre().substring(1);
-        usuarioRequestDto.setNombre(inicialNombre.toUpperCase() + restoNombre.toLowerCase());
+    public void crear(UsuarioRequestDto usuarioRequestDto) {
+//        String inicialNombre = usuarioRequestDto.getNombre().substring(0, 1);
+//        String restoNombre = usuarioRequestDto.getNombre().substring(1);
+//        usuarioRequestDto.setNombre(inicialNombre.toUpperCase() + restoNombre.toLowerCase());
+//
+//        String inicialApellido = usuarioRequestDto.getApellido().substring(0, 1);
+//        String restoApellido = usuarioRequestDto.getApellido().substring(1);
+//        usuarioRequestDto.setApellido(inicialApellido.toUpperCase() + restoApellido.toLowerCase());
+//
+//        Usuario usuario = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
+//        usuarioRepository.save(usuario);
 
-        String inicialApellido = usuarioRequestDto.getApellido().substring(0, 1);
-        String restoApellido = usuarioRequestDto.getApellido().substring(1);
-        usuarioRequestDto.setApellido(inicialApellido.toUpperCase() + restoApellido.toLowerCase());
-
+        if (usuarioRepository.findByEmail(usuarioRequestDto.getEmail()).isPresent()) {
+            throw new ResourceAlreadyExistsException("El usuario ya existe", HttpStatus.CONFLICT.value());
+        }
         Usuario usuario = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
+
         usuarioRepository.save(usuario);
     }
 

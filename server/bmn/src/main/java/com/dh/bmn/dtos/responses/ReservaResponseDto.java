@@ -1,7 +1,6 @@
 package com.dh.bmn.dtos.responses;
 
-import com.dh.bmn.entity.Bicicleta;
-import com.dh.bmn.entity.Usuario;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +11,16 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 public class ReservaResponseDto {
-    private Usuario usuario;
-    private Bicicleta bicicleta;
+
+    private Long reservaId;
+    
+    private UsuarioResponseDto usuario;
+
+    private BicicletaResponseDto bicicleta;
+
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     private LocalDate fechaInicio;
+
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     private LocalDate fechaFin;
 }

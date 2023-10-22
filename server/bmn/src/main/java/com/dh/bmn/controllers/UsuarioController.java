@@ -21,29 +21,29 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDto> obtenerUsuarioPorId (@PathVariable Long id) throws Exception {
+    public ResponseEntity<UsuarioResponseDto> obtenerUsuarioPorId (@PathVariable Long id) {
         return new ResponseEntity<>(usuarioService.buscarPorId(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> registrarUsuario (@RequestBody UsuarioRequestDto usuarioRequestDto) throws Exception {
-        usuarioService.guardar(usuarioRequestDto);
+    public ResponseEntity<?> registrarUsuario (@RequestBody UsuarioRequestDto usuarioRequestDto){
+        usuarioService.crear(usuarioRequestDto);
         return new ResponseEntity<>("Nuevo usuario registrado", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarUsuarioPorId (@PathVariable Long id) throws Exception {
+    public ResponseEntity<?> eliminarUsuarioPorId (@PathVariable Long id){
         usuarioService.borrarPorId(id);
         return new ResponseEntity<>("Usuario eliminado exitosamente", HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<UsuarioResponseDto>> listarUsuarios () throws Exception {
+    public ResponseEntity<List<UsuarioResponseDto>> listarUsuarios (){
         return new ResponseEntity<>(usuarioService.listarTodos(),HttpStatus.OK);
     }
 
     @PutMapping()
-    public ResponseEntity<?> actualizarUsuario (@RequestBody UsuarioRequestDto usuarioRequestDto) throws Exception {
+    public ResponseEntity<?> actualizarUsuario (@RequestBody UsuarioRequestDto usuarioRequestDto){
         usuarioService.actualizar(usuarioRequestDto);
         return new ResponseEntity<>("Usuario actualizado exitosamente", HttpStatus.OK);
     }

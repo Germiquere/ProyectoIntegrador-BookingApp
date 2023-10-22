@@ -3,13 +3,15 @@ package com.dh.bmn.services.impl;
 import com.dh.bmn.dtos.requests.CategoriaBicicletaRequestDto;
 import com.dh.bmn.dtos.responses.CategoriaBicicletaResponseDto;
 import com.dh.bmn.entity.CategoriaBicicleta;
+import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
+import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.ICategoriaBicicletaRepository;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,20 +30,30 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
 
     @Override
     public void actualizar(CategoriaBicicletaRequestDto categoriaBicicletaRequestDto){
+        CategoriaBicicleta categoriaDB = categoriaBicicletaRepository.findById(categoriaBicicletaRequestDto.getCategoriaId()).orElseThrow(() -> new ResourceNotFoundException("La categoria no existe", HttpStatus.NOT_FOUND.value()));
 
+        if (categoriaDB != null) {
+            categoriaDB = objectMapper.convertValue(categoriaBicicletaRequestDto, CategoriaBicicleta.class);
+
+            categoriaBicicletaRepository.save(categoriaDB);
+        }
     }
 
     @Override
     public CategoriaBicicletaResponseDto buscarPorId(Long id) {
-        CategoriaBicicleta categoriaBicicleta = categoriaBicicletaRepository.findById(id).orElseThrow(RuntimeException::new);
+        CategoriaBicicleta categoriaBicicleta = categoriaBicicletaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La categoria especificada no existe", HttpStatus.NOT_FOUND.value()));
         return objectMapper.convertValue(categoriaBicicleta, CategoriaBicicletaResponseDto.class);
     }
 
     @Override
-    public void guardar(CategoriaBicicletaRequestDto categoriaBicicletaRequestDto){
-        String inicialNombre = categoriaBicicletaRequestDto.getNombre().substring(0, 1);
-        String restoNombre = categoriaBicicletaRequestDto.getNombre().substring(1);
-        categoriaBicicletaRequestDto.setNombre(inicialNombre.toUpperCase() + restoNombre.toLowerCase());
+    public void crear(CategoriaBicicletaRequestDto categoriaBicicletaRequestDto){
+//        String inicialNombre = categoriaBicicletaRequestDto.getNombre().substring(0, 1);
+//        String restoNombre = categoriaBicicletaRequestDto.getNombre().substring(1);
+//        categoriaBicicletaRequestDto.setNombre(inicialNombre.toUpperCase() + restoNombre.toLowerCase());
+
+        if (categoriaBicicletaRepository.findByNombre(categoriaBicicletaRequestDto.getNombre()).isPresent()) {
+            throw new ResourceAlreadyExistsException("La categoria ya existe", HttpStatus.CONFLICT.value());
+        }
 
         CategoriaBicicleta categoria = objectMapper.convertValue(categoriaBicicletaRequestDto, CategoriaBicicleta.class);
         categoriaBicicletaRepository.save(categoria);
@@ -49,17 +61,13 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
 
     @Override
     public void borrarPorId(Long id){
-        Optional<CategoriaBicicleta> optionalCategoriaBicicleta = categoriaBicicletaRepository.findById(id);
-        if (optionalCategoriaBicicleta.isPresent()) {
-            categoriaBicicletaRepository.deleteById(id);
-        } else {
-            throw new RuntimeException();
-        }
+        CategoriaBicicleta categoria = categoriaBicicletaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La categoria no existe", HttpStatus.NOT_FOUND.value()));
+        categoriaBicicletaRepository.delete(categoria);
     }
 
     @Override
     public List<CategoriaBicicletaResponseDto> listarTodos() {
-        List<CategoriaBicicleta> categoriasBicicletas = categoriaBicicletaRepository.findAll();
+        List<CategoriaBicicleta> categoriasBicicletas = Optional.of(categoriaBicicletaRepository.findAll()).orElseThrow(() -> new ResourceNotFoundException("No se encontro ninguna categoria de bicicleta", HttpStatus.NOT_FOUND.value()));
         return categoriasBicicletas.stream().map(categoria -> objectMapper.convertValue(categoria, CategoriaBicicletaResponseDto.class)).collect(Collectors.toList());
     }
 }
