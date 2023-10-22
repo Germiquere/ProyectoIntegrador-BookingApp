@@ -1,14 +1,11 @@
 package com.dh.bmn.entity;
 
-
 import com.dh.bmn.security.Rol;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -19,7 +16,8 @@ import java.util.List;
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "usuario_id")
+    private Long usuarioId;
 
     @Column
     private String nombre;
@@ -36,22 +34,4 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private Rol rol;
 
-    @ManyToMany
-    @JoinTable(name = "usuario_bicicleta",
-            joinColumns = @JoinColumn(name = "usuario_id"),
-            inverseJoinColumns = @JoinColumn(name = "bicicleta_id")
-    )
-    private List<Bicicleta> bicicletas;
-
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", rol=" + rol +
-                '}';
-    }
 }
