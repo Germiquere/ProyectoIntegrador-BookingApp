@@ -25,10 +25,10 @@ public class Usuario {
     @Column
     private String apellido;
 
-    @Column
+    @Column (nullable = false)
     private String email;
 
-    @Column
+    @Column (nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
