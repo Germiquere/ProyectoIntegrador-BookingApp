@@ -1,6 +1,5 @@
 package com.dh.bmn.dtos.requests;
 
-import com.dh.bmn.entity.CategoriaBicicleta;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

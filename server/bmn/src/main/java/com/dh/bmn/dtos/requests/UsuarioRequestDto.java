@@ -1,7 +1,6 @@
 package com.dh.bmn.dtos.requests;
 
 import com.dh.bmn.security.Rol;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
