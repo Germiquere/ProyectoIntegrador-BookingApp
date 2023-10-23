@@ -1,8 +1,10 @@
 package com.dh.bmn.controllers;
 
+import com.dh.bmn.dtos.JsonMessageDto;
 import com.dh.bmn.dtos.requests.UsuarioRequestDto;
 import com.dh.bmn.dtos.responses.UsuarioResponseDto;
 import com.dh.bmn.services.IService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,15 +29,15 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registrarUsuario (@RequestBody UsuarioRequestDto usuarioRequestDto){
+    public ResponseEntity<?> registrarUsuario (@RequestBody @Valid UsuarioRequestDto usuarioRequestDto){
         usuarioService.crear(usuarioRequestDto);
-        return new ResponseEntity<>("Nuevo usuario registrado", HttpStatus.CREATED);
+        return new ResponseEntity<>(new JsonMessageDto("Nuevo usuario registrado",HttpStatus.CREATED.value()), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarUsuarioPorId (@PathVariable Long id){
         usuarioService.borrarPorId(id);
-        return new ResponseEntity<>("Usuario eliminado exitosamente", HttpStatus.OK);
+        return new ResponseEntity<>(new JsonMessageDto("Usuario eliminado exitosamente",HttpStatus.OK.value()), HttpStatus.OK);
     }
 
     @GetMapping
@@ -44,8 +46,8 @@ public class UsuarioController {
     }
 
     @PutMapping()
-    public ResponseEntity<?> actualizarUsuario (@RequestBody UsuarioRequestDto usuarioRequestDto){
+    public ResponseEntity<?> actualizarUsuario (@RequestBody @Valid UsuarioRequestDto usuarioRequestDto){
         usuarioService.actualizar(usuarioRequestDto);
-        return new ResponseEntity<>("Usuario actualizado exitosamente", HttpStatus.OK);
+        return new ResponseEntity<>(new JsonMessageDto("Usuario actualizado exitosamente",HttpStatus.OK.value()), HttpStatus.OK);
     }
 }
