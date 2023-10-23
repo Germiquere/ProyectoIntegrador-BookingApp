@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class CategoriaBicicletaResponseDto {
 
-    private String categoriaId;
+    private Long categoriaId;
     private String nombre;
     private String descripcion;
     private String imagen;
