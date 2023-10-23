@@ -10,6 +10,7 @@ export const BookingLayout = () => {
     return (
         <>
             {openCalendarAndSearch && <ResponsiveCalendarAndSearch />}
+
             {/* <ResponsiveCalendarAndSearch /> */}
             <Header />
             <main className=" md:min-h-[calc(100vh-228px)]  ">

@@ -134,7 +134,7 @@ export const CalendarDescription = () => {
                             rangeColors={["#0274AE"]}
                             locale={es}
                             direction="horizontal"
-                            className="absolute z-50 left-1/2 transform -translate-x-1/2 max-w-[250px] sm:max-w-none bottom-0 lg:bottom-auto"
+                            className="absolute z-50 left-1/2 transform -translate-x-1/2 max-w-[250px] sm:max-w-none bottom-0 "
                         />
                     </div>
                 )}

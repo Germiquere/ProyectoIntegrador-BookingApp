@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Section from "../components/Section";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
@@ -7,8 +7,29 @@ import { ImgSwiper } from "../components/sectionDescription/ImgSwiper";
 import { CalendarDescription } from "../components/sectionDescription/CalendarDescription";
 import { SkeletonDescription } from "../components/sectionDescription/SkeletonDescription";
 import { useCategoriesContext } from "../../context/CategoriesContext";
+import { useBikesContext } from "../../context/BikesContext";
+import { differenceInDays, parse } from "date-fns";
+import { useCalendarAndSearchContext } from "../../context/CalendarSearchContext";
 export const Description = () => {
-    const { loading: loadingCategories } = useCategoriesContext();
+    const { loading: loadingBikes, bikeByIdGet, bikeById } = useBikesContext();
+
+    const { formState } = useCalendarAndSearchContext();
+    const [total, setTotal] = useState(0);
+    const calcPrice = () => {
+        if (!formState.endDate || !formState.startDate) {
+            return setTotal(0);
+        } else if (bikeById) {
+            const difference = differenceInDays(
+                parse(formState.endDate, "dd-MM-yyyy", new Date()),
+                parse(formState.startDate, "dd-MM-yyyy", new Date())
+            );
+            const pricePerDay = parseFloat(
+                bikeById.precioAlquilerPorDia
+            ).toFixed(2);
+            const newTotal = difference * pricePerDay;
+            setTotal(newTotal);
+        }
+    };
     // hacer el fetch con ese id
 
     const { id } = useParams();
@@ -60,90 +81,119 @@ export const Description = () => {
             showButton: true,
         },
     ];
+    useEffect(() => {
+        bikeByIdGet(id);
+    }, []);
+    useEffect(() => {
+        calcPrice();
+    }, [formState.endDate, formState.startDate]);
+
     return (
         <Section>
-            {loadingCategories ? (
+            {loadingBikes ? (
                 <SkeletonDescription />
             ) : (
-                <div className="flex gap-3 flex-col relative lg:flex-row md:justify-center mt-3 max-w-[1200px] mx-auto ">
+                <div className="flex gap-3 flex-col relativemd:justify-center mt-3 max-w-[1200px] mx-auto ">
                     {/* seccion del lado izquierdo */}
                     {/* NOTA: con flex-1 le digo que ocupe todo el espacio libre */}
-                    <div className="flex-1 p-3 border-[1px] border-gray-200 rounded-xl">
-                        <h2 className="text-lg sm:text-2xl font-semibold pb-2 w-full">
-                            Nombre del producto
-                        </h2>
-                        <h3 className="text-lg sm:text-2xl  pb-2 w-full">
-                            Descripcion
-                        </h3>
-                        <p className="max-w-[1000px] pb-5">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                            elit. Quod dicta enim reprehenderit sint laboriosam
-                            ut, inventore est dolorem, voluptates, sit autem
-                            quasi impedit! Ullam, nesciunt voluptate modi
-                            cupiditate corporis voluptatum!
-                        </p>
+                    <div className="flex-1 p-3 border-[1px] border-gray-200  rounded-xl">
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-lg sm:text-2xl font-semibold pb-2 w-full">
+                                {bikeById.nombre}
+                            </h2>
 
-                        <ImgGallery
-                            data={data}
-                            handleToggleImgGallery={handleToggleImgGallery}
-                        />
+                            <div
+                                className="flex gap-2 items-center justify-end
+                        cursor-pointer
+                      pb-2
+                    "
+                                onClick={goBack}
+                            >
+                                <button
+                                    className="flex gap-2 items-center middle none center rounded-full  py-3 px-3 sm:px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:bg-tertiary active:bg-tertiary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none "
+                                    data-ripple-dark="true"
+                                >
+                                    <h3 className="hidden sm:block sm:text-sm">
+                                        Volver
+                                    </h3>
+                                    <IoIosArrowDropleft className="text-lg text-primary" />
+                                </button>
+                            </div>
+                        </div>
+
+                        {bikeById &&
+                            bikeById.imagenes &&
+                            bikeById.imagenes.length > 0 && (
+                                <ImgGallery
+                                    data={bikeById}
+                                    loadingBikes={loadingBikes}
+                                    handleToggleImgGallery={
+                                        handleToggleImgGallery
+                                    }
+                                />
+                            )}
                     </div>
                     {/* seccion del costado derecho */}
-                    <div className=" flex flex-col border-[1px] border-gray-200 rounded-xl  p-3 gap-3 lg:w-[300px] h-full lg:h-auto">
-                        <div
-                            className="flex gap-2 items-center justify-end
-                        cursor-pointer
-                        absolute top-4  right-3
-                        lg:relative
-                        lg:top-auto
-                        lg:right-auto
-                    "
-                            onClick={goBack}
-                        >
-                            <h3 className="hidden sm:block sm:text-lg">
-                                Volver
-                            </h3>
-                            <IoIosArrowDropleft className="text-lg text-primary" />
-                        </div>
-                        <div className="flex flex-col gap-2 h-full justify-between">
-                            <div className="flex flex-col gap-2">
-                                <h3 className="text-lg sm:text-2xl  w-full">
-                                    Precio por dia
+                    <div className=" flex flex-col    p-3 gap-3  h-full lg:h-auto border-[1px] border-gray-200 rounded-xl">
+                        <div className="flex flex-col sm:flex-row  gap-2 h-full justify-between">
+                            <div className="flex flex-col gap-2 flex-1">
+                                <h3 className="text-lg sm:text-2xl font-semibold w-full">
+                                    Caracteristicas
+                                </h3>
+                                <p className="max-w-[1000px]">
+                                    {bikeById.descripcion}
+                                </p>
+                            </div>
+                            {/* div de la derecha */}
+                            <div className="flex flex-col w-full sm:w-[300px] gap-3 rounded-xl shadow-xl p-3 border-[1px] border-gray-100">
+                                <h3 className="text-lg sm:text-2xl font-semibold w-full">
+                                    ${bikeById.precioAlquilerPorDia}/dia
                                 </h3>
                                 <h2 className="text-lg  ">
                                     ¿Cuando queres reservar?
                                 </h2>
                                 <CalendarDescription />
+                                <button
+                                    className="mb-5 middle none center mr-3 rounded-full bg-primary py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm  transition-all  hover:shadow-secondary  active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none w-full"
+                                    data-ripple-light="true"
+                                >
+                                    ALQUILAR
+                                </button>
+                                <div className="h-[1px] mb-5 bg-gray-200 w-full"></div>
+                                <div className="flex justify-between">
+                                    <h3 className="text-lg sm:text-2xl font-semibold w-full">
+                                        Total a pagar
+                                    </h3>
+                                    <h3 className="text-lg sm:text-2xl font-semibold">
+                                        {total ? ` $${total}` : ""}
+                                    </h3>
+                                </div>
                             </div>
-
-                            <button
-                                className="middle none center mr-3 rounded-full bg-primary py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm  transition-all  hover:shadow-secondary  active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none w-full"
-                                data-ripple-light="true"
-                            >
-                                ALQUILAR
-                            </button>
                         </div>
                     </div>
                 </div>
             )}
 
-            {openImgGallery && (
-                <>
-                    <div
-                        className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/5  transition-opacity duration-200 z-50 `}
-                    >
-                        <ImgSwiper
-                            data={data}
-                            handleToggleImgGallery={handleToggleImgGallery}
-                        />
-                    </div>
+            {openImgGallery &&
+                bikeById &&
+                bikeById.imagenes &&
+                bikeById.imagenes.length > 0 && (
+                    <>
+                        <div
+                            className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/5  transition-opacity duration-200 z-50 `}
+                        >
+                            <ImgSwiper
+                                data={bikeById}
+                                handleToggleImgGallery={handleToggleImgGallery}
+                            />
+                        </div>
 
-                    <div
-                        className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 transition-opacity duration-200 z-40`}
-                        onClick={handleToggleImgGallery}
-                    ></div>
-                </>
-            )}
+                        <div
+                            className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 transition-opacity duration-200 z-40`}
+                            onClick={handleToggleImgGallery}
+                        ></div>
+                    </>
+                )}
         </Section>
     );
 };

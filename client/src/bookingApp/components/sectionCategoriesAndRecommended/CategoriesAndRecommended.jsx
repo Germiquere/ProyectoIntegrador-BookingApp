@@ -7,8 +7,8 @@ export const CategoriesAndRecommended = () => {
     return (
         <Section>
             <div className="max-w-[1200px] mx-auto">
-                <h2 className="text-lg sm:text-2xl font-semibold pb-2">
-                    Busca por tipo de bicicleta
+                <h2 className="text-lg sm:text-2xl font-semibold pb-2 md:hidden">
+                    Categorias
                 </h2>
                 <CardsSwiper />
             </div>

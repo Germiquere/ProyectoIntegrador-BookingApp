@@ -98,7 +98,7 @@ export const Calendar = () => {
                     {/* input stardate */}
                     <input
                         className="sm:border-r-[1px]  sm:border-gray-100 rounded-full sm:rounded-none peer h-full w-full flex-1  p-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50 cursor-pointer"
-                        placeholder="Fecha de inicio"
+                        placeholder="Desde"
                         type="text"
                         onClick={handleOpen}
                         readOnly
@@ -132,7 +132,7 @@ export const Calendar = () => {
                     <input
                         // input enddate
                         className="rounded-full sm:rounded-none peer h-full w-full flex-1  p-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50 cursor-pointer"
-                        placeholder="Fecha de fin"
+                        placeholder="Hasta"
                         readOnly
                         type="text"
                         onClick={handleOpen}

@@ -8,9 +8,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 export const ImgSwiper = ({ handleToggleImgGallery, data }) => {
+    console.log(data.imagenes);
     return (
         <Swiper
-            className="relative"
+            className="relative hidden md:block "
             modules={[Navigation, Pagination]}
             // esto es para poder ponerle una clase a cualquier elemnto y que tenga la funcionalidad de siguiente y previo
             navigation={{
@@ -27,33 +28,43 @@ export const ImgSwiper = ({ handleToggleImgGallery, data }) => {
             slidesPerView={1}
             loop
         >
-            {data.map((item) => (
+            {data.imagenes.map((item) => (
                 <SwiperSlide key={item.id}>
-                    <div className=" overflow-hidden mx-10">
-                        <div className=" w-full">
-                            <img
-                                src={item.img}
-                                alt="imagen de galeria"
-                                //  cambiar el tamanio a gusto
-                                className=" w-full object-contain h-56 sm:h-72 md:h-96 transition-transform group-hover:scale-105 ease-in-out duration-200"
-                            />
-                        </div>
+                    <div
+                    //     className="bg-contain bg-fixed
+                    // bg-no-repeat
+                    // bg-center w-full h-[500px] flex items-center "
+                    //     style={{
+                    //         backgroundImage: `url(${item.url})`,
+                    //         // backgroundAttachment: "fixed",
+                    //         // backgroundPosition: "center",
+                    //         // backgroundSize: "cover",
+                    //     }}
+                    >
+                        <img
+                            className="h-[500px] w-full object-contain "
+                            src={item.url}
+                            alt="imagen de un producto"
+                        />
+                        {/* El contenido del contenedor */}
                     </div>
+
                     {/* <SkeletonCardsSweiper /> */}
                 </SwiperSlide>
             ))}
-            <div
-                className="flex gap-2 w-full justify-center mt-5
-            "
-            >
-                {/* <IoIosArrowDropleft className="prev-slide text-2xl sm:text-3xl text-neutral-800 hover:text-primary cursor-pointer ease-in-out duration-200 hidden sm:block" />
-                <IoIosArrowDropright className="next-slide text-2xl sm:text-3xl text-neutral-800 hover:text-primary cursor-pointer ease-in-out duration-200 hidden sm:block" /> */}
-            </div>
-            <IoIosArrowDropleft className="absolute prev-slide cursor-pointer text-primary  top-1/2 z-10 left-2 text-2xl  transform -translate-y-1/2 ease-in-out duration-200 hidden sm:block" />
 
-            <IoIosArrowDropright className="absolute next-slide cursor-pointer text-primary  z-10 top-1/2 right-2 text-2xl  transform -translate-y-1/2 ease-in-out duration-200 hidden sm:block" />
+            <IoIosArrowDropleft
+                className="p-1 absolute prev-slide cursor-pointer text-gray-100 top-1/2 z-10 left-2.5 text-4xl transform -translate-y-1/2 ease-in-out duration-200 hidden sm:block"
+                style={{ background: "rgba(0, 0, 0, 0.8)" }}
+            />
+
+            <IoIosArrowDropright
+                style={{ background: "rgba(0, 0, 0, 0.8)" }}
+                className="p-1 absolute next-slide cursor-pointer text-gray-100 z-10 top-1/2 right-2 text-4xl  transform -translate-y-1/2 ease-in-out duration-200 hidden sm:block"
+            />
             <BsXLg
-                className="absolute next-slide cursor-pointer text-primary  z-10 top-5 right-2 text-2xl  transform -translate-y-1/2 ease-in-out duration-200 hidden sm:block"
+                style={{ background: "rgba(0, 0, 0, 0.8)" }}
+                className="p-1 absolute next-slide cursor-pointer text-gray-100 z-10 top-5 right-2 text-4xl  transform -translate-y-1/2 ease-in-out duration-200 hidden sm:block"
                 onClick={handleToggleImgGallery}
             />
         </Swiper>

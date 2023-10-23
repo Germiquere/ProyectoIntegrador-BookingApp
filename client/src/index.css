@@ -23,7 +23,7 @@
 .swiper-pagination-bullet-active {
     background-color: #0274ae !important;
 }
-@media (min-width: 640px) {
+@media (min-width: 768px) {
     .swiper-pagination {
         display: none !important;
     }
@@ -31,3 +31,13 @@
 body {
     min-height: 100vh;
 }
+/* Estilos para el desplegable del select */
+select::-ms-expand {
+    display: none; /* Ocultar la flecha desplegable en IE/Edge */
+}
+
+select::-webkit-select-arrow {
+    display: none; /* Ocultar la flecha desplegable en navegadores basados en Webkit (como Chrome y Safari) */
+}
+
+/* Cambiar el tamaño y el color del desplegable */

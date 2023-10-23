@@ -19,7 +19,6 @@ export const CategoriesProvider = ({ children }) => {
         try {
             // LLAMO A LA FUNCION GET DEL ARCHIVO categories.js
             const data = await getCategories();
-            console.log(data);
             // TENER EN CUENTA COMO VIENE MI DATA
             setCategoriesData(data);
         } catch (err) {

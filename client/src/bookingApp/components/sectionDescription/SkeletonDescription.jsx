@@ -1,6 +1,6 @@
 export const SkeletonDescription = () => {
     return (
-        <div className="flex gap-3 flex-col relative lg:flex-row md:justify-center mt-3 max-w-[1200px] mx-auto animate-pulse">
+        <div className="flex gap-3 flex-col relative  md:justify-center mt-3 max-w-[1200px] mx-auto animate-pulse">
             {/* seccion del lado izquierdo */}
             {/* NOTA: con flex-1 le digo que ocupe todo el espacio libre */}
             <div className="flex-1 p-3 bg-gray-100 rounded-xl  ">
@@ -15,7 +15,7 @@ export const SkeletonDescription = () => {
             /> */}
             </div>
             {/* seccion del costado derecho */}
-            <div className=" flex flex-col bg-gray-100 rounded-xl  p-3 gap-3 lg:w-[300px] h-full lg:h-auto ">
+            <div className=" flex flex-col bg-gray-100 rounded-xl  p-3 gap-3  h-full lg:h-auto ">
                 <div
                     className="flex gap-2 items-center justify-end
                 cursor-pointer

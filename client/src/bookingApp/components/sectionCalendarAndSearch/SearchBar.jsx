@@ -13,7 +13,7 @@ export const SearchBar = () => {
                 onChange={onInputChange}
             />
 
-            <BsSearch className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-400 sm:hidden" />
+            <BsSearch className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-white sm:hidden bg-primary  rounded-full p-2 text-3xl" />
         </div>
     );
 };

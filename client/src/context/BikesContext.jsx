@@ -53,6 +53,7 @@ export const BikesProvider = ({ children }) => {
                 bikesData,
                 loading,
                 error,
+                bikeById,
                 //METODOS
                 bikeByIdGet,
             }}

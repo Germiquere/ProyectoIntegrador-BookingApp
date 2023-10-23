@@ -20,7 +20,7 @@ export const Componentes = () => {
             </button>
             {/*---------- BUTTON 3 SIN RELLENO NI BORDES ----------*/}
             <button
-                className="middle none center rounded-full py-3 px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:bg-secondary active:bg-secondary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none "
+                className="middle none center rounded-full py-3 px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:bg-tertiary active:bg-tertiary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none "
                 data-ripple-dark="true"
             >
                 3
@@ -32,6 +32,7 @@ export const Componentes = () => {
                     placeholder="Text"
                 />
             </div>
+
             {/*---------- TEXT AREA----------*/}
 
             <textarea
@@ -40,6 +41,21 @@ export const Componentes = () => {
                 style={{ resize: "none" }}
                 rows="4" // Puedes ajustar la cantidad de filas que desees
             ></textarea>
+            {/*---------- SELECT ----------*/}
+            <div className="relative h-11 w-full min-w-[200px]">
+                <select
+                    name="selectValue"
+                    // value={formState.category}
+                    // onChange={onInputChange}
+
+                    className="peer h-full w-full p-2 font-sans text-sm font-normal  outline outline-0 transition-all focus:outline-0 disabled:bg-blue-gray-50"
+                >
+                    <option value="" className="text-gray-300 ">
+                        Selecciona una opción
+                    </option>
+                    {/* hacer el map con los options */}
+                </select>
+            </div>
         </>
     );
 };
