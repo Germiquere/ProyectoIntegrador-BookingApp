@@ -35,7 +35,7 @@ public class AwsController {
     }
 
     @GetMapping("/listS3Files")
-    public ResponseEntity<List<Asset>> getS3Files(@RequestParam(value = "bucketName") String bucketName) throws IOException {
+    public ResponseEntity<List<Asset>> getS3Files(@RequestParam(value = "bucketName") String bucketName){
         List<Asset> list= new ArrayList<>();
         HttpStatus status=  HttpStatus.OK;
         try {
