@@ -31,13 +31,6 @@
 body {
     min-height: 100vh;
 }
-/* Estilos para el desplegable del select */
-select::-ms-expand {
-    display: none; /* Ocultar la flecha desplegable en IE/Edge */
+textarea {
+    -webkit-font-smoothing: antialiased;
 }
-
-select::-webkit-select-arrow {
-    display: none; /* Ocultar la flecha desplegable en navegadores basados en Webkit (como Chrome y Safari) */
-}
-
-/* Cambiar el tamaño y el color del desplegable */

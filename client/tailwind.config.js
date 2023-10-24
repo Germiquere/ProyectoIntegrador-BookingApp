@@ -11,6 +11,8 @@ export default {
                 grayPrimary: "#777777",
                 graySecondary: "#555555",
                 grayTertiary: "#343434",
+                blackOpacity1: "rgba(0, 0, 0, 0.1)",
+                blackOpacity5: "rgba(0, 0, 0, 0.5)",
             },
 
             keyframes: {
