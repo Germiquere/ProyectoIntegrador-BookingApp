@@ -4,6 +4,7 @@ import com.dh.bmn.dtos.requests.BicicletaRequestDto;
 import com.dh.bmn.dtos.requests.CategoriaBicicletaRequestDto;
 import com.dh.bmn.dtos.responses.BicicletaResponseDto;
 import com.dh.bmn.dtos.responses.CategoriaBicicletaResponseDto;
+import com.dh.bmn.embeddable.Imagen;
 import com.dh.bmn.entity.Bicicleta;
 import com.dh.bmn.entity.CategoriaBicicleta;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
@@ -47,9 +48,11 @@ public class BicicletaServiceTest {
     public void crearBicicleta() {
         //Arrange
 
+        Imagen imagen = new Imagen("https://www.bicidemontaña.com");
+        List<Imagen> imagenes = List.of(imagen);
         CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", "https://www.bicidemontaña.com");
         BicicletaRequestDto bicicletaRequestDto =
-                new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaRequestDto);
+                new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaRequestDto, imagenes);
 
         //Act
         bicicletaService.crear(bicicletaRequestDto);
@@ -62,10 +65,12 @@ public class BicicletaServiceTest {
     public void crearBicicletaThrowsResourceAlreadyExistsException() {
         //Arrange
         CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", "https://www.bicidemontaña.com");
-        BicicletaRequestDto bicicletaRequestDto = new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaRequestDto);
+        Imagen imagen = new Imagen("https://www.bicidemontaña.com");
+        List<Imagen> imagenes = List.of(imagen);
+        BicicletaRequestDto bicicletaRequestDto = new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaRequestDto, imagenes);
 
         CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", "https://www.bicidemontaña.com");
-        Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicleta);
+        Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicleta, imagenes);
 
         //Act
         when(bicicletaRepository.findByNombreAndDescripcion(bicicletaRequestDto.getNombre(), bicicletaRequestDto.getDescripcion())).thenReturn(Optional.of(bicicletaEntity));
@@ -82,11 +87,13 @@ public class BicicletaServiceTest {
     public void obtenerBicicletaPorId() {
         //Arrange
 
+        Imagen imagen = new Imagen("https://www.bicidemontaña.com");
+        List<Imagen> imagenes = List.of(imagen);
         CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", "https://www.bicidemontaña.com");
-        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicleta);
+        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicleta, imagenes);
 
         CategoriaBicicletaResponseDto categoriaBicicletaResponseDto = new CategoriaBicicletaResponseDto(1L, "Montaña", "Bicicleta de montaña", "https://www.bicidemontaña.com");
-        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaResponseDto);
+        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaResponseDto, imagenes);
 
         //Act
         Mockito.when(bicicletaRepository.findById(1L)).thenReturn(Optional.of(bicicleta));
@@ -109,14 +116,17 @@ public class BicicletaServiceTest {
     @Test
     public void obtenerTodasLasBicicletas() {
         //Arrange
+
+        Imagen imagen = new Imagen("https://www.bicidemontaña.com");
+        List<Imagen> imagenes = List.of(imagen);
         CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", "https://www.bicidemontaña.com");
-        Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicleta);
+        Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicleta, imagenes);
 
         List<Bicicleta> bicicletas = new ArrayList<>();
         bicicletas.add(bicicletaEntity);
 
         CategoriaBicicletaResponseDto categoriaBicicletaResponseDto = new CategoriaBicicletaResponseDto(1L, "Montaña", "Bicicleta de montaña", "https://www.bicidemontaña.com");
-        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaResponseDto);
+        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaResponseDto, imagenes);
         List<BicicletaResponseDto> bicicletaResponseLista = new ArrayList<>();
         bicicletaResponseLista.add(bicicletaEsperada);
 
@@ -144,8 +154,10 @@ public class BicicletaServiceTest {
     public void eliminarBicicleta() {
         //Arrange
 
+        Imagen imagen = new Imagen("https://www.bicidemontaña.com");
+        List<Imagen> imagenes = List.of(imagen);
         CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", "https://www.bicidemontaña.com");
-        Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicleta);
+        Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicleta, imagenes);
 
         //Act
         Mockito.when(bicicletaRepository.findById(1L)).thenReturn(Optional.of(bicicletaEntity));
@@ -170,11 +182,14 @@ public class BicicletaServiceTest {
     @Test
     public void actualizarBicicleta() {
         //Arrange
+
+        Imagen imagen = new Imagen("https://www.bicidemontaña.com");
+        List<Imagen> imagenes = List.of(imagen);
         CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", "https://www.bicidemontaña.com");
-        Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicleta);
+        Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicleta, imagenes);
 
         CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", "https://www.bicidemontaña.com");
-        BicicletaRequestDto bicicletaRequestDto = new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaRequestDto);
+        BicicletaRequestDto bicicletaRequestDto = new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaRequestDto, imagenes);
 
         //Act
         Mockito.when(bicicletaRepository.findById(1L)).thenReturn(Optional.of(bicicletaEntity));
@@ -188,8 +203,10 @@ public class BicicletaServiceTest {
     @Test
     public void actualizarBicicletaThrowsResourceNotFoundException() {
 
+        Imagen imagen = new Imagen("https://www.bicidemontaña.com");
+        List<Imagen> imagenes = List.of(imagen);
         CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", "https://www.bicidemontaña.com");
-        BicicletaRequestDto bicicletaRequestDto = new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaRequestDto);
+        BicicletaRequestDto bicicletaRequestDto = new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaRequestDto, imagenes);
 
         Mockito.when(bicicletaRepository.findById(1L)).thenThrow(ResourceNotFoundException.class);
 

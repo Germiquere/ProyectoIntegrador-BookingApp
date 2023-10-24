@@ -55,9 +55,6 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
 //        String inicialApellido = usuarioRequestDto.getApellido().substring(0, 1);
 //        String restoApellido = usuarioRequestDto.getApellido().substring(1);
 //        usuarioRequestDto.setApellido(inicialApellido.toUpperCase() + restoApellido.toLowerCase());
-//
-//        Usuario usuario = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
-//        usuarioRepository.save(usuario);
 
         if (usuarioRepository.findByEmail(usuarioRequestDto.getEmail()).isPresent()) {
             throw new ResourceAlreadyExistsException("El usuario ya existe", HttpStatus.CONFLICT.value());

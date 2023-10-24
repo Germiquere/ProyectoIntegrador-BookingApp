@@ -1,8 +1,11 @@
 package com.dh.bmn.dtos.responses;
 
+import com.dh.bmn.embeddable.Imagen;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,5 +17,6 @@ public class BicicletaResponseDto {
     private String descripcion;
     private Integer precioAlquilerPorDia;
     private CategoriaBicicletaResponseDto categoria;
+    private List<Imagen> imagenes;
 
 }

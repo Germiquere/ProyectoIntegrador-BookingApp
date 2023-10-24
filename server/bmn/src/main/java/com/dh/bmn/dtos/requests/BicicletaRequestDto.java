@@ -1,5 +1,6 @@
 package com.dh.bmn.dtos.requests;
 
+import com.dh.bmn.embeddable.Imagen;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -8,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.List;
 
 @Validated
 @AllArgsConstructor
@@ -31,6 +34,8 @@ public class BicicletaRequestDto {
     private Integer precioAlquilerPorDia;
 
     private CategoriaBicicletaRequestDto categoria;
+
+    private List<Imagen> imagenes;
 
 
 }

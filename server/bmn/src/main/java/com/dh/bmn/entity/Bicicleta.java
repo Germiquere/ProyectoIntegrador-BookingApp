@@ -1,10 +1,13 @@
 package com.dh.bmn.entity;
 
+import com.dh.bmn.embeddable.Imagen;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,6 +34,10 @@ public class Bicicleta {
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private CategoriaBicicleta categoria;
+
+    @ElementCollection
+    @CollectionTable(name = "bicicleta_imagenes", joinColumns = @JoinColumn(name = "bicicleta_id"))
+    private List<Imagen> imagenes;
 
 
 }
