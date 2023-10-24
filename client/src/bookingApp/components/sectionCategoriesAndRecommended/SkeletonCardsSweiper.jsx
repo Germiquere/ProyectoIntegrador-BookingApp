@@ -3,7 +3,7 @@ import React from "react";
 export const SkeletonCardsSweiper = () => {
     return (
         <div>
-            <div className="h-52  rounded-2xl overflow-hidden bg-gray-100 mx-10">
+            <div className="h-[300px] md:h-[330px] rounded-2xl overflow-hidden bg-gray-100 ">
                 {/* animacion */}
                 <div className=" animate-pulse">
                     {/* imagen */}
