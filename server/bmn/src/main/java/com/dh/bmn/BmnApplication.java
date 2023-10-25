@@ -2,7 +2,9 @@ package com.dh.bmn;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
+@ComponentScan({" com.dh.bmn.config.StorageConfig"})
 @SpringBootApplication
 public class BmnApplication {
 

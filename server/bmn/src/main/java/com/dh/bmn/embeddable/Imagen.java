@@ -13,6 +13,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Imagen {
 
+    private String nombreImagen;
+    private String imagenPath;
     @Column (length = 500)
     private String url;
 

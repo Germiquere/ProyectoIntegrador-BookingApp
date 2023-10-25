@@ -4,12 +4,13 @@ import lombok.Builder;
 import lombok.Value;
 import java.net.URL;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Value
-@Builder
+@Data
+@AllArgsConstructor
 public class Asset {
-    String name;
-    String key;
-    URL url;
+    private byte[] content;
+    private String contentType;
 }
 
