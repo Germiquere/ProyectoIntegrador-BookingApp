@@ -1,6 +1,7 @@
 package com.dh.bmn.repositories.impl;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.dh.bmn.repositories.IS3Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,11 @@ public class S3RepositoryImpl implements IS3Repository {
     }
 
     public String uploadFile(String bucketName, String fileName, File fileObj) {
-        s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
+        
+        PutObjectRequest request = new PutObjectRequest(bucketName, fileName, fileObj);
+        request.withCannedAcl(CannedAccessControlList.PublicRead);
+        s3Client.putObject(request);
+
         fileObj.delete();
         return fileName;
     }
