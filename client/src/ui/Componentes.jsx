@@ -25,6 +25,13 @@ export const Componentes = () => {
             >
                 3
             </button>
+            {/*---------- BUTTON 4 CIRCULAR SIN RELLENO NI BORDES  ----------*/}
+            <button
+                className="flex  items-center justify-center middle none center rounded-full  h-7 w-7 font-sans text-xs font-bold uppercase  transition-all hover:bg-tertiary active:bg-tertiary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none "
+                data-ripple-dark="true"
+            >
+                4
+            </button>
             {/*---------- INPUT 1----------*/}
             <div className="relative h-11 w-full min-w-[200px]">
                 <input
