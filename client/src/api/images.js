@@ -10,9 +10,7 @@ export const postImage = async (file) => {
             body: formData,
         });
         if (!res.ok) throw new Error("No se pudo subir la imagen");
-        console.log(res);
         const data = await res.json();
-        console.log(data);
         return data;
     } catch (error) {
         throw new Error(error.message);

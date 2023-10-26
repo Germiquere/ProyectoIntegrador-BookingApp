@@ -49,7 +49,6 @@ export const postBike = async (bike) => {
             throw new Error("Error en la solicitud POST");
         }
         const data = await res.json();
-        console.log(data);
         return data;
     } catch (error) {
         throw error;

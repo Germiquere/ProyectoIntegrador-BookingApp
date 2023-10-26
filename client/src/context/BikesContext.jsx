@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { deleteBike, getBikeById, getBikes, postBike } from "../api/bikes";
 import { useForm } from "../hooks/useForm";
+import { postImage } from "../api/images";
 
 const BikesContext = createContext();
 // FUNCION PARA LLAMAR AL CONTEXTO EN EL COMPONENTE QUE QUERAMOS
@@ -15,43 +16,25 @@ const formData = {
     categoria: {
         categoriaId: "",
     },
-    imagenes: [
-        {
-            url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908608/electrica1_bcv3pj.png",
-        },
-        {
-            url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908609/electrica2_pdvxvw.png",
-        },
-        {
-            url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908609/electrica4_j8kbe8.png",
-        },
-        {
-            url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908608/electrica3_leu8lc.png",
-        },
-        {
-            url: "https://a0.muscache.com/im/pictures/c3f1fd94-ab7e-409a-bfea-a20f3931d8a8.jpg?im_w=480",
-        },
-        {
-            url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908608/electrica3_leu8lc.png",
-        },
-    ],
-    id: "",
+    imagenes: [],
+    // id: "",
 };
 export const BikesProvider = ({ children }) => {
     const [bikesData, setBikesData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [bikeById, setBikeById] = useState([]);
-    const [openNewProductModal, setOpenNewProductModal] = useState(false);
+    const [openNewProductModal, setOpenNewProductModal] = useState(true);
     const { formState, onInputChange, onResetForm, setFormState } =
         useForm(formData);
     // FUNCION PARA PODER PASAR EL ID A CATEGORIA COMO UN OBJETO
     const onCategoryChange = ({ target }) => {
         const { value } = target;
+        const categoriaId = value === "" ? "" : parseFloat(value);
         setFormState({
             ...formState,
             categoria: {
-                categoriaId: parseFloat(value),
+                categoriaId: categoriaId,
             },
         });
     };
@@ -109,6 +92,23 @@ export const BikesProvider = ({ children }) => {
             setLoading(false);
         }
     };
+    const handlePostImages = async (images) => {
+        setLoading(true);
+        try {
+            const imagePromises = [];
+            for (const image of images) {
+                imagePromises.push(postImage(image));
+            }
+            const imageUrls = await Promise.all(imagePromises);
+            return imageUrls;
+        } catch (er) {
+            setError(err);
+        } finally {
+            setLoading(false);
+        }
+        // CREAR UN ARRAY DE PROMESAS
+    };
+
     const bike = {
         nombre: "SARASITA",
         descripcion: "SARASA",
@@ -117,10 +117,10 @@ export const BikesProvider = ({ children }) => {
             categoriaId: 1,
         },
         imagenes: [
-            {
-                nombre: "SARASA",
-                url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908608/electrica1_bcv3pj.png",
-            },
+            // {
+            //     key: "SARASA",
+            //     url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908608/electrica1_bcv3pj.png",
+            // },
         ],
     };
 
@@ -148,6 +148,7 @@ export const BikesProvider = ({ children }) => {
                 onResetForm,
                 setOpenNewProductModal,
                 setFormState,
+                handlePostImages,
             }}
         >
             {children}

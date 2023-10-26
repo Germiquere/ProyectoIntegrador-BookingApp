@@ -8,7 +8,8 @@ export const useForm = (initialForm = {}) => {
 
     const onInputChange = (e, convertToNumber = false) => {
         const { name, value } = e.target;
-        const finalValue = convertToNumber ? parseFloat(value) : value;
+        const finalValue =
+            convertToNumber && value !== "" ? parseFloat(value) : value;
 
         setFormState({
             ...formState,

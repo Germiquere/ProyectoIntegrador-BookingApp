@@ -9,10 +9,13 @@ export const CityBikes = () => {
                 <p className="">producto</p>
                 <p>precio</p>
             </div>
+            {/* mapear el array de bicicletas */}
+
             <div className="flex justify-between bg-indigo-100 rounded-xl">
-                <p className="p-5">id</p>
+                <p className="p-5">{bike.id}</p>
                 <p className="">producto</p>
                 <p>precio</p>
+                <button onClick={bike.id}></button>
             </div>
             <div></div>
         </div>

@@ -3,71 +3,131 @@ import { BsXLg, BsCurrencyDollar, BsCloudUpload } from "react-icons/bs";
 import { useBikesContext } from "../../../context/BikesContext";
 import { Loader } from "../../../ui/loader";
 import { postImage } from "../../../api/images";
+import { useEffect } from "react";
 
 export const CreateProductModal = () => {
     const {
+        error,
         formState,
         onInputChange,
         onResetForm,
         onCategoryChange,
         addNewBike,
         loading: loadingBikes,
-        setFormState,
         setOpenNewProductModal,
+        handlePostImages,
     } = useBikesContext();
     const { nombre, descripcion, precioAlquilerPorDia, categoria, imagenes } =
         formState;
     const [imageChange, setImageChange] = useState([]);
     const fileInputRef = useRef(null);
-    console.log(formState);
-    // FUNCION PARA SUBIR IMAGENES A S3
-    const handlePostImages = async (images) => {
-        // CREAR UN ARRAY DE PROMESAS
-        const imagePromises = [];
-        console.log(images);
-        for (const image of images) {
-            imagePromises.push(postImage(image));
-        }
-        const imageUrls = await Promise.all(imagePromises);
-        console.log(imageUrls);
-        setFormState({
-            ...formState,
-            imagenes: [
-                {
-                    url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908608/electrica1_bcv3pj.png",
-                },
-                {
-                    url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908609/electrica2_pdvxvw.png",
-                },
-                {
-                    url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908609/electrica4_j8kbe8.png",
-                },
-                {
-                    url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908608/electrica3_leu8lc.png",
-                },
-                {
-                    url: "https://a0.muscache.com/im/pictures/c3f1fd94-ab7e-409a-bfea-a20f3931d8a8.jpg?im_w=480",
-                },
-                {
-                    url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908608/electrica3_leu8lc.png",
-                },
-            ],
+    const [erros, setErros] = useState({
+        nombre: false,
+        categoria: false,
+        precioAlquilerPorDia: false,
+        imagenes: false,
+    });
+    const [hasErrorImg, setHasErrorImg] = useState(false);
+    // FUNCION PARA MANEJAR EL CAMBIO DE INPUT Y SUS ERRORES
+    const handleInputChange = (e, toNumber = false) => {
+        const { name, value } = e.target;
+        onInputChange(e, toNumber);
+        setErros({
+            ...erros,
+            [name]: value.trim() === "",
         });
     };
-    // FUNCION PARA GUARDAR Y CREAR UN NUEVO PRODUCTO
-    const handleSaveAndNew = () => {
-        // EJECUTAR LA FUNCION QUE ME TRAE LAS URLS
-        // handlePostImages(imageChange);
-        console.log(formState);
-        addNewBike(formState);
-        // onResetForm();
+    // FUNCION PARA MANEJAR EL CAMBIO DE CATEGORIA Y SUS ERRORES
+    const handleCategoryChange = (e) => {
+        const { name, value } = e.target;
+        onCategoryChange(e);
+        setErros({
+            ...erros,
+            categoria: value.trim() === "",
+        });
     };
-    const handleSave = () => {
-        // EJECUTAR LA FUNCION QUE ME TRAE LAS URLS
-        // addNewBike(formState);
-        console.log(formState);
-        // onResetForm();
-        setOpenNewProductModal(false);
+    // FUNCION PARA VALIDACIONES
+    const handleValidations = () => {
+        let hasError = false;
+        if (
+            typeof categoria.categoriaId === "string" &&
+            categoria.categoriaId.trim() === ""
+        ) {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                categoria: true,
+            }));
+            hasError = true;
+        }
+        if (nombre.trim() === "") {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                nombre: true,
+            }));
+            hasError = true;
+        }
+        if (
+            typeof precioAlquilerPorDia === "string" &&
+            precioAlquilerPorDia.trim() === ""
+        ) {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                precioAlquilerPorDia: true,
+            }));
+            hasError = true;
+        }
+        if (imageChange.length < 2) {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                imagenes: true,
+            }));
+            setHasErrorImg(true);
+            hasError = true;
+        }
+
+        return hasError;
+    };
+    // FUNCION PARA CARGAR LAS IMAGENES A LA FUNCION DEL POST
+
+    // FUNCION PARA GUARDAR Y CREAR UN NUEVO PRODUCTO
+
+    const handleSaveAndNew = async () => {
+        if (!handleValidations()) {
+            try {
+                // Cargar las imágenes y esperar a que se completen
+                const imageUrls = await handlePostImages(imageChange);
+                const data = {
+                    ...formState,
+                    imagenes: imageUrls,
+                };
+
+                addNewBike(data);
+                setImageChange([]);
+                onResetForm();
+            } catch (error) {
+                console.error("Error al cargar las imágenes:", error);
+            }
+        }
+    };
+
+    const handleSave = async () => {
+        if (!handleValidations()) {
+            try {
+                // ESPERAR A QUE SE CARGUEN LAS IMAGENES
+                const imageUrls = await handlePostImages(imageChange);
+                const data = {
+                    ...formState,
+                    imagenes: imageUrls,
+                };
+
+                addNewBike(data);
+                setImageChange([]);
+                onResetForm();
+                setOpenNewProductModal(false);
+            } catch (error) {
+                throw error;
+            }
+        }
     };
     // FUNCION PARA COMPROBAR SI YA EXISTE UNA IMAGEN CON EL MISMO LASTMODIFIED EN EL ARRAY
     const isImageInArray = (imageArray, image) => {
@@ -106,6 +166,16 @@ export const CreateProductModal = () => {
             )
         );
     };
+    useEffect(() => {
+        if (imageChange.length >= 2) {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                imagenes: false,
+            }));
+            handleValidations();
+            setHasErrorImg(false);
+        }
+    }, [imageChange]);
 
     return (
         <>
@@ -122,7 +192,11 @@ export const CreateProductModal = () => {
                         className="flex  items-center justify-center middle none center rounded-full  h-7 w-7 font-sans text-xs font-bold uppercase  transition-all hover:bg-blackOpacity1 active:bg-tertiary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none "
                         data-ripple-dark="true"
                         disabled={loadingBikes}
-                        onClick={() => setOpenNewProductModal(false)}
+                        onClick={() => {
+                            setOpenNewProductModal(false);
+                            setImageChange([]);
+                            onResetForm();
+                        }}
                     >
                         <BsXLg className="text-lg" />
                     </button>
@@ -142,16 +216,27 @@ export const CreateProductModal = () => {
                                 <label className="text-base font-semibold mb-2">
                                     Nombre del producto *
                                 </label>
-                                <div className="relative h-11 w-full min-w-[200px] shadow-md rounded-xl border-[1px] border-gray-100 overflow-hidden">
+                                <div
+                                    className={`relative h-11 w-full min-w-[200px] shadow-md rounded-xl border-[1px] border-gray-100 overflow-hidden `}
+                                >
                                     <input
-                                        className="peer h-full w-full  p-2 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50"
+                                        className={` peer h-full w-full  p-2 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50`}
                                         placeholder="Text"
                                         type="text"
                                         value={nombre}
                                         name="nombre"
-                                        onChange={onInputChange}
+                                        onChange={handleInputChange}
                                     />
                                 </div>
+                                <p
+                                    className={`pt-1 text-xs text-red-500 ${
+                                        erros.nombre
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                    }`}
+                                >
+                                    Campo obligatorio
+                                </p>
                             </div>
                             {/* CATEGORIA */}
                             <div>
@@ -169,7 +254,7 @@ export const CreateProductModal = () => {
                                     <select
                                         name="categoria"
                                         value={categoria.categoriaId}
-                                        onChange={onCategoryChange}
+                                        onChange={handleCategoryChange}
                                         className="peer h-full w-full p-2 font-sans text-sm font-normal  outline outline-0 transition-all focus:outline-0 disabled:bg-blue-gray-50"
                                     >
                                         <option
@@ -193,6 +278,15 @@ export const CreateProductModal = () => {
                                         </option>
                                     </select>
                                 </div>
+                                <p
+                                    className={`pt-1 text-xs text-red-500 ${
+                                        erros.categoria
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                    }`}
+                                >
+                                    Campo obligatorio
+                                </p>
                             </div>
 
                             {/* PRECIO POR DIA */}
@@ -209,9 +303,20 @@ export const CreateProductModal = () => {
                                         placeholder="1500"
                                         value={precioAlquilerPorDia}
                                         name="precioAlquilerPorDia"
-                                        onChange={(e) => onInputChange(e, true)}
+                                        onChange={(e) =>
+                                            handleInputChange(e, true)
+                                        }
                                     />
                                 </div>
+                                <p
+                                    className={` pt-1 text-xs text-red-500 ${
+                                        erros.precioAlquilerPorDia
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                    }`}
+                                >
+                                    Campo obligatorio
+                                </p>
                             </div>
                             {/* STOCK */}
                             {/* <div>
@@ -244,11 +349,11 @@ export const CreateProductModal = () => {
                                 ></textarea>
                             </div>
                             {/* IMAGENES */}
-                            <div>
+                            <div className="relative">
                                 <p className="text-base font-semibold mb-2 text-primary">
                                     Cargar imagenes *
                                 </p>
-                                <div className="grid grid-cols-4 grid-rows-2 gap-5 ">
+                                <div className="grid grid-cols-4 grid-rows-1 gap-5 ">
                                     <input
                                         type="file"
                                         multiple
@@ -293,13 +398,29 @@ export const CreateProductModal = () => {
                                             </div>
                                         ))}
                                 </div>
+                                <p
+                                    className={`absolute top-24 pt-1 text-xs text-red-500 ${
+                                        erros.imagenes
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                    }`}
+                                >
+                                    Debes subir como minimo 2 imagenes
+                                </p>
                             </div>
                         </div>
                     </div>
+                    <p
+                        className={`text-red-500 text-center ${
+                            error ? "opacity-100" : "opacity-0"
+                        }`}
+                    >
+                        Algo salio mal, intentalo nuevamente.
+                    </p>
                 </div>
                 {/* FOOTER */}
-                <div className="flex justify-between p-3 border-t-[1px] border-gray-300 fixed bottom-0 right-0-0 w-full bg-white z-20 h-16">
-                    <h2> * Campos obligatorios</h2>
+                <div className="flex justify-between p-3 items-center border-t-[1px] border-gray-300 fixed bottom-0 right-0-0 w-full bg-white z-20 h-16">
+                    <h2 className={``}> * Campos obligatorios</h2>
                     <div className="flex gap-2">
                         <button
                             className=" middle none center rounded-full border border-primary py-2 px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-tertiary active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
