@@ -5,7 +5,11 @@ export const getBikes = async () => {
         // const res = await fetch(import.meta.env.VITE_URL + "/");
         const res = await fetch("http://localhost:8080/bike-me-now/bicicletas");
         if (!res.ok) {
-            throw new Error("Error en la solicitud GET de las bicicletas");
+            // Crear un objeto de error personalizado con estado y ok
+            const error = new Error("Error en la solicitud POST");
+            error.status = res.status;
+            error.ok = false;
+            throw error;
         }
         const data = await res.json();
         return data;
@@ -23,7 +27,11 @@ export const getBikeById = async (id) => {
         );
 
         if (!res.ok) {
-            throw new Error("Error en la solicitud GET de las bicicletas");
+            // Crear un objeto de error personalizado con estado y ok
+            const error = new Error("Error en la solicitud POST");
+            error.status = res.status;
+            error.ok = false;
+            throw error;
         }
         const data = await res.json();
         return data;
@@ -44,9 +52,13 @@ export const postBike = async (bike) => {
                 body: JSON.stringify(bike),
             }
         );
-
+        console.log(res);
         if (!res.ok) {
-            throw new Error("Error en la solicitud POST");
+            // Crear un objeto de error personalizado con estado y ok
+            const error = new Error("Error en la solicitud POST");
+            error.status = res.status;
+            error.ok = false;
+            throw error;
         }
         const data = await res.json();
         return data;
@@ -63,7 +75,11 @@ export const deleteBike = async (id) => {
             }
         );
         if (!res.ok) {
-            throw new Error("Error en la solicitud DELETE");
+            // Crear un objeto de error personalizado con estado y ok
+            const error = new Error("Error en la solicitud POST");
+            error.status = res.status;
+            error.ok = false;
+            throw error;
         }
         console.log(res);
         const data = await res.json();

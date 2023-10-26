@@ -6,7 +6,11 @@ export const getCategories = async () => {
         const res = await fetch("http://localhost:8080/bike-me-now/categorias");
 
         if (!res.ok) {
-            throw new Error("Error en la solicitud GET");
+            // Crear un objeto de error personalizado con estado y ok
+            const error = new Error("Error en la solicitud POST");
+            error.status = res.status;
+            error.ok = false;
+            throw error;
         }
         const data = await res.json();
         return data;
@@ -26,7 +30,11 @@ export const postCategory = async (newBikeCategory) => {
             body: JSON.stringify(newBikeCategory),
         });
         if (!res.ok) {
-            throw new Error("Error en la solicitud POST");
+            // Crear un objeto de error personalizado con estado y ok
+            const error = new Error("Error en la solicitud POST");
+            error.status = res.status;
+            error.ok = false;
+            throw error;
         }
         const data = await res.json();
         return data;
@@ -40,7 +48,11 @@ export const deleteCategory = async (id) => {
             method: "DELETE",
         });
         if (!res.ok) {
-            throw new Error("Error en la solicitud POST");
+            // Crear un objeto de error personalizado con estado y ok
+            const error = new Error("Error en la solicitud POST");
+            error.status = res.status;
+            error.ok = false;
+            throw error;
         }
         const data = await res.json();
         return data;

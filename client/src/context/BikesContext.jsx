@@ -22,9 +22,9 @@ const formData = {
 export const BikesProvider = ({ children }) => {
     const [bikesData, setBikesData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState("");
     const [bikeById, setBikeById] = useState([]);
-    const [openNewProductModal, setOpenNewProductModal] = useState(true);
+    const [openNewProductModal, setOpenNewProductModal] = useState(false);
     const { formState, onInputChange, onResetForm, setFormState } =
         useForm(formData);
     // FUNCION PARA PODER PASAR EL ID A CATEGORIA COMO UN OBJETO
@@ -72,9 +72,13 @@ export const BikesProvider = ({ children }) => {
         setLoading(true);
         try {
             const newBike = await postBike(bike);
+            setPostedBike(newBike);
+            console.log(newBike);
+            return newBike;
             //   VUELVO A HACER EL FETCH DE LA DATA PARA ACTUALIZAR LAS CATEGORIAS
             fetchData();
         } catch (err) {
+            console.log(err.status);
             setError(err);
         } finally {
             setLoading(false);
@@ -139,6 +143,7 @@ export const BikesProvider = ({ children }) => {
                 bikeById,
                 formState,
                 openNewProductModal,
+
                 //METODOS
                 bikeByIdGet,
                 addNewBike,
@@ -149,6 +154,7 @@ export const BikesProvider = ({ children }) => {
                 setOpenNewProductModal,
                 setFormState,
                 handlePostImages,
+                setError,
             }}
         >
             {children}

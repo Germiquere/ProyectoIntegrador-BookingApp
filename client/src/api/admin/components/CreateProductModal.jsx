@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { BsXLg, BsCurrencyDollar, BsCloudUpload } from "react-icons/bs";
 import { useBikesContext } from "../../../context/BikesContext";
 import { Loader } from "../../../ui/loader";
-import { postImage } from "../../../api/images";
+import { postImage } from "../../images";
 import { useEffect } from "react";
 
 export const CreateProductModal = () => {
@@ -16,6 +16,8 @@ export const CreateProductModal = () => {
         loading: loadingBikes,
         setOpenNewProductModal,
         handlePostImages,
+
+        setError,
     } = useBikesContext();
     const { nombre, descripcion, precioAlquilerPorDia, categoria, imagenes } =
         formState;
@@ -27,6 +29,7 @@ export const CreateProductModal = () => {
         precioAlquilerPorDia: false,
         imagenes: false,
     });
+    console.log(error.status);
     const [hasErrorImg, setHasErrorImg] = useState(false);
     // FUNCION PARA MANEJAR EL CAMBIO DE INPUT Y SUS ERRORES
     const handleInputChange = (e, toNumber = false) => {
@@ -36,6 +39,7 @@ export const CreateProductModal = () => {
             ...erros,
             [name]: value.trim() === "",
         });
+        setError("");
     };
     // FUNCION PARA MANEJAR EL CAMBIO DE CATEGORIA Y SUS ERRORES
     const handleCategoryChange = (e) => {
@@ -66,6 +70,7 @@ export const CreateProductModal = () => {
             }));
             hasError = true;
         }
+
         if (
             typeof precioAlquilerPorDia === "string" &&
             precioAlquilerPorDia.trim() === ""
@@ -102,8 +107,11 @@ export const CreateProductModal = () => {
                 };
 
                 addNewBike(data);
-                setImageChange([]);
-                onResetForm();
+                if (error.status !== 409) {
+                    console.log("sarasa");
+                    setImageChange([]);
+                    onResetForm();
+                }
             } catch (error) {
                 console.error("Error al cargar las imágenes:", error);
             }
@@ -121,9 +129,11 @@ export const CreateProductModal = () => {
                 };
 
                 addNewBike(data);
-                setImageChange([]);
-                onResetForm();
-                setOpenNewProductModal(false);
+                if (error.status !== 409) {
+                    setImageChange([]);
+                    onResetForm();
+                    setOpenNewProductModal(false);
+                }
             } catch (error) {
                 throw error;
             }
@@ -230,12 +240,19 @@ export const CreateProductModal = () => {
                                 </div>
                                 <p
                                     className={`pt-1 text-xs text-red-500 ${
-                                        erros.nombre
-                                            ? "opacity-100"
-                                            : "opacity-0"
+                                        erros.nombre ? "block" : "hidden"
                                     }`}
                                 >
                                     Campo obligatorio
+                                </p>
+                                <p
+                                    className={`pt-1 text-xs text-red-500 ${
+                                        error.status === 409
+                                            ? "block"
+                                            : "hidden"
+                                    }`}
+                                >
+                                    Ya existe un producto con ese nombre
                                 </p>
                             </div>
                             {/* CATEGORIA */}
@@ -412,7 +429,9 @@ export const CreateProductModal = () => {
                     </div>
                     <p
                         className={`text-red-500 text-center ${
-                            error ? "opacity-100" : "opacity-0"
+                            error && error?.status !== 409
+                                ? "opacity-100"
+                                : "opacity-0"
                         }`}
                     >
                         Algo salio mal, intentalo nuevamente.

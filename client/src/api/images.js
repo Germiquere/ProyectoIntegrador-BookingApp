@@ -9,7 +9,13 @@ export const postImage = async (file) => {
             method: "POST",
             body: formData,
         });
-        if (!res.ok) throw new Error("No se pudo subir la imagen");
+        if (!res.ok) {
+            // Crear un objeto de error personalizado con estado y ok
+            const error = new Error("Error en la solicitud POST");
+            error.status = res.status;
+            error.ok = false;
+            throw error;
+        }
         const data = await res.json();
         return data;
     } catch (error) {
@@ -23,7 +29,11 @@ export const deleteImage = async (id) => {
             method: "DELETE",
         });
         if (!res.ok) {
-            throw new Error("Error en la solicitud POST");
+            // Crear un objeto de error personalizado con estado y ok
+            const error = new Error("Error en la solicitud POST");
+            error.status = res.status;
+            error.ok = false;
+            throw error;
         }
         const data = await res.json();
         return data;

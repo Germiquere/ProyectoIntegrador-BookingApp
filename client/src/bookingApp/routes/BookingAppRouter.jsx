@@ -9,6 +9,7 @@ import { Home } from "../pages/Home";
 import { BookingLayout } from "../layout/BookingLayout";
 import { Description } from "../pages/Description";
 import { Categories } from "../pages/Categories";
+import { AdminRouter } from "../../api/admin/routes/AdminRouter";
 
 export const BookingAppRouter = () => {
     return (
@@ -25,6 +26,7 @@ export const BookingAppRouter = () => {
                 <Route path="road" element={<RoadBikes />} />
                 {/* TEST */}
                 <Route path="ruta" element={<Categories />} />
+                <Route path="admin/*" element={<AdminRouter />} />
 
                 {/*----- */}
                 <Route path="/description/:id" element={<Description />} />
