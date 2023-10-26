@@ -11,10 +11,10 @@ export const BookingLayout = () => {
     return (
         <>
             {openCalendarAndSearch && <ResponsiveCalendarAndSearch />}
-            <CreateProductModal />
+            {/* <CreateProductModal /> */}
             {/* <ResponsiveCalendarAndSearch /> */}
             <Header />
-            <main className=" md:min-h-[calc(100vh-228px)]  ">
+            <main className=" md:min-h-[calc(100vh-228px)] ">
                 <Outlet />
             </main>
             <Footer />

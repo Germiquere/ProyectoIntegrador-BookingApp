@@ -27,7 +27,6 @@ export const BookingAppRouter = () => {
                 <Route path="ruta" element={<Categories />} />
 
                 {/*----- */}
-
                 <Route path="/description/:id" element={<Description />} />
                 <Route path="/*" element={<Navigate to="/" />} />
             </Route>

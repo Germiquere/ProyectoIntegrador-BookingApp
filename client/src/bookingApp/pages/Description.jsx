@@ -10,6 +10,7 @@ import { useCategoriesContext } from "../../context/CategoriesContext";
 import { useBikesContext } from "../../context/BikesContext";
 import { differenceInDays, parse } from "date-fns";
 import { useCalendarAndSearchContext } from "../../context/CalendarSearchContext";
+import { LineaBreak } from "../../ui/LineaBreak";
 export const Description = () => {
     const { loading: loadingBikes, bikeByIdGet, bikeById } = useBikesContext();
 
@@ -140,9 +141,9 @@ export const Description = () => {
                                 <h3 className="text-lg sm:text-2xl font-semibold w-full">
                                     Caracteristicas
                                 </h3>
-                                <p className="max-w-[1000px]">
-                                    {bikeById.descripcion}
-                                </p>
+                                <div className="max-w-[1000px]">
+                                    <LineaBreak text={bikeById.descripcion} />
+                                </div>
                             </div>
                             {/* div de la derecha */}
                             <div className="flex flex-col w-full sm:w-[300px] gap-3 rounded-xl shadow-xl p-3 border-[1px] border-gray-100">

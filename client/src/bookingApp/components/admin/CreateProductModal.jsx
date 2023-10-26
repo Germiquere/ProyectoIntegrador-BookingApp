@@ -1,17 +1,81 @@
 import { useRef, useState } from "react";
 import { BsXLg, BsCurrencyDollar, BsCloudUpload } from "react-icons/bs";
+import { useBikesContext } from "../../../context/BikesContext";
+import { Loader } from "../../../ui/loader";
+import { postImage } from "../../../api/images";
 
 export const CreateProductModal = () => {
-    // TODO: CAMBIAR ESTE STATE POR EL DEL FORM
+    const {
+        formState,
+        onInputChange,
+        onResetForm,
+        onCategoryChange,
+        addNewBike,
+        loading: loadingBikes,
+        setFormState,
+        setOpenNewProductModal,
+    } = useBikesContext();
+    const { nombre, descripcion, precioAlquilerPorDia, categoria, imagenes } =
+        formState;
     const [imageChange, setImageChange] = useState([]);
     const fileInputRef = useRef(null);
-
+    console.log(formState);
+    // FUNCION PARA SUBIR IMAGENES A S3
+    const handlePostImages = async (images) => {
+        // CREAR UN ARRAY DE PROMESAS
+        const imagePromises = [];
+        console.log(images);
+        for (const image of images) {
+            imagePromises.push(postImage(image));
+        }
+        const imageUrls = await Promise.all(imagePromises);
+        console.log(imageUrls);
+        setFormState({
+            ...formState,
+            imagenes: [
+                {
+                    url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908608/electrica1_bcv3pj.png",
+                },
+                {
+                    url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908609/electrica2_pdvxvw.png",
+                },
+                {
+                    url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908609/electrica4_j8kbe8.png",
+                },
+                {
+                    url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908608/electrica3_leu8lc.png",
+                },
+                {
+                    url: "https://a0.muscache.com/im/pictures/c3f1fd94-ab7e-409a-bfea-a20f3931d8a8.jpg?im_w=480",
+                },
+                {
+                    url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908608/electrica3_leu8lc.png",
+                },
+            ],
+        });
+    };
+    // FUNCION PARA GUARDAR Y CREAR UN NUEVO PRODUCTO
+    const handleSaveAndNew = () => {
+        // EJECUTAR LA FUNCION QUE ME TRAE LAS URLS
+        // handlePostImages(imageChange);
+        console.log(formState);
+        addNewBike(formState);
+        // onResetForm();
+    };
+    const handleSave = () => {
+        // EJECUTAR LA FUNCION QUE ME TRAE LAS URLS
+        // addNewBike(formState);
+        console.log(formState);
+        // onResetForm();
+        setOpenNewProductModal(false);
+    };
+    // FUNCION PARA COMPROBAR SI YA EXISTE UNA IMAGEN CON EL MISMO LASTMODIFIED EN EL ARRAY
     const isImageInArray = (imageArray, image) => {
-        // Comprueba si ya existe una imagen con el mismo lastModified en el array.
         return imageArray.some(
             (existingImage) => existingImage.lastModified === image.lastModified
         );
     };
+    // FUNCION PARA SOLAMENTE AGREGAR IMAGENES,Y QUE LAS MISMAS NO SE REPITAN EN EL CLIENTE
     const onFileInputChange = ({ target }) => {
         const selectedFiles = target.files;
         const validImages = [];
@@ -23,7 +87,7 @@ export const CreateProductModal = () => {
                 file.type.startsWith("image/") &&
                 !isImageInArray(imageChange, file)
             ) {
-                // Solo agrega imágenes que no están en el array y son de tipo "image/"
+                //  SOLO AGREGA LOS FILES QUE SEAN DEL TIPO IMAGEN
                 validImages.push(file);
             }
         }
@@ -34,7 +98,7 @@ export const CreateProductModal = () => {
             ...validImages,
         ]);
     };
-    // FUNCION PARA BORRAR LAS IMAGENES
+    // FUNCION PARA BORRAR LAS IMAGENES DEL CLIENTE
     const deleteImageChange = (lastModifiedToDelete) => {
         setImageChange((prevImageChange) =>
             prevImageChange.filter(
@@ -50,12 +114,15 @@ export const CreateProductModal = () => {
             >
                 {/* HEADER */}
                 <div className=" w-full h-16  flex justify-between p-3 border-b-[1px] border-gray-300 bg-primary text-white">
-                    <h2 className="text-xl font-semibold">
-                        Agregar un nuevo producto
+                    <h2 className="text-xl font-semibold flex gap-5 items-center">
+                        <p>Agregar nuevo producto</p>
+                        {loadingBikes && <Loader className={"text-white"} />}
                     </h2>
                     <button
                         className="flex  items-center justify-center middle none center rounded-full  h-7 w-7 font-sans text-xs font-bold uppercase  transition-all hover:bg-blackOpacity1 active:bg-tertiary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none "
                         data-ripple-dark="true"
+                        disabled={loadingBikes}
+                        onClick={() => setOpenNewProductModal(false)}
                     >
                         <BsXLg className="text-lg" />
                     </button>
@@ -80,6 +147,9 @@ export const CreateProductModal = () => {
                                         className="peer h-full w-full  p-2 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50"
                                         placeholder="Text"
                                         type="text"
+                                        value={nombre}
+                                        name="nombre"
+                                        onChange={onInputChange}
                                     />
                                 </div>
                             </div>
@@ -89,21 +159,38 @@ export const CreateProductModal = () => {
                                     Categoria *
                                 </label>
                                 {/* TODO: en base al value del select, cambia el color del texto a text-graty-400 o "" */}
-                                <div className="relative h-11 w-full min-w-[200px]  border-[1px]  border-gray-100 overflow-hidden shadow-md rounded-xl">
+                                <div
+                                    className={`relative h-11 w-full min-w-[200px]  border-[1px]  border-gray-100 overflow-hidden shadow-md rounded-xl ${
+                                        categoria.categoriaId
+                                            ? ""
+                                            : "text-gray-400"
+                                    }`}
+                                >
                                     <select
-                                        name="selectValue"
-                                        // value={formState.category}
-                                        // onChange={onInputChange}
-
+                                        name="categoria"
+                                        value={categoria.categoriaId}
+                                        onChange={onCategoryChange}
                                         className="peer h-full w-full p-2 font-sans text-sm font-normal  outline outline-0 transition-all focus:outline-0 disabled:bg-blue-gray-50"
                                     >
                                         <option
                                             value=""
-                                            className="text-gray-300 "
+                                            className="text-gray-400"
                                         >
                                             Selecciona una categoria
                                         </option>
                                         {/*TODO: hacer el map con los options */}
+                                        <option
+                                            value="1"
+                                            className="text-black"
+                                        >
+                                            Ruta
+                                        </option>
+                                        <option
+                                            value="2"
+                                            className="text-black"
+                                        >
+                                            Electrica
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -120,11 +207,14 @@ export const CreateProductModal = () => {
                                         type="number"
                                         className="peer h-full w-full   py-2 pl-5 pr-2 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50"
                                         placeholder="1500"
+                                        value={precioAlquilerPorDia}
+                                        name="precioAlquilerPorDia"
+                                        onChange={(e) => onInputChange(e, true)}
                                     />
                                 </div>
                             </div>
                             {/* STOCK */}
-                            <div>
+                            {/* <div>
                                 <label className="text-base font-semibold mb-2">
                                     Stock *
                                 </label>
@@ -135,7 +225,7 @@ export const CreateProductModal = () => {
                                         placeholder="5"
                                     />
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="flex flex-col gap-3 flex-1">
                             {/* TEXT AREA */}
@@ -148,6 +238,9 @@ export const CreateProductModal = () => {
                                     style={{ resize: "none" }}
                                     placeholder="Descripcion del producto"
                                     rows={4}
+                                    value={descripcion}
+                                    name="descripcion"
+                                    onChange={onInputChange}
                                 ></textarea>
                             </div>
                             {/* IMAGENES */}
@@ -209,14 +302,18 @@ export const CreateProductModal = () => {
                     <h2> * Campos obligatorios</h2>
                     <div className="flex gap-2">
                         <button
-                            className="middle none center rounded-full border border-primary py-2 px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-tertiary active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            className=" middle none center rounded-full border border-primary py-2 px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-tertiary active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                             data-ripple-dark="true"
+                            onClick={handleSaveAndNew}
+                            disabled={loadingBikes}
                         >
                             GUARDAR Y NUEVO
                         </button>
                         <button
                             className="middle none center  rounded-full bg-primary py-2 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm  transition-all  hover:shadow-secondary  active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                             data-ripple-light="true"
+                            disabled={loadingBikes}
+                            onClick={handleSave}
                         >
                             GUARDAR
                         </button>
