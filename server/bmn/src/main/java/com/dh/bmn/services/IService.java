@@ -1,7 +1,6 @@
 package com.dh.bmn.services;
 
 import com.dh.bmn.util.PaginatedResponse;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 public interface IService <T, E>{
@@ -16,6 +15,6 @@ public interface IService <T, E>{
 
     public List<T> listarTodos();
 
-    public PaginatedResponse<T> obtenerPaginacion(int numeroPagina, int elementosPorPagina);
+    public PaginatedResponse<T> obtenerPaginacion(int numeroPagina, int limit, int offset);
 }
 

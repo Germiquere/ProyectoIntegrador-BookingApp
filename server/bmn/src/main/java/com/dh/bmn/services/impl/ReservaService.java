@@ -85,7 +85,7 @@ public class ReservaService implements IService<ReservaResponseDto, ReservaReque
     }
 
     @Override
-    public PaginatedResponse<ReservaResponseDto> obtenerPaginacion(int numeroPagina, int elementosPorPagina) {
+    public PaginatedResponse<ReservaResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
         return null;
     }
 

@@ -4,11 +4,9 @@ import com.dh.bmn.dtos.JsonMessageDto;
 import com.dh.bmn.dtos.requests.BicicletaRequestDto;
 import com.dh.bmn.dtos.responses.BicicletaResponseDto;
 import com.dh.bmn.services.IService;
-import com.dh.bmn.services.impl.BicicletaService;
 import com.dh.bmn.util.PaginatedResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,15 +56,17 @@ public class BicicletaController {
     @GetMapping("/page/{numeroPagina}")
     public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerPaginaBicicletas(
             @PathVariable int numeroPagina,
-            @RequestParam(defaultValue = "10") int elementosPorPagina) {
-        return obtenerPagina(numeroPagina, elementosPorPagina);
-    }
-
-    private ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerPagina(int numeroPagina, int elementosPorPagina) {
-        PaginatedResponse<BicicletaResponseDto> paginatedResponse = bicicletaService.obtenerPaginacion(numeroPagina, elementosPorPagina);
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(defaultValue = "0") int offset) {
+        PaginatedResponse<BicicletaResponseDto> paginatedResponse = bicicletaService.obtenerPaginacion(numeroPagina, limit, offset);
         return new ResponseEntity<>(paginatedResponse, HttpStatus.OK);
     }
-    
+
+    private ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerPaginacion(int numeroPagina, int limit, int offset) {
+        PaginatedResponse<BicicletaResponseDto> paginatedResponse = bicicletaService.obtenerPaginacion(numeroPagina, limit, offset);
+        return new ResponseEntity<>(paginatedResponse, HttpStatus.OK);
+    }
+
     /*@GetMapping("/page/siguiente")
     public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerSiguientePaginaBicicletas(
             @RequestParam(defaultValue = "1") int numeroPagina,

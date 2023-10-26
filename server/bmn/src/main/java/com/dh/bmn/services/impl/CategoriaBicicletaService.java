@@ -73,7 +73,7 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
     }
 
     @Override
-    public PaginatedResponse<CategoriaBicicletaResponseDto> obtenerPaginacion(int numeroPagina, int elementosPorPagina) {
+    public PaginatedResponse<CategoriaBicicletaResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
         return null;
     }
 }
