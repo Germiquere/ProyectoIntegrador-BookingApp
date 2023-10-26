@@ -8,6 +8,7 @@ import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IReservaRepository;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
+import com.dh.bmn.util.PaginatedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -81,6 +82,11 @@ public class ReservaService implements IService<ReservaResponseDto, ReservaReque
         List<Reserva> reservas = Optional.of(reservaRepository.findAll()).orElseThrow(() -> new ResourceNotFoundException("No se encontraron reservas", HttpStatus.NOT_FOUND.value()));
         return reservas.stream().map(reserva -> objectMapper.convertValue(reserva, ReservaResponseDto.class)).collect(Collectors.toList());
 
+    }
+
+    @Override
+    public PaginatedResponse<ReservaResponseDto> obtenerPaginacion(int numeroPagina, int elementosPorPagina) {
+        return null;
     }
 
     public List<ReservaResponseDto> obtenerReservasPorUsuario(Long usuarioId) {

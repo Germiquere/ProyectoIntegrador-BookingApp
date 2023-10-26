@@ -8,11 +8,20 @@ import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IBicicletaRepository;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
+import com.dh.bmn.util.PaginatedResponse;
+import com.dh.bmn.util.PaginationData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -77,4 +86,23 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
                 .map(bicicleta -> objectMapper.convertValue(bicicleta, BicicletaResponseDto.class))
                 .collect(Collectors.toList());
     }
+
+    public PaginatedResponse<BicicletaResponseDto> obtenerPaginacion(int numeroPagina, int elementosPorPagina) {
+        Pageable pageable = PageRequest.of(numeroPagina - 1, elementosPorPagina);
+
+        Page<Bicicleta> bicicletas = bicicletaRepository.findAll(pageable);
+
+        List<BicicletaResponseDto> bicicletasDtoList = bicicletas.getContent().stream()
+                .map(bicicleta -> objectMapper.convertValue(bicicleta, BicicletaResponseDto.class))
+                .collect(Collectors.toList());
+
+        PaginationData paginationData = new PaginationData();
+        paginationData.setTotal(bicicletas.getTotalElements());
+        paginationData.setPrimary_results(bicicletas.getNumberOfElements());
+        paginationData.setOffset(bicicletas.getPageable().getOffset());
+        paginationData.setLimit(bicicletas.getPageable().getPageSize());
+
+        return new PaginatedResponse<>(bicicletasDtoList, paginationData);
+    }
+
 }

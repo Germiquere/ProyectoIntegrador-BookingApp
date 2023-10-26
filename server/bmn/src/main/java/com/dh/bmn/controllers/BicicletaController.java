@@ -4,8 +4,11 @@ import com.dh.bmn.dtos.JsonMessageDto;
 import com.dh.bmn.dtos.requests.BicicletaRequestDto;
 import com.dh.bmn.dtos.responses.BicicletaResponseDto;
 import com.dh.bmn.services.IService;
+import com.dh.bmn.services.impl.BicicletaService;
+import com.dh.bmn.util.PaginatedResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,4 +54,43 @@ public class BicicletaController {
         bicicletaService.actualizar(bicicletaRequestDto);
         return new ResponseEntity<>(new JsonMessageDto("Bicicleta actualizada exitosamente", HttpStatus.OK.value()), HttpStatus.OK);
     }
+
+    @GetMapping("/page/{numeroPagina}")
+    public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerPaginaBicicletas(
+            @PathVariable int numeroPagina,
+            @RequestParam(defaultValue = "10") int elementosPorPagina) {
+        return obtenerPagina(numeroPagina, elementosPorPagina);
+    }
+
+    private ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerPagina(int numeroPagina, int elementosPorPagina) {
+        PaginatedResponse<BicicletaResponseDto> paginatedResponse = bicicletaService.obtenerPaginacion(numeroPagina, elementosPorPagina);
+        return new ResponseEntity<>(paginatedResponse, HttpStatus.OK);
+    }
+    
+    /*@GetMapping("/page/siguiente")
+    public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerSiguientePaginaBicicletas(
+            @RequestParam(defaultValue = "1") int numeroPagina,
+            @RequestParam(defaultValue = "10") int elementosPorPagina) {
+        numeroPagina++; // Obtener la página siguiente
+        return obtenerPagina(numeroPagina, elementosPorPagina);
+    }
+
+    @GetMapping("/page/anterior")
+    public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerPaginaAnteriorBicicletas(
+            @RequestParam(defaultValue = "1") int numeroPagina,
+            @RequestParam(defaultValue = "10") int elementosPorPagina) {
+        numeroPagina--; // Obtener la página anterior
+        return obtenerPagina(numeroPagina, elementosPorPagina);
+    }
+
+    @GetMapping("/page/inicio")
+    public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerPrimeraPaginaBicicletas(
+            @RequestParam(defaultValue = "10") int elementosPorPagina) {
+        int numeroPagina = 1; // Obtener la primera página
+        return obtenerPagina(numeroPagina, elementosPorPagina);
+    }*/
+
+
+
+
 }

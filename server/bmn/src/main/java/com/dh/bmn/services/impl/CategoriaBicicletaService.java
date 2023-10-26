@@ -8,6 +8,7 @@ import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.ICategoriaBicicletaRepository;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
+import com.dh.bmn.util.PaginatedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,5 +70,10 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
     public List<CategoriaBicicletaResponseDto> listarTodos() {
         List<CategoriaBicicleta> categoriasBicicletas = Optional.of(categoriaBicicletaRepository.findAll()).orElseThrow(() -> new ResourceNotFoundException("No se encontro ninguna categoria de bicicleta", HttpStatus.NOT_FOUND.value()));
         return categoriasBicicletas.stream().map(categoria -> objectMapper.convertValue(categoria, CategoriaBicicletaResponseDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public PaginatedResponse<CategoriaBicicletaResponseDto> obtenerPaginacion(int numeroPagina, int elementosPorPagina) {
+        return null;
     }
 }
