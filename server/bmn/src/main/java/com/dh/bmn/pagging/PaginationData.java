@@ -1,4 +1,4 @@
-package com.dh.bmn.util;
+package com.dh.bmn.pagging;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

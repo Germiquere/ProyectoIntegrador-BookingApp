@@ -1,6 +1,6 @@
 package com.dh.bmn.services;
 
-import com.dh.bmn.util.PaginatedResponse;
+import com.dh.bmn.pagging.PaginatedResponse;
 
 import java.util.List;
 public interface IService <T, E>{

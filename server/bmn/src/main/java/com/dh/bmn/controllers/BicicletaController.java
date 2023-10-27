@@ -4,7 +4,7 @@ import com.dh.bmn.dtos.JsonMessageDto;
 import com.dh.bmn.dtos.requests.BicicletaRequestDto;
 import com.dh.bmn.dtos.responses.BicicletaResponseDto;
 import com.dh.bmn.services.IService;
-import com.dh.bmn.util.PaginatedResponse;
+import com.dh.bmn.pagging.PaginatedResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

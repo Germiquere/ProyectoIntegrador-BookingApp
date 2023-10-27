@@ -1,4 +1,4 @@
-package com.dh.bmn.util;
+package com.dh.bmn.pagging;
 
 import org.springframework.stereotype.Component;
 
