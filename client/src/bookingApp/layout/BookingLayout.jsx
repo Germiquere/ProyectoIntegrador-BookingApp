@@ -4,7 +4,6 @@ import { Header } from "../components/header/Header";
 import { Footer } from "../components/footer/Footer";
 import { ResponsiveCalendarAndSearch } from "../components/sectionCalendarAndSearch/ResponsiveCalendarAndSearch";
 import { CalendarAndSearchContext } from "../../context/CalendarSearchContext";
-import { ProductsPage } from "../../api/admin/pages/ProductsPage";
 
 export const BookingLayout = () => {
     const { openCalendarAndSearch } = useContext(CalendarAndSearchContext);
@@ -13,8 +12,7 @@ export const BookingLayout = () => {
             {openCalendarAndSearch && <ResponsiveCalendarAndSearch />}
             {/* <ResponsiveCalendarAndSearch /> */}
             <Header />
-            <main className=" md:min-h-[calc(100vh-228px)] ">
-                <ProductsPage />
+            <main className="min-h-[calc(100vh-204px)] md:min-h-[calc(100vh-168px)] lg:min-h-[calc(100vh-182px)] ">
                 <Outlet />
             </main>
             <Footer />

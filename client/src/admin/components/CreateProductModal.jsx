@@ -1,9 +1,8 @@
 import { useRef, useState } from "react";
 import { BsXLg, BsCurrencyDollar, BsCloudUpload } from "react-icons/bs";
-import { useBikesContext } from "../../../context/BikesContext";
-import { Loader } from "../../../ui/loader";
-import { postImage } from "../../images";
 import { useEffect } from "react";
+import { useBikesContext } from "../../context/BikesContext";
+import { Loader } from "../../ui/Loader";
 
 export const CreateProductModal = () => {
     const {
@@ -16,7 +15,7 @@ export const CreateProductModal = () => {
         loading: loadingBikes,
         setOpenNewProductModal,
         handlePostImages,
-
+        handleDeleteImages,
         setError,
     } = useBikesContext();
     const { nombre, descripcion, precioAlquilerPorDia, categoria, imagenes } =
@@ -29,7 +28,6 @@ export const CreateProductModal = () => {
         precioAlquilerPorDia: false,
         imagenes: false,
     });
-    console.log(error.status);
     const [hasErrorImg, setHasErrorImg] = useState(false);
     // FUNCION PARA MANEJAR EL CAMBIO DE INPUT Y SUS ERRORES
     const handleInputChange = (e, toNumber = false) => {
@@ -98,44 +96,52 @@ export const CreateProductModal = () => {
 
     const handleSaveAndNew = async () => {
         if (!handleValidations()) {
-            try {
-                // Cargar las imágenes y esperar a que se completen
-                const imageUrls = await handlePostImages(imageChange);
+            // Cargar las imágenes y esperar a que se completen
+
+            const imageUrls = await handlePostImages(imageChange);
+
+            // MANEJAR EL ERROR PARA QUE NO SE ROMPA LA APLICACION
+            if (imageUrls) {
                 const data = {
                     ...formState,
                     imagenes: imageUrls,
                 };
+                const bike = await addNewBike(data);
 
-                addNewBike(data);
-                if (error.status !== 409) {
-                    console.log("sarasa");
+                if (bike && bike.statusCode !== 409) {
                     setImageChange([]);
                     onResetForm();
+                    setError(false);
+                } else {
+                    handleDeleteImages(imageUrls);
+                    console.log("se borraron las imagenes");
                 }
-            } catch (error) {
-                console.error("Error al cargar las imágenes:", error);
             }
         }
     };
 
     const handleSave = async () => {
         if (!handleValidations()) {
-            try {
-                // ESPERAR A QUE SE CARGUEN LAS IMAGENES
-                const imageUrls = await handlePostImages(imageChange);
+            // Cargar las imágenes y esperar a que se completen
+
+            const imageUrls = await handlePostImages(imageChange);
+
+            // MANEJAR EL ERROR PARA QUE NO SE ROMPA LA APLICACION
+            if (imageUrls) {
                 const data = {
                     ...formState,
                     imagenes: imageUrls,
                 };
+                const bike = await addNewBike(data);
 
-                addNewBike(data);
-                if (error.status !== 409) {
+                if (bike && bike.statusCode !== 409) {
                     setImageChange([]);
                     onResetForm();
+                    setError(false);
                     setOpenNewProductModal(false);
+                } else {
+                    handleDeleteImages(imageUrls);
                 }
-            } catch (error) {
-                throw error;
             }
         }
     };
@@ -206,6 +212,7 @@ export const CreateProductModal = () => {
                             setOpenNewProductModal(false);
                             setImageChange([]);
                             onResetForm();
+                            setError(false);
                         }}
                     >
                         <BsXLg className="text-lg" />
@@ -285,13 +292,31 @@ export const CreateProductModal = () => {
                                             value="1"
                                             className="text-black"
                                         >
-                                            Ruta
+                                            Electrica
                                         </option>
                                         <option
                                             value="2"
                                             className="text-black"
                                         >
-                                            Electrica
+                                            Ciudad
+                                        </option>
+                                        <option
+                                            value="3"
+                                            className="text-black"
+                                        >
+                                            Montaña
+                                        </option>
+                                        <option
+                                            value="4"
+                                            className="text-black"
+                                        >
+                                            Niños
+                                        </option>
+                                        <option
+                                            value="5"
+                                            className="text-black"
+                                        >
+                                            Ruta
                                         </option>
                                     </select>
                                 </div>
@@ -434,7 +459,7 @@ export const CreateProductModal = () => {
                                 : "opacity-0"
                         }`}
                     >
-                        Algo salio mal, intentalo nuevamente.
+                        {error.message}
                     </p>
                 </div>
                 {/* FOOTER */}

@@ -9,7 +9,7 @@ import { Home } from "../pages/Home";
 import { BookingLayout } from "../layout/BookingLayout";
 import { Description } from "../pages/Description";
 import { Categories } from "../pages/Categories";
-import { AdminRouter } from "../../api/admin/routes/AdminRouter";
+import { AdminRouter } from "../../admin/routes/AdminRouter";
 
 export const BookingAppRouter = () => {
     return (

@@ -1,7 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { deleteBike, getBikeById, getBikes, postBike } from "../api/bikes";
+import {
+    deleteBike,
+    getBikeById,
+    getBikes,
+    postBike,
+    updateBike,
+} from "../api/bikes";
 import { useForm } from "../hooks/useForm";
-import { postImage } from "../api/images";
+import { deleteImage, postImage } from "../api/images";
 
 const BikesContext = createContext();
 // FUNCION PARA LLAMAR AL CONTEXTO EN EL COMPONENTE QUE QUERAMOS
@@ -25,6 +31,8 @@ export const BikesProvider = ({ children }) => {
     const [error, setError] = useState("");
     const [bikeById, setBikeById] = useState([]);
     const [openNewProductModal, setOpenNewProductModal] = useState(false);
+    const [openEditProductModal, setOpenEditProductModal] = useState(false);
+    const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
     const { formState, onInputChange, onResetForm, setFormState } =
         useForm(formData);
     // FUNCION PARA PODER PASAR EL ID A CATEGORIA COMO UN OBJETO
@@ -72,24 +80,23 @@ export const BikesProvider = ({ children }) => {
         setLoading(true);
         try {
             const newBike = await postBike(bike);
-            setPostedBike(newBike);
-            console.log(newBike);
-            return newBike;
+
             //   VUELVO A HACER EL FETCH DE LA DATA PARA ACTUALIZAR LAS CATEGORIAS
             fetchData();
+            return newBike;
         } catch (err) {
-            console.log(err.status);
             setError(err);
         } finally {
             setLoading(false);
         }
     };
-    // FUNCION PARA BORRAR UNA CATEGORIA
+    // FUNCION PARA BORRAR UNA BICICLETA
     const deleteABike = async (id) => {
         setLoading(true);
         try {
             const deletedBike = await deleteBike(id);
             fetchData();
+            return deletedBike;
         } catch (err) {
             setError(err);
         } finally {
@@ -105,32 +112,56 @@ export const BikesProvider = ({ children }) => {
             }
             const imageUrls = await Promise.all(imagePromises);
             return imageUrls;
-        } catch (er) {
+        } catch (err) {
             setError(err);
         } finally {
             setLoading(false);
         }
-        // CREAR UN ARRAY DE PROMESAS
     };
-
-    const bike = {
-        nombre: "SARASITA",
-        descripcion: "SARASA",
-        precioAlquilerPorDia: 30,
-        categoria: {
-            categoriaId: 1,
-        },
-        imagenes: [
-            // {
-            //     key: "SARASA",
-            //     url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697908608/electrica1_bcv3pj.png",
-            // },
-        ],
+    // FUNCION PARA BORRAR LAS IMAGENES
+    const handleDeleteImages = async (images) => {
+        setLoading(true);
+        try {
+            const imagePromises = [];
+            for (const image of images) {
+                imagePromises.push(deleteImage(image.key));
+            }
+            const deletedImages = await Promise.all(imagePromises);
+            return deletedImages;
+        } catch (err) {
+            console.log(err.message);
+        } finally {
+            setLoading(false);
+        }
     };
+    //  FUNCION PARA ACTUALIZAR UNA BICICLETEA
+    const updateABike = async (bike) => {
+        setLoading(true);
+        try {
+            const newBike = await updateBike(bike);
 
+            //   VUELVO A HACER EL FETCH DE LA DATA PARA ACTUALIZAR LAS CATEGORIAS
+            fetchData();
+        } catch (err) {
+            console.log(err.status);
+            setError(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+    // const sarasa = [
+    //     {
+    //         key: "bikemenowImages/1698347489267_no-image-icon-23485.png",
+    //     },
+    //     {
+    //         key: "bikemenowImages/1698348697742_no-image-icon-23485.png",
+    //     },
+    //     {
+    //         key: "bikemenowImages/1698348704238_no-image-icon-23485.png",
+    //     },
+    // ];
     useEffect(() => {
         fetchData();
-        // addNewBike(bike);
     }, []);
 
     return (
@@ -143,7 +174,8 @@ export const BikesProvider = ({ children }) => {
                 bikeById,
                 formState,
                 openNewProductModal,
-
+                openEditProductModal,
+                openConfirmDelete,
                 //METODOS
                 bikeByIdGet,
                 addNewBike,
@@ -152,9 +184,13 @@ export const BikesProvider = ({ children }) => {
                 onInputChange,
                 onResetForm,
                 setOpenNewProductModal,
+                setOpenEditProductModal,
+                setOpenConfirmDelete,
                 setFormState,
                 handlePostImages,
                 setError,
+                updateABike,
+                handleDeleteImages,
             }}
         >
             {children}
