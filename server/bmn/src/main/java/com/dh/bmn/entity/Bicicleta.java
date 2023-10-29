@@ -35,10 +35,7 @@ public class Bicicleta {
     @JoinColumn(name = "categoria_id")
     private CategoriaBicicleta categoria;
 
-    @Transient
-    @ElementCollection
-    @CollectionTable(name = "bicicleta_imagenes", joinColumns = @JoinColumn(name = "bicicleta_id"))
-    private List<Imagen> imagenes;
-
+    @OneToMany(mappedBy = "bicicleta", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Asset> imagenes;
 
 }

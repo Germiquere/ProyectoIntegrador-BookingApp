@@ -1,4 +1,4 @@
-package com.dh.bmn.security;
+package com.dh.bmn.security.user;
 
 import lombok.Getter;
 

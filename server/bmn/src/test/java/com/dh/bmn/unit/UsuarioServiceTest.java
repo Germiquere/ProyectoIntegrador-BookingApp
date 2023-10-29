@@ -6,7 +6,7 @@ import com.dh.bmn.entity.Usuario;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IUsuarioRepository;
-import com.dh.bmn.security.Rol;
+import com.dh.bmn.security.user.Rol;
 import com.dh.bmn.services.impl.UsuarioService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

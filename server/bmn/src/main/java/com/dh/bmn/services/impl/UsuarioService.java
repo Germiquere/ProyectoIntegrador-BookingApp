@@ -9,24 +9,25 @@ import com.dh.bmn.repositories.IUsuarioRepository;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
 public class UsuarioService implements IService<UsuarioResponseDto, UsuarioRequestDto> {
 
     private final IUsuarioRepository usuarioRepository;
 
+    private PasswordEncoder passwordEncoder;
+
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
-    @Autowired
-    public UsuarioService(IUsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
 
     @Override
     public void actualizar(UsuarioRequestDto usuarioRequestDto){
@@ -35,6 +36,12 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
 
         if (usuarioDB != null) {
             usuarioDB = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
+
+            String nuevaPassword = usuarioRequestDto.getPassword();
+            if (nuevaPassword != null && !nuevaPassword.isEmpty()) {
+                String passwordEncriptada = passwordEncoder.encode(nuevaPassword);
+                usuarioDB.setPassword(passwordEncriptada);
+            }
 
             usuarioRepository.save(usuarioDB);
         }
@@ -60,6 +67,9 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
             throw new ResourceAlreadyExistsException("El usuario ya existe", HttpStatus.CONFLICT.value());
         }
         Usuario usuario = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
+
+        String passwordEncriptada = passwordEncoder.encode(usuarioRequestDto.getPassword());
+        usuario.setPassword(passwordEncriptada);
 
         usuarioRepository.save(usuario);
     }

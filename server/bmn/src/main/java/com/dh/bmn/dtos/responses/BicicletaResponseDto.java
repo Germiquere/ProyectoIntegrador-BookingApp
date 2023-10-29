@@ -1,6 +1,6 @@
 package com.dh.bmn.dtos.responses;
 
-import com.dh.bmn.embeddable.Imagen;
+import com.dh.bmn.entity.Asset;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +17,6 @@ public class BicicletaResponseDto {
     private String descripcion;
     private Integer precioAlquilerPorDia;
     private CategoriaBicicletaResponseDto categoria;
-    private List<Imagen> imagenes;
+    private List<Asset> imagenes;
 
 }

@@ -1,6 +1,7 @@
 package com.dh.bmn.controllers;
 
-import com.dh.bmn.entity.vm.Asset;
+import com.dh.bmn.dtos.responses.AssetResponseDto;
+import com.dh.bmn.entity.Asset;
 import com.dh.bmn.services.IS3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +38,7 @@ public class AwsController {
     }
 
     @PostMapping("/uploadFile")
-    public ResponseEntity<Asset> uploadFile(@RequestParam(value = "bucketName") String bucketName, @RequestParam(value = "filePath") String filePath, @RequestParam(value = "file") MultipartFile file) {
+    public ResponseEntity<AssetResponseDto> uploadFile(@RequestParam(value = "bucketName") String bucketName, @RequestParam(value = "filePath") String filePath, @RequestParam(value = "file") MultipartFile file) {
         String key = awsService.uploadFile(bucketName, filePath, file);
 
         String assetUrlString = s3BaseUrl + "/" + bucketName + "/" + key;
@@ -49,10 +50,12 @@ public class AwsController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        Asset asset = Asset.builder()
-                .key(key)
-                .url(assetUrl)
-                .build();
+//        Asset asset = Asset.builder()
+//                .key(key)
+//                .url(assetUrl)
+//                .build();
+
+        AssetResponseDto asset = new AssetResponseDto(key, assetUrl);
 
         return new ResponseEntity<>(asset, HttpStatus.OK);
     }

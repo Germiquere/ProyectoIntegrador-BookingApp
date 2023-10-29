@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -25,28 +26,33 @@ public class BicicletaController {
     }
 
     @GetMapping("/{id}")
+    @Secured({ "ADMIN", "USER" })
     public ResponseEntity<BicicletaResponseDto> obtenerBicicletaPorId (@PathVariable Long id) {
         return new ResponseEntity<>(bicicletaService.buscarPorId(id), HttpStatus.OK);
     }
 
     @PostMapping
+    @Secured("ADMIN")
     public ResponseEntity<?> registrarBicicleta (@RequestBody @Valid BicicletaRequestDto bicicletaRequestDto){
         bicicletaService.crear(bicicletaRequestDto);
         return new ResponseEntity<>(new JsonMessageDto("Nueva bicicleta registrada",HttpStatus.CREATED.value()), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
+    @Secured("ADMIN")
     public ResponseEntity<?> eliminarBicicletaPorId (@PathVariable Long id){
         bicicletaService.borrarPorId(id);
         return new ResponseEntity<>(new JsonMessageDto("Bicicleta eliminada exitosamente", HttpStatus.OK.value()), HttpStatus.OK);
     }
 
     @GetMapping
+    @Secured({ "ADMIN", "USER" })
     public ResponseEntity<List<BicicletaResponseDto>> listarBicicletas (){
         return new ResponseEntity<>(bicicletaService.listarTodos(),HttpStatus.OK);
     }
 
     @PutMapping()
+    @Secured("ADMIN")
     public ResponseEntity<?> actualizarBicicleta (@RequestBody @Valid BicicletaRequestDto bicicletaRequestDto){
         bicicletaService.actualizar(bicicletaRequestDto);
         return new ResponseEntity<>(new JsonMessageDto("Bicicleta actualizada exitosamente", HttpStatus.OK.value()), HttpStatus.OK);
