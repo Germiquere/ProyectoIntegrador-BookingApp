@@ -12,7 +12,7 @@ import java.net.URL;
 @NoArgsConstructor
 @Entity
 @Table(name = "bicicleta_imagenes")
-public class Asset {
+public class Imagen {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +28,13 @@ public class Asset {
 
     @JsonIgnore
     @ManyToOne()
-    @JoinColumn(name = "bicicleta_id", nullable = false)
+    @JoinColumn(name = "bicicleta_id")
     private Bicicleta bicicleta;
 
-    public Asset(String key, URL url) {
+    @OneToOne()
+    @JoinColumn(name = "categoria_id")
+    private CategoriaBicicleta categoria;
+    public Imagen(String key, URL url) {
         this.key = key;
         this.url = url;
     }

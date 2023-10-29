@@ -1,5 +1,6 @@
 package com.dh.bmn.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,8 +36,8 @@ public class Bicicleta {
     private CategoriaBicicleta categoria;
 
 
-    @OneToMany(mappedBy = "bicicleta", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<Asset> imagenes;
+    @OneToMany(mappedBy = "bicicleta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Imagen> imagenes;
 
 
 }

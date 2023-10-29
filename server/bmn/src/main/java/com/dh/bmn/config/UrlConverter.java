@@ -17,7 +17,7 @@ public class UrlConverter implements AttributeConverter<URL, String> {
         try {
             return dbData != null ? new URL(dbData) : null;
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException("Error de conversion a entidad URL");
         }
     }
 }

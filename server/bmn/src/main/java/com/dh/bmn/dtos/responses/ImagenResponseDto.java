@@ -10,7 +10,7 @@ import java.net.URL;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class AssetResponseDto {
+public class ImagenResponseDto {
 
     private String key;
     private URL url;

@@ -3,9 +3,11 @@ package com.dh.bmn.services.impl;
 import com.dh.bmn.dtos.requests.UsuarioRequestDto;
 import com.dh.bmn.dtos.responses.UsuarioResponseDto;
 import com.dh.bmn.entity.Usuario;
+import com.dh.bmn.exceptions.RequestValidationException;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IUsuarioRepository;
+import com.dh.bmn.security.Rol;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +36,7 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
         Usuario usuarioDB = usuarioRepository.findById(usuarioRequestDto.getUsuarioId()).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
 
         if (usuarioDB != null) {
+            normalizarNombreApellido(usuarioRequestDto);
             usuarioDB = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
 
             usuarioRepository.save(usuarioDB);
@@ -48,19 +51,14 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
 
     @Override
     public void crear(UsuarioRequestDto usuarioRequestDto) {
-//        String inicialNombre = usuarioRequestDto.getNombre().substring(0, 1);
-//        String restoNombre = usuarioRequestDto.getNombre().substring(1);
-//        usuarioRequestDto.setNombre(inicialNombre.toUpperCase() + restoNombre.toLowerCase());
-//
-//        String inicialApellido = usuarioRequestDto.getApellido().substring(0, 1);
-//        String restoApellido = usuarioRequestDto.getApellido().substring(1);
-//        usuarioRequestDto.setApellido(inicialApellido.toUpperCase() + restoApellido.toLowerCase());
+        normalizarNombreApellido(usuarioRequestDto);
 
         if (usuarioRepository.findByEmail(usuarioRequestDto.getEmail()).isPresent()) {
             throw new ResourceAlreadyExistsException("El usuario ya existe", HttpStatus.CONFLICT.value());
         }
-        Usuario usuario = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
 
+        validarRol(usuarioRequestDto.getRol());
+        Usuario usuario = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
         usuarioRepository.save(usuario);
     }
 
@@ -78,5 +76,23 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
                 .stream()
                 .map(usuario -> objectMapper.convertValue(usuario, UsuarioResponseDto.class))
                 .collect(Collectors.toList());
+    }
+
+    private void validarRol(Rol rol){
+
+        if(!rol.getValor().equals("USER") && !rol.getValor().equals("ADMIN")){
+            throw new RequestValidationException("El rol especificado no existe", HttpStatus.BAD_REQUEST.value());
+        }
+    }
+
+    private void normalizarNombreApellido(UsuarioRequestDto usuarioRequestDto){
+
+        String inicialNombre = usuarioRequestDto.getNombre().substring(0, 1);
+        String restoNombre = usuarioRequestDto.getNombre().substring(1);
+        usuarioRequestDto.setNombre(inicialNombre.toUpperCase() + restoNombre.toLowerCase());
+
+        String inicialApellido = usuarioRequestDto.getApellido().substring(0, 1);
+        String restoApellido = usuarioRequestDto.getApellido().substring(1);
+        usuarioRequestDto.setApellido(inicialApellido.toUpperCase() + restoApellido.toLowerCase());
     }
 }

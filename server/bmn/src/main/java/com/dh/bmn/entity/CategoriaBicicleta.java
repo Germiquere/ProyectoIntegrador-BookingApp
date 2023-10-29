@@ -1,10 +1,13 @@
 package com.dh.bmn.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,7 +28,12 @@ public class CategoriaBicicleta {
     @Column
     private String descripcion;
 
-    @Column(length = 500)
-    private String imagen;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "imagen_id")
+    private Imagen imagen;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
+    private List<Bicicleta> bicicletas;
 
 }

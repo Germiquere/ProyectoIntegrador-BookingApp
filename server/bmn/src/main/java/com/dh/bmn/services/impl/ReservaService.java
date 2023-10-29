@@ -3,6 +3,7 @@ package com.dh.bmn.services.impl;
 import com.dh.bmn.dtos.requests.ReservaRequestDto;
 import com.dh.bmn.dtos.responses.ReservaResponseDto;
 import com.dh.bmn.entity.Reserva;
+import com.dh.bmn.exceptions.IllegalDateException;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IReservaRepository;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,6 +47,15 @@ public class ReservaService implements IService<ReservaResponseDto, ReservaReque
         Reserva reservaDB = reservaRepository.findById(reservaRequestDto.getReservaId()).orElseThrow(() -> new ResourceNotFoundException("La reserva no existe", HttpStatus.NOT_FOUND.value()));
 
         if (reservaDB != null) {
+
+            List<Reserva> listaReservasBicicleta = reservaRepository.findReservasByBicicletaId(reservaRequestDto.getBicicleta().getBicicletaId());
+
+            if(!listaReservasBicicleta.isEmpty()){
+                validarSiExisteReservaPrevia(reservaRequestDto);
+            }
+
+            validarFechaInicioFinValida(reservaRequestDto.getFechaInicio(), reservaRequestDto.getFechaFin());
+
             reservaDB = objectMapper.convertValue(reservaRequestDto, Reserva.class);
 
             reservaRepository.save(reservaDB);
@@ -61,10 +72,9 @@ public class ReservaService implements IService<ReservaResponseDto, ReservaReque
     @Override
     public void crear(ReservaRequestDto reservaRequestDto) {
 
-        if (reservaRepository.findByBicicletaAndFechaInicioAndFechaFin(reservaRequestDto.getBicicleta().getBicicletaId(), reservaRequestDto.getFechaInicio(), reservaRequestDto.getFechaFin()).isPresent()) {
-            throw new ResourceAlreadyExistsException("La reserva ya existe", HttpStatus.CONFLICT.value());
-        }
+        validarSiExisteReservaPrevia(reservaRequestDto);
 
+        validarFechaInicioFinValida(reservaRequestDto.getFechaInicio(), reservaRequestDto.getFechaFin());
         Reserva reserva = objectMapper.convertValue(reservaRequestDto, Reserva.class);
 
         reservaRepository.save(reserva);
@@ -93,8 +103,22 @@ public class ReservaService implements IService<ReservaResponseDto, ReservaReque
                 .map(reserva -> objectMapper.convertValue(reserva, ReservaResponseDto.class))
                 .collect(Collectors.toList());
 
+    }
 
+    private void validarSiExisteReservaPrevia(ReservaRequestDto reservaRequestDto){
 
+        if (reservaRepository.findByBicicletaAndFechaInicioAndFechaFin(reservaRequestDto.getBicicleta().getBicicletaId(), reservaRequestDto.getFechaInicio(), reservaRequestDto.getFechaFin()).isPresent()) {
+            throw new ResourceAlreadyExistsException("Ya existe una reserva en esa fecha para la bicicleta especificada", HttpStatus.CONFLICT.value());
+        }
+    }
 
+    private void validarFechaInicioFinValida(LocalDate fechaInicio, LocalDate fechaFin){
+        if ( fechaInicio.isBefore(LocalDate.now())) {
+            throw new IllegalDateException("La fecha de inicio no puede ser menor a la actual", HttpStatus.BAD_REQUEST.value());
+        }
+
+        if ( fechaFin.isBefore(fechaInicio)) {
+            throw new IllegalDateException("La fecha de fin no puede ser menor a la fecha de inicio", HttpStatus.BAD_REQUEST.value());
+        }
     }
 }

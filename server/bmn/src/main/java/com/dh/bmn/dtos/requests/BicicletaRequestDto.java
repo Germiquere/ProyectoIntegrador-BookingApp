@@ -1,6 +1,6 @@
 package com.dh.bmn.dtos.requests;
 
-import com.dh.bmn.entity.Asset;
+import com.dh.bmn.entity.Imagen;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -35,7 +35,8 @@ public class BicicletaRequestDto {
 
     private CategoriaBicicletaRequestDto categoria;
 
-    private List<Asset> imagenes;
+    @NotNull(message = "Las imagenes no pueden ser nulas")
+    private List<Imagen> imagenes;
 
 
 }

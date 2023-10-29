@@ -33,6 +33,8 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
         CategoriaBicicleta categoriaDB = categoriaBicicletaRepository.findById(categoriaBicicletaRequestDto.getCategoriaId()).orElseThrow(() -> new ResourceNotFoundException("La categoria no existe", HttpStatus.NOT_FOUND.value()));
 
         if (categoriaDB != null) {
+
+            normalizarNombreDescripcion(categoriaBicicletaRequestDto);
             categoriaDB = objectMapper.convertValue(categoriaBicicletaRequestDto, CategoriaBicicleta.class);
 
             categoriaBicicletaRepository.save(categoriaDB);
@@ -47,9 +49,7 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
 
     @Override
     public void crear(CategoriaBicicletaRequestDto categoriaBicicletaRequestDto){
-//        String inicialNombre = categoriaBicicletaRequestDto.getNombre().substring(0, 1);
-//        String restoNombre = categoriaBicicletaRequestDto.getNombre().substring(1);
-//        categoriaBicicletaRequestDto.setNombre(inicialNombre.toUpperCase() + restoNombre.toLowerCase());
+        normalizarNombreDescripcion(categoriaBicicletaRequestDto);
 
         if (categoriaBicicletaRepository.findByNombre(categoriaBicicletaRequestDto.getNombre()).isPresent()) {
             throw new ResourceAlreadyExistsException("La categoria ya existe", HttpStatus.CONFLICT.value());
@@ -69,5 +69,16 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
     public List<CategoriaBicicletaResponseDto> listarTodos() {
         List<CategoriaBicicleta> categoriasBicicletas = Optional.of(categoriaBicicletaRepository.findAll()).orElseThrow(() -> new ResourceNotFoundException("No se encontro ninguna categoria de bicicleta", HttpStatus.NOT_FOUND.value()));
         return categoriasBicicletas.stream().map(categoria -> objectMapper.convertValue(categoria, CategoriaBicicletaResponseDto.class)).collect(Collectors.toList());
+    }
+
+    private void normalizarNombreDescripcion(CategoriaBicicletaRequestDto categoriaBicicletaRequestDto){
+
+        String inicialNombre = categoriaBicicletaRequestDto.getNombre().substring(0, 1);
+        String restoNombre = categoriaBicicletaRequestDto.getNombre().substring(1);
+        categoriaBicicletaRequestDto.setNombre(inicialNombre.toUpperCase() + restoNombre.toLowerCase());
+
+        String inicialDescripcion = categoriaBicicletaRequestDto.getDescripcion().substring(0, 1);
+        String restoDescripcion = categoriaBicicletaRequestDto.getDescripcion().substring(1);
+        categoriaBicicletaRequestDto.setDescripcion(inicialDescripcion.toUpperCase() + restoDescripcion.toLowerCase());
     }
 }

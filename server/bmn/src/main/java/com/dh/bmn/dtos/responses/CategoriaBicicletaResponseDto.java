@@ -12,5 +12,5 @@ public class CategoriaBicicletaResponseDto {
     private Long categoriaId;
     private String nombre;
     private String descripcion;
-    private String imagen;
+    private ImagenResponseDto imagen;
 }

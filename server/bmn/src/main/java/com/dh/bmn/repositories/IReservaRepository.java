@@ -11,9 +11,12 @@ import java.util.Optional;
 @Repository
 public interface IReservaRepository extends JpaRepository<Reserva, Long> {
 
-    @Query("SELECT r FROM Reserva r WHERE r.bicicleta.bicicletaId = ?1 AND r.fechaInicio = ?2 AND r.fechaFin = ?3")
-    Optional<Reserva> findByBicicletaAndFechaInicioAndFechaFin(Long idBicicleta, LocalDate fechaInicio, LocalDate fechaFin);
-
     @Query("SELECT r FROM Reserva r WHERE r.usuario.usuarioId = ?1")
     List<Reserva> findReservasByUsuarioId(Long idUsuario);
+
+    @Query("SELECT r FROM Reserva r WHERE r.bicicleta.bicicletaId = ?1")
+    List<Reserva> findReservasByBicicletaId(Long idBicicleta);
+
+    @Query("SELECT r FROM Reserva r WHERE r.bicicleta.bicicletaId = ?1 AND ((r.fechaInicio <=?2 AND r.fechaFin >= ?2) OR (r.fechaInicio <= ?3 AND r.fechaFin >= ?3))")
+    Optional<Reserva> findByBicicletaAndFechaInicioAndFechaFin(Long idBicicleta, LocalDate fechaInicio, LocalDate fechaFin);
 }
