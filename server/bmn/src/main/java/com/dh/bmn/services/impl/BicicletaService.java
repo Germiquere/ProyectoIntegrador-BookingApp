@@ -83,13 +83,13 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
     }
 
     public PaginatedResponse<BicicletaResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
-        Pageable pageable = PageRequest.of(numeroPagina - 1, limit);
+        //Pageable pageable = PageRequest.of(numeroPagina - 1, limit);
 
         if (offset < 0) {
             offset = 0;
         }
 
-        pageable = PageRequest.of(offset / limit, limit);
+        Pageable pageable = PageRequest.of(offset / limit, limit);
 
         Page<Bicicleta> bicicletas = bicicletaRepository.findAll(pageable);
 

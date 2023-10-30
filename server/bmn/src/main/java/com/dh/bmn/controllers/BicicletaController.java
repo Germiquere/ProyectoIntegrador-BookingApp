@@ -62,10 +62,10 @@ public class BicicletaController {
         return new ResponseEntity<>(paginatedResponse, HttpStatus.OK);
     }
 
-    private ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerPaginacion(int numeroPagina, int limit, int offset) {
+    /*private ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerPaginacion(int numeroPagina, int limit, int offset) {
         PaginatedResponse<BicicletaResponseDto> paginatedResponse = bicicletaService.obtenerPaginacion(numeroPagina, limit, offset);
         return new ResponseEntity<>(paginatedResponse, HttpStatus.OK);
-    }
+    }*/
 
     /*@GetMapping("/page/siguiente")
     public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerSiguientePaginaBicicletas(
@@ -89,8 +89,5 @@ public class BicicletaController {
         int numeroPagina = 1; // Obtener la primera página
         return obtenerPagina(numeroPagina, elementosPorPagina);
     }*/
-
-
-
 
 }
