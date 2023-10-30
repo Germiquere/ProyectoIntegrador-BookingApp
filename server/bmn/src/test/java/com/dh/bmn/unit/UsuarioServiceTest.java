@@ -1,8 +1,13 @@
 package com.dh.bmn.unit;
 
+import com.dh.bmn.dtos.requests.BicicletaRequestDto;
+import com.dh.bmn.dtos.requests.CategoriaBicicletaRequestDto;
+import com.dh.bmn.dtos.requests.ImagenRequestDto;
 import com.dh.bmn.dtos.requests.UsuarioRequestDto;
 import com.dh.bmn.dtos.responses.UsuarioResponseDto;
+import com.dh.bmn.entity.Imagen;
 import com.dh.bmn.entity.Usuario;
+import com.dh.bmn.exceptions.RequestValidationException;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IUsuarioRepository;
@@ -17,6 +22,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -179,4 +187,5 @@ public class UsuarioServiceTest {
             usuarioService.actualizar(usuarioRequestDto);
         });
     }
+
 }

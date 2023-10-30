@@ -12,7 +12,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "categorias_bicicletas")
 public class CategoriaBicicleta {
@@ -36,4 +35,10 @@ public class CategoriaBicicleta {
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
     private List<Bicicleta> bicicletas;
 
+    public CategoriaBicicleta(Long categoriaId, String nombre, String descripcion, Imagen imagen) {
+        this.categoriaId = categoriaId;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.imagen = imagen;
+    }
 }
