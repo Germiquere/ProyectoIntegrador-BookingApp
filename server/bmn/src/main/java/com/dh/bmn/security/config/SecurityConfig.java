@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authRequest ->        //filtro de rutas privadas y protegidas
                         authRequest
-                                .requestMatchers("/auth/login", "/auth/registro").permitAll()
+                                .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/bike-me-now/**").authenticated()
                                 .anyRequest().permitAll()
                 )
