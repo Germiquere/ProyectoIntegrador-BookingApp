@@ -10,6 +10,7 @@ import com.dh.bmn.repositories.IUsuarioRepository;
 import com.dh.bmn.security.Rol;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
+import com.dh.bmn.pagging.PaginatedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -94,5 +95,8 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
         String inicialApellido = usuarioRequestDto.getApellido().substring(0, 1);
         String restoApellido = usuarioRequestDto.getApellido().substring(1);
         usuarioRequestDto.setApellido(inicialApellido.toUpperCase() + restoApellido.toLowerCase());
+    @Override
+    public PaginatedResponse<UsuarioResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
+        return null;
     }
 }

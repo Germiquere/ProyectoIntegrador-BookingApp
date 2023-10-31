@@ -8,6 +8,7 @@ import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.ICategoriaBicicletaRepository;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
+import com.dh.bmn.pagging.PaginatedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -80,5 +81,8 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
         String inicialDescripcion = categoriaBicicletaRequestDto.getDescripcion().substring(0, 1);
         String restoDescripcion = categoriaBicicletaRequestDto.getDescripcion().substring(1);
         categoriaBicicletaRequestDto.setDescripcion(inicialDescripcion.toUpperCase() + restoDescripcion.toLowerCase());
+    @Override
+    public PaginatedResponse<CategoriaBicicletaResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
+        return null;
     }
 }

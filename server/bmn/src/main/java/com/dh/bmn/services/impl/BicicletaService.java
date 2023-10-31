@@ -11,8 +11,11 @@ import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IBicicletaRepository;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
+import com.dh.bmn.pagging.PaginatedResponse;
+import com.dh.bmn.pagging.PaginationData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -119,4 +122,28 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         String restoDescripcion = bicicletaRequestDto.getDescripcion().substring(1);
         bicicletaRequestDto.setDescripcion(inicialDescripcion.toUpperCase() + restoDescripcion.toLowerCase());
     }
+    public PaginatedResponse<BicicletaResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
+        //Pageable pageable = PageRequest.of(numeroPagina - 1, limit);
+
+        if (offset < 0) {
+            offset = 0;
+        }
+
+        Pageable pageable = PageRequest.of(offset / limit, limit);
+
+        Page<Bicicleta> bicicletas = bicicletaRepository.findAll(pageable);
+
+        List<BicicletaResponseDto> bicicletasDtoList = bicicletas.getContent().stream()
+                .map(bicicleta -> objectMapper.convertValue(bicicleta, BicicletaResponseDto.class))
+                .collect(Collectors.toList());
+
+        PaginationData paginationData = new PaginationData();
+        paginationData.setTotal(bicicletas.getTotalElements());
+        paginationData.setPrimary_results(bicicletas.getNumberOfElements());
+        paginationData.setOffset(offset);
+        paginationData.setLimit(bicicletas.getPageable().getPageSize());
+
+        return new PaginatedResponse<>(bicicletasDtoList, paginationData);
+    }
+
 }
