@@ -1,20 +1,19 @@
-package com.dh.bmn.dtos.responses;
+package com.dh.bmn.security.auth;
 
-import com.dh.bmn.security.user.Rol;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-public class UsuarioResponseDto {
+public class RegisterRequest {
 
-    private Long usuarioId;
     private String nombre;
     private String apellido;
     private String email;
-    private Rol rol;
+    private String password;
 
 }

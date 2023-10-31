@@ -8,7 +8,7 @@ import com.dh.bmn.exceptions.IllegalDateException;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IReservaRepository;
-import com.dh.bmn.security.Rol;
+import com.dh.bmn.security.user.Rol;
 import com.dh.bmn.services.impl.BicicletaService;
 import com.dh.bmn.services.impl.ReservaService;
 import com.dh.bmn.services.impl.UsuarioService;

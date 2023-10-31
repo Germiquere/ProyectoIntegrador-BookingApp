@@ -1,17 +1,12 @@
 package com.dh.bmn.unit;
 
-import com.dh.bmn.dtos.requests.BicicletaRequestDto;
-import com.dh.bmn.dtos.requests.CategoriaBicicletaRequestDto;
-import com.dh.bmn.dtos.requests.ImagenRequestDto;
 import com.dh.bmn.dtos.requests.UsuarioRequestDto;
 import com.dh.bmn.dtos.responses.UsuarioResponseDto;
-import com.dh.bmn.entity.Imagen;
 import com.dh.bmn.entity.Usuario;
-import com.dh.bmn.exceptions.RequestValidationException;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IUsuarioRepository;
-import com.dh.bmn.security.Rol;
+import com.dh.bmn.security.user.Rol;
 import com.dh.bmn.services.impl.UsuarioService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,9 +17,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +31,10 @@ public class UsuarioServiceTest {
 
     @Mock
     private IUsuarioRepository usuarioRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private UsuarioService usuarioService;
 
@@ -44,7 +42,8 @@ public class UsuarioServiceTest {
     public void setup() {
 
         usuarioRepository = mock(IUsuarioRepository.class);
-        usuarioService = new UsuarioService(usuarioRepository);
+        passwordEncoder = mock((PasswordEncoder.class));
+        usuarioService = new UsuarioService(usuarioRepository, passwordEncoder);
     }
 
     @Test

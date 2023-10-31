@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.multipart.MultipartFile;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 @CrossOrigin(origins = "*")
 @RestController
+@Secured("ADMIN")
 @RequestMapping(value = "/s3")
 public class AwsController {
     private IS3Service awsService;

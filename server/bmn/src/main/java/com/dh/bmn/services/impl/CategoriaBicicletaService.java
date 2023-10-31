@@ -72,7 +72,7 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
         return categoriasBicicletas.stream().map(categoria -> objectMapper.convertValue(categoria, CategoriaBicicletaResponseDto.class)).collect(Collectors.toList());
     }
 
-    private void normalizarNombreDescripcion(CategoriaBicicletaRequestDto categoriaBicicletaRequestDto){
+    private void normalizarNombreDescripcion(CategoriaBicicletaRequestDto categoriaBicicletaRequestDto) {
 
         String inicialNombre = categoriaBicicletaRequestDto.getNombre().substring(0, 1);
         String restoNombre = categoriaBicicletaRequestDto.getNombre().substring(1);
@@ -81,6 +81,8 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
         String inicialDescripcion = categoriaBicicletaRequestDto.getDescripcion().substring(0, 1);
         String restoDescripcion = categoriaBicicletaRequestDto.getDescripcion().substring(1);
         categoriaBicicletaRequestDto.setDescripcion(inicialDescripcion.toUpperCase() + restoDescripcion.toLowerCase());
+    }
+
     @Override
     public PaginatedResponse<CategoriaBicicletaResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
         return null;

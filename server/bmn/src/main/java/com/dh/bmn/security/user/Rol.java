@@ -1,4 +1,4 @@
-package com.dh.bmn.security;
+package com.dh.bmn.security.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
