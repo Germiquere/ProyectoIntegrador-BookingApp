@@ -1,10 +1,5 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { CityBikes } from "../pages/categories/CityBikes";
-import { EBikes } from "../pages/categories/EBikes";
-import { KidsBikes } from "../pages/categories/KidsBikes";
-import { MountainBikes } from "../pages/categories/MountainBikes";
-import { RoadBikes } from "../pages/categories/RoadBikes";
 import { Home } from "../pages/Home";
 import { BookingLayout } from "../layout/BookingLayout";
 import { Description } from "../pages/Description";

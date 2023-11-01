@@ -8,6 +8,7 @@ import {
 } from "../api/bikes";
 import { useForm } from "../hooks/useForm";
 import { deleteImage, postImage } from "../api/images";
+import { useNavigate } from "react-router-dom";
 
 const BikesContext = createContext();
 // FUNCION PARA LLAMAR AL CONTEXTO EN EL COMPONENTE QUE QUERAMOS
@@ -35,6 +36,7 @@ export const BikesProvider = ({ children }) => {
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
     const { formState, onInputChange, onResetForm, setFormState } =
         useForm(formData);
+    const navigate = useNavigate();
     // FUNCION PARA PODER PASAR EL ID A CATEGORIA COMO UN OBJETO
     const onCategoryChange = ({ target }) => {
         const { value } = target;
@@ -133,6 +135,11 @@ export const BikesProvider = ({ children }) => {
             const deletedImages = await Promise.all(imagePromises);
             return deletedImages;
         } catch (err) {
+            // TODO: CAMBIAR EL STATUS CODE CUANDO SE SOLUCIONE EL PROBLEMA EN EL BACK. DEBERIA SER UN 403 O UN 401
+            if (err.status === 500) {
+                navigate("/auth/login", { replace: true });
+            }
+            console.log(err.status);
             console.log(err.message);
         } finally {
             setLoading(false);

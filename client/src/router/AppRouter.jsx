@@ -7,7 +7,6 @@ export const AppRouter = () => {
         <Routes>
             <Route path="/*" element={<BookingAppRouter />} />
             <Route path="/auth/*" element={<AuthRouter />} />
-            <Route path="/*" element={<Navigate to="/" />} />
         </Routes>
     );
 };

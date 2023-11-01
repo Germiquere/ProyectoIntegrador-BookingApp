@@ -44,15 +44,26 @@ export const deleteImage = async (key) => {
         );
         console.log(res);
         if (!res.ok) {
-            // Crear un objeto de error personalizado con estado y ok
-            const error = new Error("Error en la solicitud POST");
-            error.status = res.status;
-            error.ok = false;
+            let error = {
+                status: res.status,
+                ok: false,
+                message: "Error en la solicitud DELETE",
+            };
+
+            // TODO:MODIFICAR EN CADA UNO DE LAS SOLICITUDES LOS ERRORES
+            if (res.status === 400) {
+                error.message = "Error: Solicitud incorrecta";
+            } else if (res.status === 401) {
+                error.message = "Error: No autorizado";
+            } else if (res.status === 404) {
+                error.message = "Error: Recurso no encontrado";
+            }
+
             throw error;
         }
         const data = await res.json();
         return data;
     } catch (error) {
-        throw new Error("Error al borrar las imagenes");
+        throw error;
     }
 };
