@@ -57,7 +57,7 @@ export const Categories = () => {
                         <div className="grid grid-cols-1  gap-4  ssm:grid-cols-2  sm:grid-cols-3  md:grid-cols-4  lg:grid-cols-5  ">
                             {filteredBikes.map((item) => (
                                 <div
-                                    className={` mt-8 mb-8 rounded-xl transition-transform transform-gpu duration-300 shadow-md hover:-translate-y-1 hover:scale-105 
+                                    className={`border border-gray-100 mt-8 mb-8 rounded-xl transition-transform transform-gpu duration-300 shadow-md hover:-translate-y-1 hover:scale-105 
                 `}
                                     key={item.bicicletaId}
                                 >
