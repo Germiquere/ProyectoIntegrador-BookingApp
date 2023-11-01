@@ -15,7 +15,7 @@ import java.net.URL;
 @CrossOrigin(origins = "*")
 @RestController
 @Secured("ADMIN")
-@RequestMapping(value = "/s3")
+@RequestMapping(value = "/bike-me-now/api/s3")
 public class AwsController {
     private IS3Service awsService;
 

@@ -13,9 +13,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+
 @RestController
-@RequestMapping("/bike-me-now/bicicletas")
+@RequestMapping("/bike-me-now")
 public class BicicletaController {
 
 
@@ -26,40 +26,40 @@ public class BicicletaController {
         this.bicicletaService = bicicletaService;
     }
 
-    @GetMapping("/{id}")
-    @Secured({ "ADMIN", "USER" })
+    @GetMapping("/bicicletas/{id}")
+
     public ResponseEntity<BicicletaResponseDto> obtenerBicicletaPorId (@PathVariable Long id) {
         return new ResponseEntity<>(bicicletaService.buscarPorId(id), HttpStatus.OK);
     }
 
-    @PostMapping
+
+    @PostMapping("/api/bicicletas")
     @Secured("ADMIN")
     public ResponseEntity<?> registrarBicicleta (@RequestBody @Valid BicicletaRequestDto bicicletaRequestDto){
         bicicletaService.crear(bicicletaRequestDto);
         return new ResponseEntity<>(new JsonMessageDto("Nueva bicicleta registrada",HttpStatus.CREATED.value()), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/bicicletas/{id}")
     @Secured("ADMIN")
     public ResponseEntity<?> eliminarBicicletaPorId (@PathVariable Long id){
         bicicletaService.borrarPorId(id);
         return new ResponseEntity<>(new JsonMessageDto("Bicicleta eliminada exitosamente", HttpStatus.OK.value()), HttpStatus.OK);
     }
 
-    @GetMapping
-    @Secured({ "ADMIN", "USER" })
+    @GetMapping("/bicicletas")
     public ResponseEntity<List<BicicletaResponseDto>> listarBicicletas (){
         return new ResponseEntity<>(bicicletaService.listarTodos(),HttpStatus.OK);
     }
 
-    @PutMapping()
+    @PutMapping("/api/bicicletas")
     @Secured("ADMIN")
     public ResponseEntity<?> actualizarBicicleta (@RequestBody @Valid BicicletaRequestDto bicicletaRequestDto){
         bicicletaService.actualizar(bicicletaRequestDto);
         return new ResponseEntity<>(new JsonMessageDto("Bicicleta actualizada exitosamente", HttpStatus.OK.value()), HttpStatus.OK);
     }
 
-    @GetMapping("/page/{numeroPagina}")
+    @GetMapping("/bicicletas/page/{numeroPagina}")
     public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerPaginaBicicletas(
             @PathVariable int numeroPagina,
             @RequestParam(defaultValue = "10") int limit,

@@ -2,7 +2,6 @@ package com.dh.bmn;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 public class BmnApplication {
@@ -10,5 +9,6 @@ public class BmnApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BmnApplication.class, args);
 	}
+
 }
 
