@@ -57,6 +57,7 @@ export const CategoriesProvider = ({ children }) => {
         try {
             const newCategory = await postCategory(newBikeCategory);
             //   VUELVO A HACER EL FETCH DE LA DATA PARA ACTUALIZAR LAS CATEGORIAS
+            console.log(newCategory);
             fetchData();
         } catch (err) {
             setError(err);
@@ -76,11 +77,19 @@ export const CategoriesProvider = ({ children }) => {
             setLoading(false);
         }
     };
+    const cat = {
+        nombre: "derutini",
+        descripcion: "Una bici electrica",
+        imagen: {
+            key: "key",
+            url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697378118/bjlchzsoybajjimpz7aa.jpg",
+        },
+    };
+
     useEffect(() => {
         // MANDO A LLAMAR LA FUNCCION FETCHDATA AL MOMENTO EN QUE SE MONTA EL COMPONENTE
         fetchData();
     }, []);
-
     return (
         <CategoriesContext.Provider
             value={{

@@ -21,14 +21,21 @@ export const getCategories = async () => {
 
 export const postCategory = async (newBikeCategory) => {
     try {
+        console.log(newBikeCategory);
         // PASAR EL ENDPOINT DE NUESTRA API
-        const res = await fetch("URL", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newBikeCategory),
-        });
+        const res = await fetch(
+            "http://localhost:8080/bike-me-now/api/categorias",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:
+                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODgwNTc3NSwiZXhwIjoxNjk4ODA5Mzc1fQ.HNhF_Sm60i5tsiDK2wKNODKiI_IQt9qknXGAZcNlr10",
+                },
+
+                body: JSON.stringify(newBikeCategory),
+            }
+        );
         if (!res.ok) {
             // Crear un objeto de error personalizado con estado y ok
             const error = new Error("Error en la solicitud POST");

@@ -1,6 +1,9 @@
 import { MdOutlineDeleteForever } from "react-icons/md";
 
-export const ConfirmDelete = () => {
+export const ConfirmDelete = ({
+    handleDeleteProduct,
+    setOpenConfirmDelete,
+}) => {
     return (
         <>
             <div
@@ -17,12 +20,14 @@ export const ConfirmDelete = () => {
                         <button
                             className="middle none center mr-3 rounded-full border border-primary py-3 px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-tertiary active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                             data-ripple-dark="true"
+                            onClick={handleDeleteProduct}
                         >
                             CONFIRMAR
                         </button>
                         <button
                             className="middle none center mr-3 rounded-full bg-primary py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm  transition-all  hover:shadow-secondary  active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                             data-ripple-light="true"
+                            onClick={() => setOpenConfirmDelete(false)}
                         >
                             CANCELAR
                         </button>

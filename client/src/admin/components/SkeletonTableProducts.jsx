@@ -13,16 +13,16 @@ export const SkeletonTableProducts = () => {
                     </div>
                     <div className="h-7 bg-gray-300 w-14  rounded-2xl "></div>
                 </div>
-                <div className="h-7 bg-gray-300 w-14  rounded-2xl "></div>
+                <div className="h-7 bg-gray-300 w-20  rounded-2xl "></div>
 
-                <div className="w-16 flex justify-center">
+                {/* <div className="w-16 flex justify-center">
                     <button
                         className="flex  items-center justify-center middle none center rounded-full  h-7 w-7 font-sans text-xs font-bold uppercase  transition-all hover:bg-blackOpacity1 active:bg-tertiary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none "
                         data-ripple-dark="true"
                     >
                         <div className="h-5 bg-gray-300 w-5  rounded-2xl "></div>
                     </button>
-                </div>
+                </div> */}
             </div>
         </div>
     );

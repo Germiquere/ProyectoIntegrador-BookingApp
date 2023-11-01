@@ -3,6 +3,8 @@ import { BsXLg, BsCurrencyDollar, BsCloudUpload } from "react-icons/bs";
 import { useEffect } from "react";
 import { Loader } from "../../ui/Loader";
 import { useBikesContext } from "../../context/BikesContext";
+import { deleteImage } from "../../api/images";
+import { ConfirmDelete } from "./ConfirmDelete";
 
 export const EditProductModal = () => {
     const {
@@ -17,9 +19,20 @@ export const EditProductModal = () => {
         handlePostImages,
         updateABike,
         setError,
+        handleDeleteImages,
+        deleteABike,
+        setFormState,
+        openConfirmDelete,
+        setOpenConfirmDelete,
     } = useBikesContext();
-    const { nombre, descripcion, precioAlquilerPorDia, categoria, imagenes } =
-        formState;
+    const {
+        nombre,
+        descripcion,
+        precioAlquilerPorDia,
+        categoria,
+        imagenes,
+        bicicletaId,
+    } = formState;
     const [imageChange, setImageChange] = useState([]);
     const fileInputRef = useRef(null);
     const [erros, setErros] = useState({
@@ -28,8 +41,7 @@ export const EditProductModal = () => {
         precioAlquilerPorDia: false,
         imagenes: false,
     });
-    console.log(error.status);
-    console.log(formState);
+    const [imagesToDelete, setImagesToDelete] = useState([]);
     const [hasErrorImg, setHasErrorImg] = useState(false);
     // FUNCION PARA MANEJAR EL CAMBIO DE INPUT Y SUS ERRORES
     const handleInputChange = (e, toNumber = false) => {
@@ -81,62 +93,57 @@ export const EditProductModal = () => {
             }));
             hasError = true;
         }
-        // if (imageChange.length < 2) {
-        //     setErros((prevErrors) => ({
-        //         ...prevErrors,
-        //         imagenes: true,
-        //     }));
-        //     setHasErrorImg(true);
-        //     hasError = true;
-        // }
+        console.log(imagenes);
+        if (imageChange.length + imagenes.length < 2) {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                imagenes: true,
+            }));
+            setHasErrorImg(true);
+            hasError = true;
+        }
 
         return hasError;
     };
-    // FUNCION PARA CARGAR LAS IMAGENES A LA FUNCION DEL POST
-
-    // FUNCION PARA GUARDAR Y CREAR UN NUEVO PRODUCTO
-
-    const handleSaveAndNew = async () => {
-        if (!handleValidations()) {
-            try {
-                // Cargar las imágenes y esperar a que se completen
-                const imageUrls = await handlePostImages(imageChange);
-                const data = {
-                    ...formState,
-                    imagenes: imageUrls,
-                };
-
-                const bike = await addNewBike(data);
-                if (bike && bike.statusCode !== 409) {
-                    console.log("sarasa");
-                    setImageChange([]);
-                    onResetForm();
-                }
-            } catch (error) {
-                console.error("Error al cargar las imágenes:", error);
-            }
-        }
-    };
+    // FUNCION PARA GUARDAR
 
     const handleSave = async () => {
         if (!handleValidations()) {
-            try {
-                // ESPERAR A QUE SE CARGUEN LAS IMAGENES
-                // const imageUrls = await handlePostImages(imageChange);
-                // const data = {
-                //     ...formState,
-                //     imagenes: imageUrls,
-                // };
+            // Cargar las imágenes y esperar a que se completen
+            console.log(imageChange);
+            const imageUrls = await handlePostImages(imageChange);
 
-                const bike = updateABike(formState);
+            // MANEJAR EL ERROR PARA QUE NO SE ROMPA LA APLICACION
+            if (imageUrls) {
+                console.log(imagesToDelete);
+                await handleDeleteImages(imagesToDelete);
+                const data = {
+                    ...formState,
+                    imagenes: [...formState.imagenes, ...imageUrls],
+                };
+                const bike = await updateABike(data);
+                console.log(bike);
+
                 if (bike && bike.statusCode !== 409) {
                     setImageChange([]);
                     onResetForm();
+                    setError(false);
                     setOpenEditProductModal(false);
+                } else {
+                    handleDeleteImages(imageUrls);
                 }
-            } catch (error) {
-                throw error;
             }
+        }
+    };
+    // FUNCION PARA ELIMNAR EL PRODUCTO CON LAS IMAGENES
+    const handleDeleteProduct = async () => {
+        await handleDeleteImages(imagenes);
+        const deleted = await deleteABike(bicicletaId);
+        if (deleted && deleted.statusCode !== 409) {
+            setImageChange([]);
+            onResetForm();
+            setOpenEditProductModal(false);
+            setOpenConfirmDelete(false);
         }
     };
     // FUNCION PARA COMPROBAR SI YA EXISTE UNA IMAGEN CON EL MISMO LASTMODIFIED EN EL ARRAY
@@ -176,8 +183,20 @@ export const EditProductModal = () => {
             )
         );
     };
+    // FUNCION PARA BORRAR LAS IMAGENES DE LA BASE DE DATOS
+
+    const deleteImageFromFormState = (key) => {
+        const newFormState = { ...formState };
+        newFormState.imagenes = imagenes.filter((imagen) => imagen.key !== key);
+        console.log(newFormState);
+        const imageToDelete = imagenes.find((imagen) => imagen.key === key);
+        if (imageToDelete) {
+            setImagesToDelete([...imagesToDelete, imageToDelete]);
+        }
+        setFormState(newFormState);
+    };
     useEffect(() => {
-        if (imageChange.length >= 2) {
+        if (imageChange.length + imagenes.length >= 2) {
             setErros((prevErrors) => ({
                 ...prevErrors,
                 imagenes: false,
@@ -185,17 +204,22 @@ export const EditProductModal = () => {
             handleValidations();
             setHasErrorImg(false);
         }
-    }, [imageChange]);
-
+    }, [imageChange, imagenes]);
     return (
         <>
             <div
                 className={` rounded-xl max-h-[600px] overflow-hidden bg-white  fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-[1200px] min-w-[700px] mx-auto transition-opacity duration-200 z-50 `}
             >
+                {openConfirmDelete && (
+                    <ConfirmDelete
+                        handleDeleteProduct={handleDeleteProduct}
+                        setOpenConfirmDelete={setOpenConfirmDelete}
+                    />
+                )}
                 {/* HEADER */}
                 <div className=" w-full h-16  flex justify-between p-3 border-b-[1px] border-gray-300 bg-primary text-white">
                     <h2 className="text-xl font-semibold flex gap-5 items-center">
-                        <p>Agregar nuevo producto</p>
+                        <p>Editar producto</p>
                         {loadingBikes && <Loader className={"text-white"} />}
                     </h2>
                     <button
@@ -414,6 +438,7 @@ export const EditProductModal = () => {
                                                 />
                                             </div>
                                         ))}
+                                    {/* MAP DE LAS IMAGENS QUE YA ESTAN EN EL PRODUCTO  */}
                                     {imagenes.map((image) => (
                                         <div
                                             className="relative group  w-16 h-16  shadow-md border-[1px] border-gray-100 overflow-hidden text-white"
@@ -428,12 +453,11 @@ export const EditProductModal = () => {
 
                                             <BsXLg
                                                 className=" bg-primary  opacity-40 group-hover:opacity-100  p-1 rounded-full text-2xl   absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20  cursor-pointer"
-                                                // onClick={() => {
-                                                //     deleteImageChange(
-                                                //         image.lastModified
-                                                //     );
-                                                //     console.log(image);
-                                                // }}
+                                                onClick={() => {
+                                                    deleteImageFromFormState(
+                                                        image.key
+                                                    );
+                                                }}
                                             />
                                         </div>
                                     ))}
@@ -467,8 +491,8 @@ export const EditProductModal = () => {
                         <button
                             className=" middle none center rounded-full border border-primary py-2 px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-tertiary active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                             data-ripple-dark="true"
-                            onClick={handleSaveAndNew}
                             disabled={loadingBikes}
+                            onClick={() => setOpenConfirmDelete(true)}
                         >
                             ELIMINAR
                         </button>

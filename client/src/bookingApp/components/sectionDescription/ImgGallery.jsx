@@ -32,7 +32,7 @@ export const ImgGallery = ({ data, handleToggleImgGallery, loadingBikes }) => {
                     <div className="grid grid-cols-2 grid-rows-2 h-full gap-2">
                         {images.map((img, index) => (
                             <div
-                                key={img.id}
+                                key={img.key + index}
                                 className="col-span-1 row-span-1 bg-gray-100"
                             >
                                 <img

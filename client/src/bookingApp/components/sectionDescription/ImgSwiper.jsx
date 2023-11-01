@@ -29,7 +29,7 @@ export const ImgSwiper = ({ handleToggleImgGallery, data }) => {
             loop
         >
             {data.imagenes.map((item) => (
-                <SwiperSlide key={item.id}>
+                <SwiperSlide key={item.key}>
                     <div
                     //     className="bg-contain bg-fixed
                     // bg-no-repeat

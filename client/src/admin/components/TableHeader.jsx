@@ -6,7 +6,6 @@ export const TableHeader = () => {
             <p className="w-10">ID</p>
             <p className="flex-1">Producto</p>
             <p className="w-20">Precio</p>
-            <p className="w-16">Acciones</p>
         </div>
     );
 };

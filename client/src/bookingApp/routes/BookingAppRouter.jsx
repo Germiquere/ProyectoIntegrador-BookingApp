@@ -10,22 +10,24 @@ import { BookingLayout } from "../layout/BookingLayout";
 import { Description } from "../pages/Description";
 import { Categories } from "../pages/Categories";
 import { AdminRouter } from "../../admin/routes/AdminRouter";
+import { useCategoriesContext } from "../../context/CategoriesContext";
 
 export const BookingAppRouter = () => {
+    const { categoriesData } = useCategoriesContext();
+    console.log(categoriesData);
     return (
         <Routes>
             <Route path="/" element={<BookingLayout />}>
                 <Route index element={<Home />}></Route>
-                {/*----- */}
-                {/* TODO: HACER QUE SEAN DINAMICAS OBTENIENDO LAS CATEGORIAS DESDE LA API */}
-                {/* TODO: EN BASE AL PATH, HACER EL FETCH EN EL UNICO COMPONENTE QUE SE VA A RENDERIZAR EN VEZ DE TODOS LOS OTROS HARDCODEADOS SE TENRIA QUE LLAMAR ALGO ASI COMO CATEGORIES Y FILTRAR LAS CATEGORIAS POR EL PATH TAMBIEN*/}
-                <Route path="city" element={<CityBikes />} />
-                <Route path="electric" element={<EBikes />} />
-                <Route path="kids" element={<KidsBikes />} />
-                <Route path="mountain" element={<MountainBikes />} />
-                <Route path="road" element={<RoadBikes />} />
+                {categoriesData &&
+                    categoriesData.map((category) => (
+                        <Route
+                            key={category.categoriaId}
+                            path={category.nombre.toLowerCase()}
+                            element={<Categories />}
+                        />
+                    ))}
                 {/* TEST */}
-                <Route path="ruta" element={<Categories />} />
                 <Route path="admin/*" element={<AdminRouter />} />
 
                 {/*----- */}

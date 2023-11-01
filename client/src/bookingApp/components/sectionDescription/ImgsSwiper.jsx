@@ -34,7 +34,7 @@ export default ({ data }) => {
                       </SwiperSlide>
                   ))
                 : data.imagenes.map((item) => (
-                      <SwiperSlide key={item.id}>
+                      <SwiperSlide key={item.key}>
                           <div className="h-full w-full">
                               <img
                                   className="max-h-[400px]  w-full object-contain "

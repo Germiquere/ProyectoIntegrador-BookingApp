@@ -4,6 +4,7 @@ import { Header } from "../components/header/Header";
 import { Footer } from "../components/footer/Footer";
 import { ResponsiveCalendarAndSearch } from "../components/sectionCalendarAndSearch/ResponsiveCalendarAndSearch";
 import { CalendarAndSearchContext } from "../../context/CalendarSearchContext";
+import { IconPicker } from "../../ui/IconPicker";
 
 export const BookingLayout = () => {
     const { openCalendarAndSearch } = useContext(CalendarAndSearchContext);
@@ -14,6 +15,7 @@ export const BookingLayout = () => {
             <Header />
             <main className="min-h-[calc(100vh-204px)] md:min-h-[calc(100vh-168px)] lg:min-h-[calc(100vh-182px)] ">
                 <Outlet />
+                {/* <IconPicker /> */}
             </main>
             <Footer />
         </>

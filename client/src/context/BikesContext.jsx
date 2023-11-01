@@ -80,11 +80,12 @@ export const BikesProvider = ({ children }) => {
         setLoading(true);
         try {
             const newBike = await postBike(bike);
-
+            console.log(newBike);
             //   VUELVO A HACER EL FETCH DE LA DATA PARA ACTUALIZAR LAS CATEGORIAS
             fetchData();
             return newBike;
         } catch (err) {
+            console.log(err.message);
             setError(err);
         } finally {
             setLoading(false);
@@ -121,11 +122,14 @@ export const BikesProvider = ({ children }) => {
     // FUNCION PARA BORRAR LAS IMAGENES
     const handleDeleteImages = async (images) => {
         setLoading(true);
+        console.log("estoy aca por borrr imagenes");
+        console.log(images);
         try {
             const imagePromises = [];
             for (const image of images) {
                 imagePromises.push(deleteImage(image.key));
             }
+
             const deletedImages = await Promise.all(imagePromises);
             return deletedImages;
         } catch (err) {
@@ -138,10 +142,10 @@ export const BikesProvider = ({ children }) => {
     const updateABike = async (bike) => {
         setLoading(true);
         try {
-            const newBike = await updateBike(bike);
-
+            const updatedBike = await updateBike(bike);
             //   VUELVO A HACER EL FETCH DE LA DATA PARA ACTUALIZAR LAS CATEGORIAS
             fetchData();
+            return updatedBike;
         } catch (err) {
             console.log(err.status);
             setError(err);
@@ -160,6 +164,7 @@ export const BikesProvider = ({ children }) => {
     //         key: "bikemenowImages/1698348704238_no-image-icon-23485.png",
     //     },
     // ];
+
     useEffect(() => {
         fetchData();
     }, []);

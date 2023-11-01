@@ -125,14 +125,16 @@ export const CreateProductModal = () => {
             // Cargar las imágenes y esperar a que se completen
 
             const imageUrls = await handlePostImages(imageChange);
-
+            console.log(imageUrls);
             // MANEJAR EL ERROR PARA QUE NO SE ROMPA LA APLICACION
             if (imageUrls) {
+                console.log("entre aca");
                 const data = {
                     ...formState,
                     imagenes: imageUrls,
                 };
                 const bike = await addNewBike(data);
+                console.log(bike);
 
                 if (bike && bike.statusCode !== 409) {
                     setImageChange([]);
