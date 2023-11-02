@@ -11,7 +11,7 @@ export const postImage = async (file) => {
                 method: "POST",
                 headers: {
                     Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODg2NzY1NiwiZXhwIjoxNjk4ODcxMjU2fQ.t1g39PM2gs6Fy-7mzDsLlhhDEtLyHPBENAw69kEg-ek",
+                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODg4OTU0MiwiZXhwIjoxNjk4ODkzMTQyfQ.7uAZbjI1I5q1l3ttzZcgpuz3Jq0oQbgyWLw2i039Kxk",
                 },
                 body: formData,
             }
@@ -38,7 +38,7 @@ export const deleteImage = async (key) => {
                 method: "DELETE",
                 headers: {
                     Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODg2NzY1NiwiZXhwIjoxNjk4ODcxMjU2fQ.t1g39PM2gs6Fy-7mzDsLlhhDEtLyHPBENAw69kEg-ek",
+                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODg4OTU0MiwiZXhwIjoxNjk4ODkzMTQyfQ.7uAZbjI1I5q1l3ttzZcgpuz3Jq0oQbgyWLw2i039Kxk",
                 },
             }
         );

@@ -29,18 +29,18 @@ export const Categories = () => {
     };
     const filteredBikes = filterBikes(bikesData, currentPath);
 
-    // const filterCategory = (arr, bikeCategory) => {
-    //     // TODO: CHECKEAR COMO VIENE EL OBJETO DE LA CATEGORIA Y CAMBIAR EN BASE A ESO EL ITEM.NAME
-    //     if (!arr) {
-    //         return [];
-    //     }
+    const filterCategory = (arr, bikeCategory) => {
+        // TODO: CHECKEAR COMO VIENE EL OBJETO DE LA CATEGORIA Y CAMBIAR EN BASE A ESO EL ITEM.NAME
+        if (!arr) {
+            return [];
+        }
 
-    //     const res = arr.find(
-    //         (item) => item.nombre.toLowerCase() == bikeCategory
-    //     );
-    //     return res;
-    // };
-    // const filteredCategory = filterCategory(categoriesData, currentPath);
+        const res = arr.find(
+            (item) => item.nombre.toLowerCase() == bikeCategory
+        );
+        return res;
+    };
+    const filteredCategory = filterCategory(categoriesData, currentPath);
     return (
         <Section>
             <div className="max-w-[1200px] mx-auto mt-3">
@@ -53,6 +53,9 @@ export const Categories = () => {
                     <>
                         <h2 className="text-lg sm:text-2xl font-semibold pb-2">
                             Bicicletas
+                        </h2>
+                        <h2 className="text-lg sm:text-xl  pb-2">
+                            {/* {filteredCategory.descripcion} */}
                         </h2>
                         <div className="grid grid-cols-1  gap-4  ssm:grid-cols-2  sm:grid-cols-3  md:grid-cols-4  lg:grid-cols-5  ">
                             {filteredBikes.map((item) => (

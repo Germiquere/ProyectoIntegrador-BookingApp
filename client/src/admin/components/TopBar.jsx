@@ -1,11 +1,37 @@
 import { BsSearch, BsPlusLg } from "react-icons/bs";
 import { useBikesContext } from "../../context/BikesContext";
+import { Link, NavLink } from "react-router-dom";
 
 export const TopBar = () => {
     const { setOpenNewProductModal } = useBikesContext();
     return (
         <div className="w-full flex justify-between items-center bg-white ">
-            <h2 className="text-lg sm:text-2xl font-semibold">Productos</h2>
+            <nav>
+                <ul className="flex gap-2">
+                    <li>
+                        <NavLink
+                            to="/admin"
+
+                            // className={({ isActive }) =>
+                            //     isActive ? "text-cyan-400" : ""
+                            // }
+                        >
+                            Productos
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink
+                            to="usuarios"
+                            // className={({ isActive }) =>
+                            //     isActive ? "text-cyan-400" : ""
+                            // }
+                        >
+                            Usuarios
+                        </NavLink>
+                    </li>
+                </ul>
+            </nav>
+            {/* <h2 className="text-lg sm:text-2xl font-semibold">Productos</h2> */}
             <div className="flex gap-2">
                 <div className="relative h-11 w-full sm:min-w-[200px]  flex-1 items-center shadow-xl rounded-full">
                     <input
