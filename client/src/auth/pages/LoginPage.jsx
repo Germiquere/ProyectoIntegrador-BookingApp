@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import Section from '../../bookingApp/components/Section';
 import React, { useState } from 'react';
-import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { VscEyeClosed, VscEye } from 'react-icons/vsc';
 
 export const LoginPage = () => {
@@ -37,8 +36,7 @@ export const LoginPage = () => {
               className='absolute inset-y-10 right-0 pr-3 flex items-center cursor-pointer'
               onClick={() => setShowPassword(!showPassword)}
             >
-              {/* {showPassword ? <VscEyeClosed /> : <VscEye />} */}
-              {showPassword ? <BsEyeSlash /> : <BsEye />}
+              {showPassword ? <VscEyeClosed /> : <VscEye />}
             </span>
           </div>
           <div className='flex flex-col gap-4 pt-6'>
@@ -50,7 +48,7 @@ export const LoginPage = () => {
             </button>
             <p>
               ¿Aún no tienes cuenta?{' '}
-              <Link to='' className='text-primary'>
+              <Link to='/auth/register' className='text-primary'>
                 Registrate
               </Link>
             </p>
