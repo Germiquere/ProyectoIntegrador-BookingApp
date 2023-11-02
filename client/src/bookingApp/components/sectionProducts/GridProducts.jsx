@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useBikesContext } from "../../../context/BikesContext";
-import { SkeletonGridProducts } from "./SkeletonGridProducts";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useBikesContext } from '../../../context/BikesContext';
+import { SkeletonGridProducts } from './SkeletonGridProducts';
 
 export default function GridProducts() {
   const { bikesData, loading: loadingProducts } = useBikesContext();
@@ -27,7 +27,7 @@ export default function GridProducts() {
   }, [bikesData, loadingProducts]);
 
   return (
-    <div className='grid grid-cols-1 grid-rows-4 gap-4 ssm:grid ssm:grid-cols-2 sm:grid sm:grid-cols-3 md:grid md:grid-cols-4  lg:grid lg:grid-cols-5 lg:grid-rows-2 '>
+    <div className='grid grid-cols-1  gap-4  ssm:grid-cols-2  sm:grid-cols-3  md:grid-cols-4  lg:grid-cols-5 '>
       {loadingProducts
         ? Array.from({ length: totalCards }).map((_, index) => (
             <SkeletonGridProducts key={index} />
