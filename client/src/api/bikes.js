@@ -84,7 +84,7 @@ export const postBike = async (bike) => {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODg2NzY1NiwiZXhwIjoxNjk4ODcxMjU2fQ.t1g39PM2gs6Fy-7mzDsLlhhDEtLyHPBENAw69kEg-ek",
+                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODg5NDc4MiwiZXhwIjoxNjk4ODk4MzgyfQ.BAyceQh4OhYiNTxXAUNwjkff3FU5ZUXap2nzkpg-i8E",
                 },
 
                 body: JSON.stringify(bike),
@@ -113,7 +113,7 @@ export const deleteBike = async (id) => {
                 headers: {
                     // "Content-Type": "application/json",
                     Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODg2NzY1NiwiZXhwIjoxNjk4ODcxMjU2fQ.t1g39PM2gs6Fy-7mzDsLlhhDEtLyHPBENAw69kEg-ek",
+                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODg5NDc4MiwiZXhwIjoxNjk4ODk4MzgyfQ.BAyceQh4OhYiNTxXAUNwjkff3FU5ZUXap2nzkpg-i8E",
                 },
             }
         );
@@ -143,7 +143,7 @@ export const updateBike = async (bike) => {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODg2NzY1NiwiZXhwIjoxNjk4ODcxMjU2fQ.t1g39PM2gs6Fy-7mzDsLlhhDEtLyHPBENAw69kEg-ek",
+                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODg5NDc4MiwiZXhwIjoxNjk4ODk4MzgyfQ.BAyceQh4OhYiNTxXAUNwjkff3FU5ZUXap2nzkpg-i8E",
                 },
                 body: JSON.stringify(bike),
             }
