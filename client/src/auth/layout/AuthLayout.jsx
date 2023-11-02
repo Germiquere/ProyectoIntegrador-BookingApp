@@ -7,7 +7,7 @@ export const AuthLayout = () => {
     return (
         <>
             <Header />
-            <main>
+            <main className="min-h-[calc(100vh-186px)] md:min-h-[calc(100vh-150px)] flex items-center justify-center">
                 <Outlet />
             </main>
             <Footer />
