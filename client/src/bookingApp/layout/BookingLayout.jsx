@@ -6,16 +6,16 @@ import { ResponsiveCalendarAndSearch } from "../components/sectionCalendarAndSea
 import { CalendarAndSearchContext } from "../../context/CalendarSearchContext";
 
 export const BookingLayout = () => {
-  const { openCalendarAndSearch } = useContext(CalendarAndSearchContext);
-  return (
-    <>
-      {openCalendarAndSearch && <ResponsiveCalendarAndSearch />}
-      {/* <ResponsiveCalendarAndSearch /> */}
-      <Header />
-      <main>
-        <Outlet />
-      </main>
-      <Footer />
-    </>
-  );
+    const { openCalendarAndSearch } = useContext(CalendarAndSearchContext);
+    return (
+        <>
+            {openCalendarAndSearch && <ResponsiveCalendarAndSearch />}
+            {/* <ResponsiveCalendarAndSearch /> */}
+            <Header />
+            <main className=" md:min-h-[calc(100vh-228px)]  ">
+                <Outlet />
+            </main>
+            <Footer />
+        </>
+    );
 };

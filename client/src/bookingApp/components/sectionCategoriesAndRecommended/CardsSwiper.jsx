@@ -1,16 +1,15 @@
 // import Swiper core and required modules
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {
-    BsFillArrowLeftCircleFill,
-    BsFillArrowRightCircleFill,
-} from "react-icons/bs";
+
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Link } from "react-router-dom";
+import { SkeletonCardsSweiper } from "./SkeletonCardsSweiper";
+import { useCategoriesContext } from "../../../context/CategoriesContext";
 
 // DATA HARCODEADA
 export const data = [
@@ -47,6 +46,7 @@ export const data = [
 ];
 
 export default () => {
+    const { loading: loadingCategories } = useCategoriesContext();
     return (
         <Swiper
             className="relative"
@@ -66,48 +66,53 @@ export default () => {
             breakpoints={{
                 640: {
                     slidesPerView: 1,
-                    spaceBetween: 20,
                 },
                 768: {
                     slidesPerView: 2,
-                    spaceBetween: 30,
                 },
                 1024: {
                     slidesPerView: 4,
-                    spaceBetween: 30,
                 },
             }}
         >
-            {data.map((item) => (
-                <SwiperSlide key={item.id}>
-                    <div className="cursor-pointer rounded-2xl overflow-hidden mx-10 group ">
-                        <Link to={item.category}>
-                            <img
-                                src={item.img}
-                                alt="imagende un gato"
-                                //  cambiar el tamanio a gusto
-                                className="w-full h-40 object-cover object-center transition-transform group-hover:scale-105 ease-in-out duration-200"
-                            />
-                            <div className=" bg-neutral-800 h-12 flex justify-center  items-center text-white group-hover:bg-primary ease-in-out duration-200">
-                                <h3 className="text-lg font-medium">
-                                    {item.name}
-                                </h3>
-                            </div>
-                        </Link>
-                    </div>
-                    {/* <SkeletonCardsSweiper /> */}
-                </SwiperSlide>
-            ))}
-            <div
-                className="flex gap-2 w-full justify-center mt-5
-            "
-            >
-                {/* <IoIosArrowDropleft className="prev-slide text-2xl sm:text-3xl text-neutral-800 hover:text-primary cursor-pointer ease-in-out duration-200 hidden sm:block" />
-                <IoIosArrowDropright className="next-slide text-2xl sm:text-3xl text-neutral-800 hover:text-primary cursor-pointer ease-in-out duration-200 hidden sm:block" /> */}
-            </div>
-            <IoIosArrowDropleft className="absolute prev-slide cursor-pointer text-neutral-800 hover:text-primary top-1/2 z-10 left-2 text-2xl  transform -translate-y-1/2 ease-in-out duration-200 hidden sm:block" />
+            {loadingCategories
+                ? [1, 2, 3, 4, 5].map((item) => (
+                      <SwiperSlide key={item}>
+                          <SkeletonCardsSweiper />
+                      </SwiperSlide>
+                  ))
+                : data.map((item) => (
+                      <SwiperSlide key={item.id}>
+                          <div className="cursor-pointer rounded-2xl overflow-hidden mx-10 group ">
+                              <Link to={item.category}>
+                                  <img
+                                      src={item.img}
+                                      alt="Imagende un gato"
+                                      className="w-full h-40 object-cover object-center transition-transform group-hover:scale-105 ease-in-out duration-200"
+                                  />
+                                  <div className="bg-neutral-800 h-12 flex justify-center items-center text-white group-hover:bg-primary ease-in-out duration-200">
+                                      <h3 className="text-lg font-medium">
+                                          {item.name}
+                                      </h3>
+                                  </div>
+                              </Link>
+                          </div>
+                      </SwiperSlide>
+                  ))}
 
-            <IoIosArrowDropright className="absolute next-slide cursor-pointer text-neutral-800 hover:text-primary z-10 top-1/2 right-2 text-2xl  transform -translate-y-1/2 ease-in-out duration-200 hidden sm:block" />
+            <>
+                <IoIosArrowDropleft
+                    className={`absolute prev-slide cursor-pointer text-neutral-800 hover:text-primary top-1/2 z-10 left-2 text-2xl  transform -translate-y-1/2 ease-in-out duration-200 hidden sm:block ${
+                        !loadingCategories ? "" : "opacity-0"
+                    }`}
+                />
+
+                <IoIosArrowDropright
+                    className={`absolute next-slide cursor-pointer text-neutral-800 hover:text-primary z-10 top-1/2 right-2 text-2xl  transform -translate-y-1/2 ease-in-out duration-200 hidden sm:block ${
+                        !loadingCategories ? "" : "opacity-0"
+                    }`}
+                />
+            </>
         </Swiper>
     );
 };
