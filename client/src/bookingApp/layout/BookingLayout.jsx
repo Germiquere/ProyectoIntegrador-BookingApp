@@ -4,7 +4,6 @@ import { Header } from "../components/header/Header";
 import { Footer } from "../components/footer/Footer";
 import { ResponsiveCalendarAndSearch } from "../components/sectionCalendarAndSearch/ResponsiveCalendarAndSearch";
 import { CalendarAndSearchContext } from "../../context/CalendarSearchContext";
-import { IconPicker } from "../../ui/IconPicker";
 
 export const BookingLayout = () => {
     const { openCalendarAndSearch } = useContext(CalendarAndSearchContext);
