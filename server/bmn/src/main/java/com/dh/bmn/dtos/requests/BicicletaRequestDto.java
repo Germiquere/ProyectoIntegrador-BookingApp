@@ -1,6 +1,5 @@
 package com.dh.bmn.dtos.requests;
 
-import com.dh.bmn.entity.CaracteristicaBicicleta;
 import com.dh.bmn.entity.Imagen;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,8 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Validated

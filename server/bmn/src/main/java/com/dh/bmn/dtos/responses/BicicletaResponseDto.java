@@ -1,6 +1,5 @@
 package com.dh.bmn.dtos.responses;
 
-import com.dh.bmn.entity.Imagen;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
