@@ -15,7 +15,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/bike-me-now/reservas")
+@RequestMapping("/bike-me-now/api/reservas")
 public class ReservaController {
 
     private final IService<ReservaResponseDto, ReservaRequestDto> iReservaService;
@@ -29,7 +29,7 @@ public class ReservaController {
     }
 
     @GetMapping("/{id}")
-    @Secured("ADMIN")
+    @Secured({ "ADMIN", "USER" })
     public ResponseEntity<ReservaResponseDto> obtenerReservaPorId (@PathVariable Long id)  {
         return new ResponseEntity<>(iReservaService.buscarPorId(id), HttpStatus.OK);
     }
