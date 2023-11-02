@@ -16,5 +16,7 @@ public interface IService <T, E>{
     public List<T> listarTodos();
 
     public PaginatedResponse<T> obtenerPaginacion(int numeroPagina, int limit, int offset);
+
+    public T buscarPorToken(String token);
 }
 

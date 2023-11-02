@@ -56,4 +56,11 @@ public class UsuarioController {
         usuarioService.actualizar(usuarioRequestDto);
         return new ResponseEntity<>(new JsonMessageDto("Usuario actualizado exitosamente",HttpStatus.OK.value()), HttpStatus.OK);
     }
+
+    @GetMapping("/buscar-por-token")
+    @Secured({ "ADMIN", "USER" })
+    public ResponseEntity<UsuarioResponseDto> obtenerUsuarioPorToken(@RequestHeader("Authorization") String token) {
+        UsuarioResponseDto usuario = usuarioService.buscarPorToken(token);
+        return new ResponseEntity<>(usuario, HttpStatus.OK);
+    }
 }

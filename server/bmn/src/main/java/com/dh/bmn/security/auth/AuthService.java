@@ -24,7 +24,6 @@ public class AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-
     private final EmailService emailService;
 
     public AuthResponse login(LoginRequest request) {
@@ -55,9 +54,9 @@ public class AuthService {
 
         emailService.sendWelcomeEmail(request.getEmail(), request.getNombre());
 
-        return AuthResponse.builder()
-                .token(jwtService.getToken(usuario))
-                .build();
+        return AuthResponse.builder().build();
+                //.token(jwtService.getToken(usuario))
+                //.build();
     }
 
     private void normalizarNombreApellido(RegisterRequest request) {

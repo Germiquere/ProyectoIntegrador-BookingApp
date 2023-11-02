@@ -1,6 +1,8 @@
 package com.dh.bmn.security.auth;
 
+import com.dh.bmn.dtos.JsonMessageDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +20,8 @@ public class AuthController {
     }
 
     @PostMapping(value = "/registrar")
-    public ResponseEntity<AuthResponse> registrar(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authService.register(request));
+    public ResponseEntity<?> registrar(@RequestBody RegisterRequest request) {
+        authService.register(request);
+        return new ResponseEntity<>(new JsonMessageDto("Nuevo usuario registrado", HttpStatus.CREATED.value()), HttpStatus.CREATED);
     }
 }
