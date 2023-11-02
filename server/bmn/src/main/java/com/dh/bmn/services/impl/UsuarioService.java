@@ -12,7 +12,10 @@ import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
 import com.dh.bmn.pagging.PaginatedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,9 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
     private final IUsuarioRepository usuarioRepository;
 
     private PasswordEncoder passwordEncoder;
+
+    @Value("${jwt.secretKey}")
+    private String secretKey;
 
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
@@ -88,6 +94,27 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public PaginatedResponse<UsuarioResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
+        return null;
+    }
+
+    public UsuarioResponseDto buscarPorToken(String token) {
+        // Decodificar el token JWT
+        Claims claims = Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token.replace("Bearer ", ""))
+                .getBody();
+
+        // Extraer el correo electrónico del usuario desde las reclamaciones del token
+        String email = claims.getSubject();
+
+        // Buscar al usuario por correo electrónico en la base de datos
+        Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
+
+        return objectMapper.convertValue(usuario, UsuarioResponseDto.class);
+    }
+
     private void validarRol(Rol rol){
 
         if(!rol.getValor().equals("USER") && !rol.getValor().equals("ADMIN")){
@@ -106,8 +133,5 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
         usuarioRequestDto.setApellido(inicialApellido.toUpperCase() + restoApellido.toLowerCase());
 
     }
-    @Override
-    public PaginatedResponse<UsuarioResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
-        return null;
-    }
+
 }

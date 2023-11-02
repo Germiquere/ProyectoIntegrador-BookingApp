@@ -87,4 +87,10 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
     public PaginatedResponse<CategoriaBicicletaResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
         return null;
     }
+
+    //AGREGADO
+    @Override
+    public CategoriaBicicletaResponseDto buscarPorToken(String token) {
+        return null;
+    }
 }

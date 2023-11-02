@@ -146,4 +146,10 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         return new PaginatedResponse<>(bicicletasDtoList, paginationData);
     }
 
+    //AGREGADO
+    @Override
+    public BicicletaResponseDto buscarPorToken(String token) {
+        return null;
+    }
+
 }
