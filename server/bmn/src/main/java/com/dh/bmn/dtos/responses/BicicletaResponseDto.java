@@ -18,5 +18,6 @@ public class BicicletaResponseDto {
     private Integer precioAlquilerPorDia;
     private CategoriaBicicletaResponseDto categoria;
     private List<ImagenResponseDto> imagenes;
+    private List<CaracteristicaBicicletaResponseDto> caracteristicas;
 
 }

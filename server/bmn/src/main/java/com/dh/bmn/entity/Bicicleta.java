@@ -1,14 +1,14 @@
 package com.dh.bmn.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -40,4 +40,29 @@ public class Bicicleta {
     private List<Imagen> imagenes;
 
 
+    @JsonIgnore
+    @ManyToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "bicicleta_caracteristica",
+            joinColumns = @JoinColumn(name = "bicicleta_id"),
+            inverseJoinColumns = @JoinColumn(name = "id_caracteristica")
+    )
+
+    private List<CaracteristicaBicicleta> caracteristicas;
+
+
+    public void addCaracteristica(CaracteristicaBicicleta caracteristica) {
+        if (caracteristicas == null) {
+            caracteristicas = new ArrayList<>();
+        }
+        caracteristicas.add(caracteristica);
+        caracteristica.getBicicletas().add(this);
+    }
+
+    public void removeCaracteristica(CaracteristicaBicicleta caracteristica) {
+        if (caracteristicas != null) {
+            caracteristicas.remove(caracteristica);
+            caracteristica.getBicicletas().remove(this);
+        }
+    }
 }
