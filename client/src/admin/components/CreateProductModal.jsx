@@ -3,7 +3,7 @@ import { BsXLg, BsCurrencyDollar, BsCloudUpload } from "react-icons/bs";
 import { useEffect } from "react";
 import { useBikesContext } from "../../context/BikesContext";
 import { Loader } from "../../ui/Loader";
-
+import { Tooltip } from "@mui/material";
 export const CreateProductModal = () => {
     const {
         error,
@@ -206,19 +206,21 @@ export const CreateProductModal = () => {
                         <p>Agregar nuevo producto</p>
                         {loadingBikes && <Loader className={"text-white"} />}
                     </h2>
-                    <button
-                        className="flex  items-center justify-center middle none center rounded-full  h-7 w-7 font-sans text-xs font-bold uppercase  transition-all hover:bg-blackOpacity1 active:bg-tertiary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none "
-                        data-ripple-dark="true"
-                        disabled={loadingBikes}
-                        onClick={() => {
-                            setOpenNewProductModal(false);
-                            setImageChange([]);
-                            onResetForm();
-                            setError(false);
-                        }}
-                    >
-                        <BsXLg className="text-lg" />
-                    </button>
+                    <Tooltip title="Cerrar">
+                        <button
+                            className="flex  items-center justify-center middle none center rounded-full  h-10 w-10 font-sans text-xs font-bold uppercase  transition-all hover:bg-blackOpacity1 active:bg-tertiary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none "
+                            data-ripple-dark="true"
+                            disabled={loadingBikes}
+                            onClick={() => {
+                                setOpenNewProductModal(false);
+                                setImageChange([]);
+                                onResetForm();
+                                setError(false);
+                            }}
+                        >
+                            <BsXLg className="text-lg" />
+                        </button>
+                    </Tooltip>
                 </div>
                 {/* MAIN */}
                 <div className=" p-5 max-h-[450px] overflow-auto mb-16">
@@ -241,7 +243,7 @@ export const CreateProductModal = () => {
                                     <input
                                         className={` peer h-full w-full  p-2 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50`}
                                         placeholder="Text"
-                                        type="text"
+                                        type="Bicicleta de ciudad"
                                         value={nombre}
                                         name="nombre"
                                         onChange={handleInputChange}
@@ -395,7 +397,7 @@ export const CreateProductModal = () => {
                             {/* IMAGENES */}
                             <div className="relative">
                                 <p className="text-base font-semibold mb-2 text-primary">
-                                    Cargar imagenes *
+                                    Cargar imágenes *
                                 </p>
                                 <div className="grid grid-cols-4 grid-rows-1 gap-5 ">
                                     <input
@@ -406,14 +408,17 @@ export const CreateProductModal = () => {
                                         onChange={onFileInputChange}
                                         ref={fileInputRef}
                                     />
-                                    <div className=" w-16 h-16 flex items-center justify-center shadow-md rounded-xl  border-[1px] border-gray-100">
-                                        <BsCloudUpload
-                                            className="text-xl text-gray-400 cursor-pointer"
-                                            onClick={() =>
-                                                fileInputRef.current.click()
-                                            }
-                                        />
-                                    </div>
+                                    <Tooltip title="Cargar imágenes">
+                                        <div className=" w-16 h-16 flex items-center justify-center shadow-md rounded-xl  border-[1px] border-gray-100">
+                                            <BsCloudUpload
+                                                className="text-xl text-gray-400 cursor-pointer"
+                                                onClick={() =>
+                                                    fileInputRef.current.click()
+                                                }
+                                            />
+                                        </div>
+                                    </Tooltip>
+
                                     {/* MAPEAR ESTE POR CADA IMAGEN SELECCIONADA */}
                                     {imageChange &&
                                         imageChange.map((image) => (

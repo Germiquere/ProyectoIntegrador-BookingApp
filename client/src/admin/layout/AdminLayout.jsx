@@ -2,8 +2,12 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Section from "../../bookingApp/components/Section";
 import { TopBar } from "../components/TopBar";
+import { useCategoriesContext } from "../../context/CategoriesContext";
+import { Manage } from "../components/manage/Manage";
 
 export const AdminLayout = () => {
+    const { openManageCategories, setOpenManageCategories } =
+        useCategoriesContext();
     return (
         <Section>
             <div className="max-w-[1200px] mx-auto lg:flex flex-col mt-3 gap-3 hidden">
@@ -20,6 +24,7 @@ export const AdminLayout = () => {
                     alt="imagen de no disponible"
                 />
             </div>
+            {openManageCategories && <Manage />}
         </Section>
     );
 };

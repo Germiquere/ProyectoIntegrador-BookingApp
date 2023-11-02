@@ -13,6 +13,7 @@ export default {
                 grayTertiary: "#343434",
                 blackOpacity1: "rgba(0, 0, 0, 0.1)",
                 blackOpacity5: "rgba(0, 0, 0, 0.5)",
+                blackOpacity6: "rgba(0, 0, 0, 0.6)",
             },
 
             keyframes: {

@@ -12,6 +12,7 @@ export const CategoriesProvider = ({ children }) => {
     const [categoriesData, setCategoriesData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [openManageCategories, setOpenManageCategories] = useState(false);
     // FUNCION PARA HACER  EL GET
     const fetchData = async () => {
         // MANEJO EL ESTADO  DEL LOADING EN TRUE
@@ -97,9 +98,11 @@ export const CategoriesProvider = ({ children }) => {
                 categoriesData,
                 loading,
                 error,
+                openManageCategories,
                 //METODOS
                 addNewCategory,
                 deleteACategory,
+                setOpenManageCategories,
             }}
         >
             {children}

@@ -5,6 +5,7 @@ import { Loader } from "../../ui/Loader";
 import { useBikesContext } from "../../context/BikesContext";
 import { deleteImage } from "../../api/images";
 import { ConfirmDelete } from "./ConfirmDelete";
+import { Tooltip } from "@mui/material";
 
 export const EditProductModal = () => {
     const {
@@ -222,18 +223,20 @@ export const EditProductModal = () => {
                         <p>Editar producto</p>
                         {loadingBikes && <Loader className={"text-white"} />}
                     </h2>
-                    <button
-                        className="flex  items-center justify-center middle none center rounded-full  h-7 w-7 font-sans text-xs font-bold uppercase  transition-all hover:bg-blackOpacity1 active:bg-tertiary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none "
-                        data-ripple-dark="true"
-                        disabled={loadingBikes}
-                        onClick={() => {
-                            setOpenEditProductModal(false);
-                            setImageChange([]);
-                            onResetForm();
-                        }}
-                    >
-                        <BsXLg className="text-lg" />
-                    </button>
+                    <Tooltip title="Cerrar">
+                        <button
+                            className="flex  items-center justify-center middle none center rounded-full  h-10 w-10 font-sans text-xs font-bold uppercase  transition-all hover:bg-blackOpacity1 active:bg-tertiary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none "
+                            data-ripple-dark="true"
+                            disabled={loadingBikes}
+                            onClick={() => {
+                                setOpenEditProductModal(false);
+                                setImageChange([]);
+                                onResetForm();
+                            }}
+                        >
+                            <BsXLg className="text-lg" />
+                        </button>
+                    </Tooltip>
                 </div>
                 {/* MAIN */}
                 <div className=" p-5 max-h-[450px] overflow-auto mb-16">
@@ -392,7 +395,7 @@ export const EditProductModal = () => {
                             {/* IMAGENES */}
                             <div className="relative">
                                 <p className="text-base font-semibold mb-2 text-primary">
-                                    Cargar imagenes *
+                                    Cargar imágenes *
                                 </p>
                                 <div className="grid grid-cols-4 grid-rows-1 gap-5 ">
                                     <input
@@ -403,14 +406,17 @@ export const EditProductModal = () => {
                                         onChange={onFileInputChange}
                                         ref={fileInputRef}
                                     />
-                                    <div className=" w-16 h-16 flex items-center justify-center shadow-md rounded-xl  border-[1px] border-gray-100">
-                                        <BsCloudUpload
-                                            className="text-xl text-gray-400 cursor-pointer"
-                                            onClick={() =>
-                                                fileInputRef.current.click()
-                                            }
-                                        />
-                                    </div>
+                                    <Tooltip title="Cargar imágenes">
+                                        <div className=" w-16 h-16 flex items-center justify-center shadow-md rounded-xl  border-[1px] border-gray-100">
+                                            <BsCloudUpload
+                                                className="text-xl text-gray-400 cursor-pointer"
+                                                onClick={() =>
+                                                    fileInputRef.current.click()
+                                                }
+                                            />
+                                        </div>
+                                    </Tooltip>
+
                                     {/* MAPEAR ESTE POR CADA IMAGEN SELECCIONADA */}
                                     {imageChange &&
                                         imageChange.map((image) => (
