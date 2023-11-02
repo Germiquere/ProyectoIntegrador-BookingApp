@@ -3,12 +3,15 @@ package com.dh.bmn.services.impl;
 import com.dh.bmn.dtos.requests.BicicletaRequestDto;
 
 import com.dh.bmn.dtos.responses.BicicletaResponseDto;
+import com.dh.bmn.entity.CaracteristicaBicicleta;
 import com.dh.bmn.entity.Imagen;
 import com.dh.bmn.entity.Bicicleta;
 import com.dh.bmn.exceptions.RequestValidationException;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IBicicletaRepository;
+import com.dh.bmn.repositories.ICaracteristicaBicicletaRepository;
+import com.dh.bmn.services.ICaracteristicaBicicletaService;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
 import com.dh.bmn.pagging.PaginatedResponse;
@@ -18,26 +21,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class BicicletaService implements IService<BicicletaResponseDto, BicicletaRequestDto> {
+public class BicicletaService implements IService<BicicletaResponseDto, BicicletaRequestDto>, ICaracteristicaBicicletaService {
 
 
     private final IBicicletaRepository bicicletaRepository;
 
     private final S3Service s3Service;
 
+    private final ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository;
+
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
 
     @Autowired
-    public BicicletaService(IBicicletaRepository bicicletaRepository, S3Service s3Service) {
+    public BicicletaService(IBicicletaRepository bicicletaRepository, S3Service s3Service, ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository) {
         this.bicicletaRepository = bicicletaRepository;
         this.s3Service = s3Service;
+        this.caracteristicaBicicletaRepository = caracteristicaBicicletaRepository;
     }
 
     @Override
@@ -55,6 +62,7 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         }
     }
 
+    @Transactional
     @Override
     public BicicletaResponseDto buscarPorId(Long id) {
         Bicicleta bicicleta = bicicletaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La bicicleta no existe", HttpStatus.NOT_FOUND.value()));
@@ -144,6 +152,28 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         paginationData.setLimit(bicicletas.getPageable().getPageSize());
 
         return new PaginatedResponse<>(bicicletasDtoList, paginationData);
+    }
+
+    public void agregarCaracteristicaABicicleta(Long bicicletaId, Long caracteristicaId) {
+        Bicicleta bicicleta = bicicletaRepository.findById(bicicletaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bicicleta no encontrada con ID: " + bicicletaId, HttpStatus.NOT_FOUND.value()));
+
+        CaracteristicaBicicleta caracteristica = caracteristicaBicicletaRepository.findById(caracteristicaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Característica no encontrada con ID: " + caracteristicaId, HttpStatus.NOT_FOUND.value()));
+
+        bicicleta.addCaracteristica(caracteristica);
+        bicicletaRepository.save(bicicleta);
+    }
+
+    public void quitarCaracteristicaDeBicicleta(Long bicicletaId, Long caracteristicaId) {
+        Bicicleta bicicleta = bicicletaRepository.findById(bicicletaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bicicleta no encontrada con ID: " + bicicletaId, HttpStatus.NOT_FOUND.value()));
+
+        CaracteristicaBicicleta caracteristica = caracteristicaBicicletaRepository.findById(caracteristicaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Característica no encontrada con ID: " + caracteristicaId, HttpStatus.NOT_FOUND.value()));
+
+        bicicleta.removeCaracteristica(caracteristica);
+        bicicletaRepository.save(bicicleta);
     }
 
 }

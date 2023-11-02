@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/bike-me-now")
 public class CategoriaBicicletaController {
 
-    private final IService<CategoriaBicicletaResponseDto, CategoriaBicicletaRequestDto> categoriaBicicletaService;;
+    private final IService<CategoriaBicicletaResponseDto, CategoriaBicicletaRequestDto> categoriaBicicletaService;
 
     @Autowired
     public CategoriaBicicletaController(IService<CategoriaBicicletaResponseDto, CategoriaBicicletaRequestDto> categoriaBicicletaService) {
