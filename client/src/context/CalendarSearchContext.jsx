@@ -1,9 +1,19 @@
-import { useState, useEffect, createContext } from "react";
-
+import { useState, useEffect, createContext, useContext } from "react";
+import { useForm } from "../hooks/useForm";
+const formData = {
+    search: "",
+    startDate: "",
+    endDate: "",
+};
 export const CalendarAndSearchContext = createContext();
-
+export const useCalendarAndSearchContext = () => {
+    return useContext(CalendarAndSearchContext);
+};
 export function CalendarAndSearchProvider({ children }) {
     const [openCalendarAndSearch, setOpenCalendarAndSearch] = useState(false);
+    const { onInputChange, formState, setFormState, onResetForm } =
+        useForm(formData);
+    console.log(formState);
     const handleOpenCalendarAndSearch = () => {
         setOpenCalendarAndSearch(!openCalendarAndSearch);
     };
@@ -11,7 +21,13 @@ export function CalendarAndSearchProvider({ children }) {
     return (
         <CalendarAndSearchContext.Provider
             value={{
+                // PROPIEDADES
+                formState,
                 openCalendarAndSearch,
+                // METODOS
+                onInputChange,
+                onResetForm,
+                setFormState,
                 setOpenCalendarAndSearch,
                 handleOpenCalendarAndSearch,
             }}

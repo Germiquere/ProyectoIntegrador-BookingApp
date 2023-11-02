@@ -4,14 +4,14 @@ import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRange } from "react-date-range";
 import { es } from "date-fns/locale";
-import "./rangeCalendar.css";
+import "../sectionCalendarAndSearch/Calendar/rangeCalendar.css";
 import { compareAsc, format, startOfDay } from "date-fns";
-import { CalendarAndSearchContext } from "../../../../context/CalendarSearchContext";
-export const Calendar = () => {
+import { CalendarAndSearchContext } from "../../../context/CalendarSearchContext";
+export const CalendarDescription = () => {
     const { onInputChange, formState, setFormState } = useContext(
         CalendarAndSearchContext
     );
-    const [hasSelected, setHasSelected] = useState(false);
+
     const [state, setState] = useState([
         {
             startDate: new Date(),
@@ -19,7 +19,7 @@ export const Calendar = () => {
             key: "selection",
         },
     ]);
-
+    const [hasSelected, setHasSelected] = useState(false);
     const [open, setOpen] = useState(false);
     const calendarRef = useRef(null);
 
@@ -71,7 +71,6 @@ export const Calendar = () => {
                 calendarRef.current &&
                 !calendarRef.current.contains(event.target)
             ) {
-                // de esta forma consigo recetear la funcion hasselected cuando clickeo afuera y tambien los valores del start y end para evitar errores con los datos
                 setOpen(false);
                 setFormState({
                     ...formState,
@@ -91,17 +90,17 @@ export const Calendar = () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [open]);
+
     return (
         <div className="flex-col ">
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-0">
-                <div className="relative h-11 w-full  sm:min-w-[150px] ">
-                    {/* input stardate */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-0 relative">
+                <div className=" h-11 w-full   ">
                     <input
-                        className="sm:border-r-[1px]  sm:border-gray-100 rounded-full sm:rounded-none peer h-full w-full flex-1  p-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50 cursor-pointer"
+                        className="border-[1px] lg:border-r-[1px]  border-gray-100 rounded-l-full  peer h-full w-full flex-1  p-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50 cursor-pointer"
                         placeholder="Desde"
+                        readOnly
                         type="text"
                         onClick={handleOpen}
-                        readOnly
                         name="startDate"
                         value={formState.startDate}
                     />
@@ -110,28 +109,10 @@ export const Calendar = () => {
                         className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-400"
                         onClick={handleOpen}
                     /> */}
-                    {open && (
-                        <div ref={calendarRef}>
-                            <DateRange
-                                editableDateInputs={true}
-                                onChange={handleSelect}
-                                moveRangeOnFirstSelection={false}
-                                ranges={state}
-                                months={1}
-                                showDateDisplay={false}
-                                minDate={new Date()}
-                                rangeColors={["#0274AE"]}
-                                locale={es}
-                                direction="horizontal"
-                                className="absolute z-50 left-1/2 transform -translate-x-1/2 max-w-[250px] sm:max-w-none bottom-0 sm:bottom-auto"
-                            />
-                        </div>
-                    )}
                 </div>
-                <div className=" h-11 w-full  sm:min-w-[150px] ">
+                <div className=" h-11 w-full   ">
                     <input
-                        // input enddate
-                        className="rounded-full sm:rounded-none peer h-full w-full flex-1  p-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50 cursor-pointer"
+                        className="border-[1px] border-l-[0px] border-gray-100 rounded-r-full peer h-full w-full flex-1  p-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50 cursor-pointer"
                         placeholder="Hasta"
                         readOnly
                         type="text"
@@ -140,6 +121,23 @@ export const Calendar = () => {
                         value={formState.endDate}
                     />
                 </div>
+                {open && (
+                    <div ref={calendarRef}>
+                        <DateRange
+                            editableDateInputs={true}
+                            onChange={handleSelect}
+                            moveRangeOnFirstSelection={false}
+                            ranges={state}
+                            months={1}
+                            showDateDisplay={false}
+                            minDate={new Date()}
+                            rangeColors={["#0274AE"]}
+                            locale={es}
+                            direction="horizontal"
+                            className="absolute z-50 left-1/2 transform -translate-x-1/2 max-w-[250px] sm:max-w-none bottom-0 "
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );
