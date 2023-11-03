@@ -8,6 +8,7 @@ import com.dh.bmn.repositories.IUsuarioRepository;
 import com.dh.bmn.security.jwt.JwtService;
 import com.dh.bmn.security.user.Rol;
 import com.dh.bmn.services.impl.EmailService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,7 +36,7 @@ public class AuthService {
                 .build();
     }
 
-    public AuthResponse register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request) throws MessagingException {
         Usuario usuario = Usuario.builder()
                 .nombre(request.getNombre())
                 .apellido(request.getApellido())

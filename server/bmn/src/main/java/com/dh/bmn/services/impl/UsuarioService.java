@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,7 +33,6 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
     private PasswordEncoder passwordEncoder;
 
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
-
 
     @Override
     public void actualizar(UsuarioRequestDto usuarioRequestDto){

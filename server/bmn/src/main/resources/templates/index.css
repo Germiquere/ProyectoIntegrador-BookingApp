@@ -1,0 +1,36 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Nunito Sans", sans-serif;
+}
+body {
+    display: flex;
+    justify-content: center;
+}
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    max-width: 500px;
+    text-align: center;
+}
+.img-div {
+    width: 200px;
+}
+.img-div img {
+    width: 100%;
+}
+.login-button {
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    color: white;
+    background-color: #0274ae;
+    cursor: pointer;
+}
+a {
+    text-decoration: none;
+}
