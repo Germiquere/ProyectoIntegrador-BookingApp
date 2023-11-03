@@ -1,6 +1,5 @@
 package com.dh.bmn.dtos.requests;
 
-import com.dh.bmn.entity.Imagen;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

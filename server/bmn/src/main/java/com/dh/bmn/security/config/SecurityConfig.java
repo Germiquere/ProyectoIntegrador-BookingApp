@@ -11,6 +11,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.http.HttpMethod;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -25,10 +29,20 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authRequest ->        //filtro de rutas privadas y protegidas
+                .cors(cors -> cors
+                        .configurationSource(request -> {
+                            CorsConfiguration config = new CorsConfiguration();
+                            config.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5173"));
+                            config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // Especifica los métodos permitidos
+                            config.setAllowedHeaders(Arrays.asList("*")); // Especifica los encabezados permitidos
+                            config.setAllowCredentials(true);
+                            return config;
+                        })
+                )
+                .authorizeHttpRequests(authRequest ->
                         authRequest
-                                .requestMatchers("/auth/login", "/auth/registro").permitAll()
-                                .requestMatchers("/bike-me-now/**").authenticated()
+//                                .requestMatchers("/auth/**,").permitAll()
+                                .requestMatchers("/bike-me-now/api/**").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .sessionManagement(sessionManager ->

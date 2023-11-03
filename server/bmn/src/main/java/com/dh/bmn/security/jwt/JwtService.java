@@ -16,12 +16,22 @@ import java.security.Key;
 import java.util.*;
 import java.util.function.Function;
 
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Service
 public class JwtService {
 
     //private static final String SECRET_KEY="586E3272357538782F413F4428472B4B6250655368566B597033733676397924";
+
+
+    public JwtService(String secretKey, int tokenExpirationSeconds) {
+        this.secretKey = secretKey;
+        this.tokenExpirationSeconds = tokenExpirationSeconds;
+    }
+
+    public JwtService() {
+    }
 
     @Value("${jwt.secretKey}")
     private String secretKey;

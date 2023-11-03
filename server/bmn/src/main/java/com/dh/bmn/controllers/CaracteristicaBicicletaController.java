@@ -2,7 +2,6 @@ package com.dh.bmn.controllers;
 
 import com.dh.bmn.dtos.JsonMessageDto;
 import com.dh.bmn.dtos.requests.CaracteristicaBicicletaRequestDto;
-import com.dh.bmn.dtos.requests.CategoriaBicicletaRequestDto;
 import com.dh.bmn.dtos.responses.CaracteristicaBicicletaResponseDto;
 import com.dh.bmn.services.IService;
 import jakarta.validation.Valid;
@@ -49,7 +48,7 @@ public class CaracteristicaBicicletaController {
 
     @GetMapping
     @Secured({ "ADMIN", "USER" })
-    public ResponseEntity<List<CaracteristicaBicicletaResponseDto>> listaDeCaracteristica(){
+    public ResponseEntity<List<CaracteristicaBicicletaResponseDto>> listaDeCaracteristicas(){
         return new ResponseEntity<>(caracteristicaBicicletaService.listarTodos(), HttpStatus.OK);
     }
 
