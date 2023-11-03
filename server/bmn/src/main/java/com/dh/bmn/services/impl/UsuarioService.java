@@ -32,13 +32,14 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
 
 
     @Override
-    public void actualizar(UsuarioRequestDto usuarioRequestDto){
+    public void actualizar(UsuarioRequestDto usuarioRequestDto) {
 
         Usuario usuarioDB = usuarioRepository.findById(usuarioRequestDto.getUsuarioId()).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
 
         if (usuarioDB != null) {
             normalizarNombreApellido(usuarioRequestDto);
             usuarioDB = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
+
 
             String nuevaPassword = usuarioRequestDto.getPassword();
             if (nuevaPassword != null && !nuevaPassword.isEmpty()) {
@@ -50,64 +51,65 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
         }
     }
 
-    @Override
-    public UsuarioResponseDto buscarPorId(Long id) {
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
-        return objectMapper.convertValue(usuario, UsuarioResponseDto.class);
-    }
-
-    @Override
-    public void crear(UsuarioRequestDto usuarioRequestDto) {
-        normalizarNombreApellido(usuarioRequestDto);
-
-        if (usuarioRepository.findByEmail(usuarioRequestDto.getEmail()).isPresent()) {
-            throw new ResourceAlreadyExistsException("El usuario ya existe", HttpStatus.CONFLICT.value());
+        @Override
+        public UsuarioResponseDto buscarPorId (Long id){
+            Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
+            return objectMapper.convertValue(usuario, UsuarioResponseDto.class);
         }
 
-        validarRol(usuarioRequestDto.getRol());
-        Usuario usuario = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
-        String passwordEncriptada = passwordEncoder.encode(usuarioRequestDto.getPassword());
-        usuario.setPassword(passwordEncriptada);
+        @Override
+        public void crear (UsuarioRequestDto usuarioRequestDto){
+            normalizarNombreApellido(usuarioRequestDto);
 
-        usuarioRepository.save(usuario);
-    }
+            if (usuarioRepository.findByEmail(usuarioRequestDto.getEmail()).isPresent()) {
+                throw new ResourceAlreadyExistsException("El usuario ya existe", HttpStatus.CONFLICT.value());
+            }
 
-    @Override
-    public void borrarPorId(Long id){
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
-        usuarioRepository.delete(usuario);
-    }
+            validarRol(usuarioRequestDto.getRol());
+            Usuario usuario = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
+            String passwordEncriptada = passwordEncoder.encode(usuarioRequestDto.getPassword());
+            usuario.setPassword(passwordEncriptada);
 
-    @Override
-    public List<UsuarioResponseDto> listarTodos(){
-        List<Usuario> listaUsuarios = Optional.of(usuarioRepository.findAll()).orElseThrow(() -> new ResourceNotFoundException("No se encontraron usuarios", HttpStatus.NOT_FOUND.value()));
+            usuarioRepository.save(usuario);
+        }
 
-        return listaUsuarios
-                .stream()
-                .map(usuario -> objectMapper.convertValue(usuario, UsuarioResponseDto.class))
-                .collect(Collectors.toList());
-    }
+        @Override
+        public void borrarPorId (Long id){
+            Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
+            usuarioRepository.delete(usuario);
+        }
 
-    private void validarRol(Rol rol){
+        @Override
+        public List<UsuarioResponseDto> listarTodos () {
+            List<Usuario> listaUsuarios = Optional.of(usuarioRepository.findAll()).orElseThrow(() -> new ResourceNotFoundException("No se encontraron usuarios", HttpStatus.NOT_FOUND.value()));
 
-        if(!rol.getValor().equals("USER") && !rol.getValor().equals("ADMIN")){
-            throw new RequestValidationException("El rol especificado no existe", HttpStatus.BAD_REQUEST.value());
+            return listaUsuarios
+                    .stream()
+                    .map(usuario -> objectMapper.convertValue(usuario, UsuarioResponseDto.class))
+                    .collect(Collectors.toList());
+        }
+
+        private void validarRol (Rol rol){
+
+            if (!rol.getValor().equals("USER") && !rol.getValor().equals("ADMIN")) {
+                throw new RequestValidationException("El rol especificado no existe", HttpStatus.BAD_REQUEST.value());
+            }
+        }
+
+        private void normalizarNombreApellido (UsuarioRequestDto usuarioRequestDto){
+
+            String inicialNombre = usuarioRequestDto.getNombre().substring(0, 1);
+            String restoNombre = usuarioRequestDto.getNombre().substring(1);
+            usuarioRequestDto.setNombre(inicialNombre.toUpperCase() + restoNombre.toLowerCase());
+
+            String inicialApellido = usuarioRequestDto.getApellido().substring(0, 1);
+            String restoApellido = usuarioRequestDto.getApellido().substring(1);
+            usuarioRequestDto.setApellido(inicialApellido.toUpperCase() + restoApellido.toLowerCase());
+
+        }
+
+        @Override
+        public PaginatedResponse<UsuarioResponseDto> obtenerPaginacion ( int numeroPagina, int limit, int offset){
+            return null;
         }
     }
-
-    private void normalizarNombreApellido(UsuarioRequestDto usuarioRequestDto) {
-
-        String inicialNombre = usuarioRequestDto.getNombre().substring(0, 1);
-        String restoNombre = usuarioRequestDto.getNombre().substring(1);
-        usuarioRequestDto.setNombre(inicialNombre.toUpperCase() + restoNombre.toLowerCase());
-
-        String inicialApellido = usuarioRequestDto.getApellido().substring(0, 1);
-        String restoApellido = usuarioRequestDto.getApellido().substring(1);
-        usuarioRequestDto.setApellido(inicialApellido.toUpperCase() + restoApellido.toLowerCase());
-
-    }
-    @Override
-    public PaginatedResponse<UsuarioResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
-        return null;
-    }
-}

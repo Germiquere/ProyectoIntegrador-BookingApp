@@ -1,10 +1,9 @@
 package com.dh.bmn.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "bicicletas")
-public class Bicicleta {
+public class Bicicleta implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,8 +39,9 @@ public class Bicicleta {
     private List<Imagen> imagenes;
 
 
-    @JsonIgnore
-    @ManyToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+    //@JsonIgnore
+    @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "bicicleta_caracteristica",
             joinColumns = @JoinColumn(name = "bicicleta_id"),
