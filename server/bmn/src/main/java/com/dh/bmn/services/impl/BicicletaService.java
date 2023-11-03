@@ -2,8 +2,10 @@ package com.dh.bmn.services.impl;
 
 import com.dh.bmn.dtos.requests.BicicletaRequestDto;
 
+import com.dh.bmn.dtos.requests.CategoriaBicicletaRequestDto;
 import com.dh.bmn.dtos.responses.BicicletaResponseDto;
 import com.dh.bmn.entity.CaracteristicaBicicleta;
+import com.dh.bmn.entity.CategoriaBicicleta;
 import com.dh.bmn.entity.Imagen;
 import com.dh.bmn.entity.Bicicleta;
 import com.dh.bmn.exceptions.RequestValidationException;
@@ -11,6 +13,7 @@ import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IBicicletaRepository;
 import com.dh.bmn.repositories.ICaracteristicaBicicletaRepository;
+import com.dh.bmn.repositories.ICategoriaBicicletaRepository;
 import com.dh.bmn.services.ICaracteristicaBicicletaService;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
@@ -23,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,14 +41,17 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
     private final ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository;
 
+    private final ICategoriaBicicletaRepository categoriaBicicletaRepository;
+
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
 
     @Autowired
-    public BicicletaService(IBicicletaRepository bicicletaRepository, S3Service s3Service, ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository) {
+    public BicicletaService(IBicicletaRepository bicicletaRepository, S3Service s3Service, ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository, ICategoriaBicicletaRepository categoriaBicicletaRepository) {
         this.bicicletaRepository = bicicletaRepository;
         this.s3Service = s3Service;
         this.caracteristicaBicicletaRepository = caracteristicaBicicletaRepository;
+        this.categoriaBicicletaRepository = categoriaBicicletaRepository;
     }
 
     @Override
@@ -55,6 +62,8 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
             normalizarNombreDescripcion(bicicletaRequestDto);
             bicicletaDB = objectMapper.convertValue(bicicletaRequestDto, Bicicleta.class);
+
+            guardarCategoriasBicicleta(bicicletaRequestDto, bicicletaDB);
 
             validarListaImagenesVacia(bicicletaRequestDto);
             validarYguardarImagenesBicicleta(bicicletaRequestDto, bicicletaDB);
@@ -79,6 +88,8 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         }
 
         Bicicleta bicicleta = objectMapper.convertValue(bicicletaRequestDto, Bicicleta.class);
+
+        guardarCategoriasBicicleta(bicicletaRequestDto, bicicleta);
 
         validarListaImagenesVacia(bicicletaRequestDto);
 
@@ -111,6 +122,19 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         }
 
         bicicleta.setImagenes(bicicletaRequestDto.getImagenes());
+    }
+
+    private void guardarCategoriasBicicleta(BicicletaRequestDto bicicletaRequestDto, Bicicleta bicicleta) {
+
+        List<CategoriaBicicleta> categorias = new ArrayList<>();
+        for (CategoriaBicicletaRequestDto categoriaBicicletaRequestDto : bicicletaRequestDto.getCategorias()) {
+            Optional<CategoriaBicicleta> categoriaOptional = categoriaBicicletaRepository.findById(categoriaBicicletaRequestDto.getCategoriaId());
+            CategoriaBicicleta categoria = categoriaOptional.orElseThrow(() -> new ResourceNotFoundException("La categoria con ID " + categoriaBicicletaRequestDto.getCategoriaId() + " no existe", HttpStatus.NOT_FOUND.value()));
+
+            categorias.add(categoria);
+        }
+
+        bicicleta.setCategorias(categorias);
     }
 
     private void validarListaImagenesVacia(BicicletaRequestDto bicicletaRequestDto) {

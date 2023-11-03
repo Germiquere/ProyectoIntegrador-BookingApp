@@ -1,14 +1,15 @@
 package com.dh.bmn.security.jwt;
 
 import com.dh.bmn.entity.Usuario;
+import com.dh.bmn.exceptions.TokenExpiredException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +17,16 @@ import java.security.Key;
 import java.util.*;
 import java.util.function.Function;
 
-
-@NoArgsConstructor
-@AllArgsConstructor
 @Service
 public class JwtService {
 
     //private static final String SECRET_KEY="586E3272357538782F413F4428472B4B6250655368566B597033733676397924";
 
+    @Value("${jwt.secretKey}")
+    private String secretKey;
+
+    @Value("${jwt.tokenExpirationSeconds}")
+    private int tokenExpirationSeconds;
 
     public JwtService(String secretKey, int tokenExpirationSeconds) {
         this.secretKey = secretKey;
@@ -32,12 +35,6 @@ public class JwtService {
 
     public JwtService() {
     }
-
-    @Value("${jwt.secretKey}")
-    private String secretKey;
-
-    @Value("${jwt.tokenExpirationSeconds}")
-    private int tokenExpirationSeconds;
 
     public String getToken(UserDetails usuario) {
         List<String> roles = getRolesFromUser(usuario);
@@ -84,12 +81,16 @@ public class JwtService {
     }
 
     private Claims getAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            return Jwts
+                    .parserBuilder()
+                    .setSigningKey(getKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        }catch (ExpiredJwtException e) {
+            throw new TokenExpiredException("El token ha expirado", HttpStatus.FORBIDDEN.value());
+        }
     }
 
     public <T> T getClaim(String token, Function<Claims, T> claimsResolver) {

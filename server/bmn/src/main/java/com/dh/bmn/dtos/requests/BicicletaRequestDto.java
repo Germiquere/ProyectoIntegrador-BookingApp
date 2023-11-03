@@ -32,7 +32,7 @@ public class BicicletaRequestDto {
     @Positive(message = "El precio debe ser mayor a 0")
     private Integer precioAlquilerPorDia;
 
-    private CategoriaBicicletaRequestDto categoria;
+    private List<CategoriaBicicletaRequestDto> categorias;
 
     @NotNull(message = "Las imagenes no pueden ser nulas")
     private List<Imagen> imagenes;

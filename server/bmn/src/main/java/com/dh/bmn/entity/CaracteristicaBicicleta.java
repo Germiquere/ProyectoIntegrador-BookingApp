@@ -33,4 +33,9 @@ public class CaracteristicaBicicleta {
 
     private List<Bicicleta> bicicletas;
 
+    public CaracteristicaBicicleta(Long caracteristicaId, String nombre, String icono) {
+        this.caracteristicaId = caracteristicaId;
+        this.nombre = nombre;
+        this.icono = icono;
+    }
 }

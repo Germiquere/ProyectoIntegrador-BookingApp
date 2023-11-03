@@ -15,7 +15,7 @@ public class BicicletaResponseDto {
     private String nombre;
     private String descripcion;
     private Integer precioAlquilerPorDia;
-    private CategoriaBicicletaResponseDto categoria;
+    private List<CategoriaBicicletaResponseDto> categorias;
     private List<ImagenResponseDto> imagenes;
     private List<CaracteristicaBicicletaResponseDto> caracteristicas;
 

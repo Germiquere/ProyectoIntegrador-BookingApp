@@ -1,6 +1,7 @@
 package com.dh.bmn.exceptions;
 
 import com.dh.bmn.dtos.JsonMessageDto;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,20 @@ public class HandlerException {
         ex.printStackTrace();
         logger.error(ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(HandlerException.getError(ex.getMessage(), ex.getStatusCode()));
+    }
+
+//    @ExceptionHandler(ExpiredJwtException.class)
+//    public ResponseEntity<?> expiredJwtException(ExpiredJwtException ex){
+//        ex.printStackTrace();
+//        logger.error(ex.getMessage());
+//        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El token ha expirado");
+//    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<?> tokenExpiredException(TokenExpiredException ex){
+        ex.printStackTrace();
+        logger.error(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(HandlerException.getError(ex.getMessage(), ex.getStatusCode()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

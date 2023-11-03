@@ -31,7 +31,7 @@ public class CategoriaBicicleta {
     private Imagen imagen;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "categorias")
     private List<Bicicleta> bicicletas;
 
     public CategoriaBicicleta(Long categoriaId, String nombre, String descripcion, Imagen imagen) {
