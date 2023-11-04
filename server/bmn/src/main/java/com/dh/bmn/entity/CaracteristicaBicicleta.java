@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -16,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "caracteristicas_bicicletas")
 
-public class CaracteristicaBicicleta {
+public class CaracteristicaBicicleta implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_caracteristica")
@@ -28,8 +29,9 @@ public class CaracteristicaBicicleta {
     @Column
     private String icono;
 
+
     @JsonIgnore
-    @ManyToMany(mappedBy = "caracteristicas", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "caracteristicas", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 
     private List<Bicicleta> bicicletas;
 
