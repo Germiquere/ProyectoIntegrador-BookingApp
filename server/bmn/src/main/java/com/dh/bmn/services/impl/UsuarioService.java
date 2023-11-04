@@ -9,6 +9,7 @@ import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IUsuarioRepository;
 import com.dh.bmn.security.user.Rol;
 import com.dh.bmn.services.IService;
+import com.dh.bmn.services.IUsuarioService;
 import com.dh.bmn.util.MapperClass;
 import com.dh.bmn.pagging.PaginatedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
-public class UsuarioService implements IService<UsuarioResponseDto, UsuarioRequestDto> {
+public class UsuarioService implements IService<UsuarioResponseDto, UsuarioRequestDto>, IUsuarioService<UsuarioResponseDto> {
 
     private final IUsuarioRepository usuarioRepository;
 
@@ -115,7 +116,7 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
         public PaginatedResponse<UsuarioResponseDto> obtenerPaginacion ( int numeroPagina, int limit, int offset){
             return null;
         }
-    }
+
 
     @Override
     public UsuarioResponseDto buscarPorToken(String token) {

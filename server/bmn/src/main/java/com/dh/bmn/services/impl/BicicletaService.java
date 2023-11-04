@@ -1,7 +1,7 @@
 package com.dh.bmn.services.impl;
 
 import com.dh.bmn.dtos.requests.BicicletaRequestDto;
-
+import com.dh.bmn.dtos.requests.CaracteristicaBicicletaRequestDto;
 import com.dh.bmn.dtos.requests.CategoriaBicicletaRequestDto;
 import com.dh.bmn.dtos.responses.BicicletaResponseDto;
 import com.dh.bmn.entity.CaracteristicaBicicleta;
@@ -25,7 +25,6 @@ import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +61,7 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
             bicicletaDB = objectMapper.convertValue(bicicletaRequestDto, Bicicleta.class);
 
             guardarCategoriasBicicleta(bicicletaRequestDto, bicicletaDB);
-
+            guardarCaracteriticasBicicleta(bicicletaRequestDto, bicicletaDB);
             validarListaImagenesVacia(bicicletaRequestDto);
             validarYguardarImagenesBicicleta(bicicletaRequestDto, bicicletaDB);
             bicicletaRepository.save(bicicletaDB);
@@ -88,9 +87,8 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         Bicicleta bicicleta = objectMapper.convertValue(bicicletaRequestDto, Bicicleta.class);
 
         guardarCategoriasBicicleta(bicicletaRequestDto, bicicleta);
-
+        guardarCaracteriticasBicicleta(bicicletaRequestDto, bicicleta);
         validarListaImagenesVacia(bicicletaRequestDto);
-
         validarYguardarImagenesBicicleta(bicicletaRequestDto, bicicleta);
         bicicletaRepository.save(bicicleta);
     }
@@ -109,11 +107,6 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
                 .stream()
                 .map(bicicleta -> objectMapper.convertValue(bicicleta, BicicletaResponseDto.class))
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public BicicletaResponseDto buscarPorToken(String token) {
-        return null;
     }
 
     private void validarYguardarImagenesBicicleta(BicicletaRequestDto bicicletaRequestDto, Bicicleta bicicleta) {
@@ -138,6 +131,19 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         }
 
         bicicleta.setCategorias(categorias);
+    }
+
+    private void guardarCaracteriticasBicicleta(BicicletaRequestDto bicicletaRequestDto, Bicicleta bicicleta) {
+
+        List<CaracteristicaBicicleta> caracteristicas = new ArrayList<>();
+        for (CaracteristicaBicicletaRequestDto caracteristicaBicicletaRequestDto : bicicletaRequestDto.getCaracteristicas()) {
+            Optional<CaracteristicaBicicleta> caracteristicaOptional = caracteristicaBicicletaRepository.findById(caracteristicaBicicletaRequestDto.getCaracteristicaId());
+            CaracteristicaBicicleta caracteristica = caracteristicaOptional.orElseThrow(() -> new ResourceNotFoundException("La caracteristica con ID " + caracteristicaBicicletaRequestDto.getCaracteristicaId() + " no existe", HttpStatus.NOT_FOUND.value()));
+
+            caracteristicas.add(caracteristica);
+        }
+
+        bicicleta.setCaracteristicas(caracteristicas);
     }
 
     private void validarListaImagenesVacia(BicicletaRequestDto bicicletaRequestDto) {

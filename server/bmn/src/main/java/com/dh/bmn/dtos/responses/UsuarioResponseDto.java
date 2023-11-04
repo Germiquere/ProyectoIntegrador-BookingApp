@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -15,7 +14,6 @@ public class UsuarioResponseDto {
     private String nombre;
     private String apellido;
     private String email;
-    private String password;
     private Rol rol;
 
 }

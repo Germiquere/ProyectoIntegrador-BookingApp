@@ -49,13 +49,10 @@ public class UsuarioServiceTest {
     @Test
     public void crearUsuario() {
         //Arrange
-
         UsuarioRequestDto usuarioRequestDto =
                 new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
-
         //Act
         usuarioService.crear(usuarioRequestDto);
-
         // Asserts
         verify(usuarioRepository, times(1)).save(any(Usuario.class));
     }
@@ -64,7 +61,6 @@ public class UsuarioServiceTest {
     public void crearUsuarioThrowsResourceAlreadyExistsException() {
         //Arrange
         UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
-
         Usuario usuarioEntity = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
 
         //Act
@@ -81,7 +77,6 @@ public class UsuarioServiceTest {
     @Test
     public void obtenerUsuarioPorId() {
         //Arrange
-
         Usuario usuario = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
         UsuarioResponseDto usuarioEsperado = new UsuarioResponseDto(1L, "Juan", "Perez", "juan.perez@gmail.com", Rol.USER);
 
@@ -91,13 +86,11 @@ public class UsuarioServiceTest {
 
         // Asserts
         Assertions.assertEquals(usuarioEsperado.getUsuarioId(), usuarioResponseDto.getUsuarioId());
-
     }
 
     @Test
     public void obtenerUsuarioPorIdThrowsResourceNotFoundException() {
         Mockito.when(usuarioRepository.findById(1L)).thenThrow(ResourceNotFoundException.class);
-
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             usuarioService.buscarPorId(1L);
         });
@@ -108,10 +101,8 @@ public class UsuarioServiceTest {
         //Arrange
 
         Usuario usuarioEntity = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
-
         List<Usuario> usuarios = new ArrayList<>();
         usuarios.add(usuarioEntity);
-
         UsuarioResponseDto usuarioEsperado = new UsuarioResponseDto(1L, "Juan", "Perez", "juan.perez@gmail.com", Rol.USER);
         List<UsuarioResponseDto> usuarioResponseLista = new ArrayList<>();
         usuarioResponseLista.add(usuarioEsperado);
@@ -122,18 +113,15 @@ public class UsuarioServiceTest {
 
         // Asserts
         Assertions.assertEquals(usuarioResponseLista.size(), usuariosLista.size());
-
     }
 
     @Test
     public void listarTodosUsuariosThrowsResourceNotFoundException() {
-
         Mockito.when(usuarioRepository.findAll()).thenThrow(ResourceNotFoundException.class);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             usuarioService.listarTodos();
         });
-
     }
 
     @Test
@@ -144,7 +132,6 @@ public class UsuarioServiceTest {
         //Act
         Mockito.when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioEntity));
         doNothing().when(usuarioRepository).delete(usuarioEntity);
-
         usuarioService.borrarPorId(1L);
 
         // Asserts
@@ -153,7 +140,6 @@ public class UsuarioServiceTest {
 
     @Test
     public void eliminarUsuarioThrowsResourceNotFoundException() {
-
         Mockito.when(usuarioRepository.findById(1L)).thenThrow(ResourceNotFoundException.class);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {

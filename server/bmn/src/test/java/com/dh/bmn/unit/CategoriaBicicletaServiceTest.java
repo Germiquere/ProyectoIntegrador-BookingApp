@@ -33,7 +33,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class CategoriaBicicletaServiceTest {
 
-
     @Mock
     private ICategoriaBicicletaRepository categoriaBicicletaRepository;
     @InjectMocks
@@ -41,7 +40,6 @@ public class CategoriaBicicletaServiceTest {
 
     @BeforeEach
     public void setup() {
-
         categoriaBicicletaRepository = mock(ICategoriaBicicletaRepository.class);
         categoriaBicicletaService = new CategoriaBicicletaService(categoriaBicicletaRepository);
     }
@@ -49,7 +47,6 @@ public class CategoriaBicicletaServiceTest {
     @Test
     public void crearCategoriaBicicleta() throws MalformedURLException {
         //Arrange
-
         ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
 
@@ -65,10 +62,8 @@ public class CategoriaBicicletaServiceTest {
         //Arrange
         ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
-
         Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
-
 
         //Act
         when(categoriaBicicletaRepository.findByNombre(categoriaBicicletaRequestDto.getNombre())).thenReturn(Optional.of(categoriaBicicleta));
@@ -84,13 +79,10 @@ public class CategoriaBicicletaServiceTest {
     @Test
     public void obtenerCategoriaBicicletaPorId() throws MalformedURLException {
         //Arrange
-
         Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
-
         ImagenResponseDto imagenResponseDto = new ImagenResponseDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         CategoriaBicicletaResponseDto categoriaBicicletaEsperada = new CategoriaBicicletaResponseDto(1L, "Montaña", "Bicicleta de montaña", imagenResponseDto);
-
 
         //Act
         Mockito.when(categoriaBicicletaRepository.findById(1L)).thenReturn(Optional.of(categoriaBicicleta));
@@ -98,7 +90,6 @@ public class CategoriaBicicletaServiceTest {
 
         // Asserts
         Assertions.assertEquals(categoriaBicicletaEsperada.getCategoriaId(), categoriaBicicletaResponseDto.getCategoriaId());
-
     }
 
     @Test
@@ -113,17 +104,12 @@ public class CategoriaBicicletaServiceTest {
     @Test
     public void obtenerTodasCategoriasBicicletas() throws MalformedURLException {
         //Arrange
-
         Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         CategoriaBicicleta categoriaBicicletaEntity = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
-
-
         List<CategoriaBicicleta> categoriaBicicletas = new ArrayList<>();
         categoriaBicicletas.add(categoriaBicicletaEntity);
-
         ImagenResponseDto imagenResponseDto = new ImagenResponseDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         CategoriaBicicletaResponseDto categoriaBicicletaEsperada = new CategoriaBicicletaResponseDto(1L, "Montaña", "Bicicleta de montaña", imagenResponseDto);
-
         List<CategoriaBicicletaResponseDto> categoriaBicicletaResponseLista = new ArrayList<>();
         categoriaBicicletaResponseLista.add(categoriaBicicletaEsperada);
 
@@ -150,15 +136,12 @@ public class CategoriaBicicletaServiceTest {
     @Test
     public void eliminarCategoriaBicicleta() throws MalformedURLException {
         //Arrange
-
         Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         CategoriaBicicleta categoriaBicicletaEntity = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
-
 
         //Act
         Mockito.when(categoriaBicicletaRepository.findById(1L)).thenReturn(Optional.of(categoriaBicicletaEntity));
         doNothing().when(categoriaBicicletaRepository).delete(categoriaBicicletaEntity);
-
         categoriaBicicletaService.borrarPorId(1L);
 
         // Asserts
@@ -178,13 +161,10 @@ public class CategoriaBicicletaServiceTest {
     @Test
     public void actualizarCategoriaBicicleta() throws MalformedURLException {
         //Arrange
-
         Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         CategoriaBicicleta categoriaBicicletaEntity = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
-
         ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
-
 
         //Act
         Mockito.when(categoriaBicicletaRepository.findById(1L)).thenReturn(Optional.of(categoriaBicicletaEntity));
@@ -197,10 +177,8 @@ public class CategoriaBicicletaServiceTest {
 
         @Test
         public void actualizarCategoriaBicicletaThrowsResourceNotFoundException() throws MalformedURLException {
-
             ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
             CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
-
 
             Mockito.when(categoriaBicicletaRepository.findById(1L)).thenThrow(ResourceNotFoundException.class);
 

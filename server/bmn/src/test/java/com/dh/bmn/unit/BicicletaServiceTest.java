@@ -40,8 +40,6 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class BicicletaServiceTest {
-
-
     @Mock
     private IBicicletaRepository bicicletaRepository;
 
@@ -58,7 +56,6 @@ public class BicicletaServiceTest {
 
     @BeforeEach
     public void setup() {
-
         bicicletaRepository = mock(IBicicletaRepository.class);
         categoriaBicicletaRepository = mock(ICategoriaBicicletaRepository.class);
         caracteristicaBicicletaRepository = mock(ICaracteristicaBicicletaRepository.class);
@@ -66,30 +63,29 @@ public class BicicletaServiceTest {
         bicicletaService = new BicicletaService(bicicletaRepository, s3Service, caracteristicaBicicletaRepository, categoriaBicicletaRepository);
     }
 
-//    @Test
-//    public void crearBicicleta() throws MalformedURLException {
-//        //Arrange
-//
-//        Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
-//        ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
-//        List<Imagen> imagenes = List.of(imagen);
-//
-//        CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
-//
-//        List<CategoriaBicicletaRequestDto> categoriaBicicletaList = List.of(categoriaBicicletaRequestDto);
-//
-//        CaracteristicaBicicletaRequestDto caracteristicaBicicleta = new CaracteristicaBicicletaRequestDto(1L, "electrica", "icono");
-//
-//        List<CaracteristicaBicicletaRequestDto> caracteristicaBicicletaList = List.of(caracteristicaBicicleta);
-//        BicicletaRequestDto bicicletaRequestDto =
-//                new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicaBicicletaList);
-//
-//        //Act
-//        bicicletaService.crear(bicicletaRequestDto);
-//
-//        // Asserts
-//        verify(bicicletaRepository, times(1)).save(any(Bicicleta.class));
-//    }
+    @Test
+    public void crearBicicleta() throws MalformedURLException {
+        //Arrange
+        Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
+        ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
+        List<Imagen> imagenes = List.of(imagen);
+        CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
+        List<CategoriaBicicletaRequestDto> categoriaBicicletaList = List.of(categoriaBicicletaRequestDto);
+        CaracteristicaBicicletaRequestDto caracteristicaBicicletaRequestDto = new CaracteristicaBicicletaRequestDto(1L, "electrica", "icono");
+        List<CaracteristicaBicicletaRequestDto> caracteristicaBicicletaList = List.of(caracteristicaBicicletaRequestDto);
+        BicicletaRequestDto bicicletaRequestDto =
+                new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicaBicicletaList);
+        CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
+        CaracteristicaBicicleta caracteristicaBicicleta = new CaracteristicaBicicleta(1L, "Precio", "icono");
+        //Act
+
+        Mockito.when(categoriaBicicletaRepository.findById(1L)).thenReturn(Optional.of(categoriaBicicleta));
+        Mockito.when(caracteristicaBicicletaRepository.findById(1L)).thenReturn(Optional.of(caracteristicaBicicleta));
+        bicicletaService.crear(bicicletaRequestDto);
+
+        // Asserts
+        verify(bicicletaRepository, times(1)).save(any(Bicicleta.class));
+    }
 
     @Test
     public void crearBicicletaThrowsResourceAlreadyExistsException() throws MalformedURLException {
@@ -97,21 +93,13 @@ public class BicicletaServiceTest {
         ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
         Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
-
         List<Imagen> imagenes = List.of(imagen);
-
         List<CategoriaBicicletaRequestDto> categoriaBicicletaList = List.of(categoriaBicicletaRequestDto);
-
         CaracteristicaBicicletaRequestDto caracteristicaBicicletaRequestDto = new CaracteristicaBicicletaRequestDto(1L, "electrica", "icono");
-
         List<CaracteristicaBicicletaRequestDto> caracteristicaBicicletaList = List.of(caracteristicaBicicletaRequestDto);
-
         BicicletaRequestDto bicicletaRequestDto = new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicaBicicletaList);
-
         CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
-
         List<CategoriaBicicleta> categorias = List.of(categoriaBicicleta);
-
         CaracteristicaBicicleta caracteristicaBicicleta = new CaracteristicaBicicleta(1L, "electrica", "icono");
         List<CaracteristicaBicicleta> caracteristicas = List.of(caracteristicaBicicleta);
         Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categorias, imagenes, caracteristicas);
@@ -130,26 +118,17 @@ public class BicicletaServiceTest {
     @Test
     public void obtenerBicicletaPorId() throws MalformedURLException {
         //Arrange
-
         Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         List<Imagen> imagenes = List.of(imagen);
         ImagenResponseDto imagenResponseDto = new ImagenResponseDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
-
         List<CategoriaBicicleta> categoriaBicicletaList = List.of(categoriaBicicleta);
-
         CaracteristicaBicicleta caracteristicaBicicleta = new CaracteristicaBicicleta(1L, "electrica", "icono");
-
         List<CaracteristicaBicicleta> caracteristicaBicicletaList = List.of(caracteristicaBicicleta);
-
-
         Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicaBicicletaList);
-
         List<ImagenResponseDto> imagenesResponse = List.of(imagenResponseDto);
         CategoriaBicicletaResponseDto categoriaBicicletaResponseDto = new CategoriaBicicletaResponseDto(1L, "Montaña", "Bicicleta de montaña", imagenResponseDto);
-
         List<CategoriaBicicletaResponseDto> categoriaBicicletaResponseDtoList = List.of(categoriaBicicletaResponseDto);
-
         CaracteristicaBicicletaResponseDto caracteristicaBicicletaResponseDto = new CaracteristicaBicicletaResponseDto(1L, "electrica", "icono");
         List<CaracteristicaBicicletaResponseDto> caracteristicasResponse = List.of(caracteristicaBicicletaResponseDto);
         BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaResponseDtoList, imagenesResponse, caracteristicasResponse);
@@ -160,7 +139,6 @@ public class BicicletaServiceTest {
 
         // Asserts
         Assertions.assertEquals(bicicletaEsperada.getBicicletaId(), bicicletaResponseDto.getBicicletaId());
-
     }
 
     @Test
@@ -175,30 +153,21 @@ public class BicicletaServiceTest {
     @Test
     public void obtenerTodasLasBicicletas() throws MalformedURLException {
         //Arrange
-
         Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         List<Imagen> imagenes = List.of(imagen);
         CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
-
         List<CategoriaBicicleta> categoriaBicicletaList = List.of(categoriaBicicleta);
-
         CaracteristicaBicicleta caracteristicaBicicleta = new CaracteristicaBicicleta(1L, "electrica", "icono");
         List<CaracteristicaBicicleta> caracteristicasList = List.of(caracteristicaBicicleta);
-
         Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicasList);
-
         List<Bicicleta> bicicletas = new ArrayList<>();
         bicicletas.add(bicicletaEntity);
-
-
         ImagenResponseDto imagenResponseDto = new ImagenResponseDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         List<ImagenResponseDto> imagenesResponse = List.of(imagenResponseDto);
         CategoriaBicicletaResponseDto categoriaBicicletaResponseDto = new CategoriaBicicletaResponseDto(1L, "Montaña", "Bicicleta de montaña", imagenResponseDto);
-
         List <CategoriaBicicletaResponseDto> categoriaBicicletaResponseDtoList = List.of(categoriaBicicletaResponseDto);
         CaracteristicaBicicletaResponseDto caracteristicaBicicletaResponseDto = new CaracteristicaBicicletaResponseDto(1L, "electrica", "icono");
         List<CaracteristicaBicicletaResponseDto> caracteristicasResponseList = List.of(caracteristicaBicicletaResponseDto);
-
         BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaResponseDtoList, imagenesResponse, caracteristicasResponseList);
         List<BicicletaResponseDto> bicicletaResponseLista = new ArrayList<>();
         bicicletaResponseLista.add(bicicletaEsperada);
@@ -214,25 +183,20 @@ public class BicicletaServiceTest {
 
     @Test
     public void listarTodasBicicletasThrowsResourceNotFoundException() {
-
         Mockito.when(bicicletaRepository.findAll()).thenThrow(ResourceNotFoundException.class);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             bicicletaService.listarTodos();
         });
-
     }
 
     @Test
     public void eliminarBicicleta() throws MalformedURLException {
         //Arrange
-
         Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         List<Imagen> imagenes = List.of(imagen);
         CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
-
         List<CategoriaBicicleta> categoriaBicicletaList = List.of(categoriaBicicleta);
-
         CaracteristicaBicicleta caracteristicaBicicleta = new CaracteristicaBicicleta(1L, "electrica", "icono");
         List<CaracteristicaBicicleta> caracteristicasList = List.of(caracteristicaBicicleta);
         Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicasList);
@@ -240,7 +204,6 @@ public class BicicletaServiceTest {
         //Act
         Mockito.when(bicicletaRepository.findById(1L)).thenReturn(Optional.of(bicicletaEntity));
         doNothing().when(bicicletaRepository).delete(bicicletaEntity);
-
         bicicletaService.borrarPorId(1L);
 
         // Asserts
@@ -249,7 +212,6 @@ public class BicicletaServiceTest {
 
     @Test
     public void eliminarBicicletaThrowsResourceNotFoundException() {
-
         Mockito.when(bicicletaRepository.findById(1L)).thenThrow(ResourceNotFoundException.class);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
@@ -257,55 +219,45 @@ public class BicicletaServiceTest {
         });
     }
 
-//    @Test
-//    public void actualizarBicicleta() throws MalformedURLException {
-//        //Arrange
-//
-//        Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
-//        List<Imagen> imagenes = List.of(imagen);
-//        CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
-//
-//        List<CategoriaBicicleta> categoriaBicicletaList = List.of(categoriaBicicleta);
-//
-//        CaracteristicaBicicleta caracteristicaBicicleta = new CaracteristicaBicicleta(1L, "electrica", "icono");
-//        List<CaracteristicaBicicleta> caracteristicasList = List.of(caracteristicaBicicleta);
-//
-//        Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicasList);
-//
-//        ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
-//        CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
-//
-//        List<CategoriaBicicletaRequestDto> categoriaBicicletaRequestList = List.of(categoriaBicicletaRequestDto);
-//
-//        CaracteristicaBicicletaRequestDto caracteristicaBicicletaRequestDto = new CaracteristicaBicicletaRequestDto(1L, "electrica", "icono");
-//        List<CaracteristicaBicicletaRequestDto> caracteristicasRequestList = List.of(caracteristicaBicicletaRequestDto);
-//        BicicletaRequestDto bicicletaRequestDto = new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaRequestList, imagenes, caracteristicasRequestList);
-//
-//        //Act
-//        Mockito.when(bicicletaRepository.findById(1L)).thenReturn(Optional.of(bicicletaEntity));
-//
-//        bicicletaService.actualizar(bicicletaRequestDto);
-//
-//        // Asserts
-//        verify(bicicletaRepository, times(1)).save(any(Bicicleta.class));
-//    }
+    @Test
+    public void actualizarBicicleta() throws MalformedURLException {
+        //Arrange
+        Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
+        List<Imagen> imagenes = List.of(imagen);
+        CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
+        List<CategoriaBicicleta> categoriaBicicletaList = List.of(categoriaBicicleta);
+        CaracteristicaBicicleta caracteristicaBicicleta = new CaracteristicaBicicleta(1L, "Precio", "icono");
+        List<CaracteristicaBicicleta> caracteristicasList = List.of(caracteristicaBicicleta);
+        Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicasList);
+        ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
+        CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
+        List<CategoriaBicicletaRequestDto> categoriaBicicletaRequestList = List.of(categoriaBicicletaRequestDto);
+        CaracteristicaBicicletaRequestDto caracteristicaBicicletaRequestDto = new CaracteristicaBicicletaRequestDto(1L, "electrica", "icono");
+        List<CaracteristicaBicicletaRequestDto> caracteristicasRequestList = List.of(caracteristicaBicicletaRequestDto);
+        BicicletaRequestDto bicicletaRequestDto = new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaRequestList, imagenes, caracteristicasRequestList);
+
+        //Act
+        Mockito.when(bicicletaRepository.findById(1L)).thenReturn(Optional.of(bicicletaEntity));
+        Mockito.when(categoriaBicicletaRepository.findById(1L)).thenReturn(Optional.of(categoriaBicicleta));
+        Mockito.when(caracteristicaBicicletaRepository.findById(1L)).thenReturn(Optional.of(caracteristicaBicicleta));
+
+
+        bicicletaService.actualizar(bicicletaRequestDto);
+
+        // Asserts
+        verify(bicicletaRepository, times(1)).save(any(Bicicleta.class));
+    }
 
     @Test
     public void actualizarBicicletaThrowsResourceNotFoundException() throws MalformedURLException {
-
         Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         List<Imagen> imagenes = List.of(imagen);
-
         ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
-
         List<CategoriaBicicletaRequestDto> categoriaBicicletaRequestDtoList = List.of(categoriaBicicletaRequestDto);
-
         CaracteristicaBicicletaRequestDto caracteristicaBicicletaRequestDto = new CaracteristicaBicicletaRequestDto(1L, "electrica", "icono");
         List<CaracteristicaBicicletaRequestDto> caracteristicasRequestList = List.of(caracteristicaBicicletaRequestDto);
-
         BicicletaRequestDto bicicletaRequestDto = new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaRequestDtoList, imagenes, caracteristicasRequestList);
-
         Mockito.when(bicicletaRepository.findById(1L)).thenThrow(ResourceNotFoundException.class);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
@@ -313,22 +265,26 @@ public class BicicletaServiceTest {
         });
     }
 
-//    @Test
-//    public void testValidarListaImagenesVaciaThrowsRequestValidationException() throws MalformedURLException {
-//
-//        ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
-//        CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
-//        List<CategoriaBicicletaRequestDto> categoriaBicicletaRequestDtoList = List.of(categoriaBicicletaRequestDto);
-//        List<Imagen> imagenes = List.of();
-//
-//        CaracteristicaBicicletaRequestDto caracteristicaBicicletaRequestDto = new CaracteristicaBicicletaRequestDto(1L, "electrica", "icono");
-//        List<CaracteristicaBicicletaRequestDto> caracteristicasRequestList = List.of(caracteristicaBicicletaRequestDto);
-//        BicicletaRequestDto bicicletaRequestDto = new BicicletaRequestDto(1L, "bike", "ideal para montaña", 34567, categoriaBicicletaRequestDtoList, imagenes, caracteristicasRequestList);
-//
-//        RequestValidationException exception = Assertions.assertThrows(RequestValidationException.class, () -> {
-//            bicicletaService.crear(bicicletaRequestDto);
-//        });
-//
-//        Assertions.assertEquals("La lista de imagenes no puede estar vacia", exception.getMessage());
-//    }
+    @Test
+    public void testValidarListaImagenesVaciaThrowsRequestValidationException() throws MalformedURLException {
+        Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
+        ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
+        CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
+        List<CategoriaBicicletaRequestDto> categoriaBicicletaRequestDtoList = List.of(categoriaBicicletaRequestDto);
+        List<Imagen> imagenes = List.of();
+        CaracteristicaBicicletaRequestDto caracteristicaBicicletaRequestDto = new CaracteristicaBicicletaRequestDto(1L, "electrica", "icono");
+        List<CaracteristicaBicicletaRequestDto> caracteristicasRequestList = List.of(caracteristicaBicicletaRequestDto);
+        BicicletaRequestDto bicicletaRequestDto = new BicicletaRequestDto(1L, "bike", "ideal para montaña", 34567, categoriaBicicletaRequestDtoList, imagenes, caracteristicasRequestList);
+        CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
+        CaracteristicaBicicleta caracteristicaBicicleta = new CaracteristicaBicicleta(1L, "Precio", "icono");
+
+        Mockito.when(categoriaBicicletaRepository.findById(1L)).thenReturn(Optional.of(categoriaBicicleta));
+        Mockito.when(caracteristicaBicicletaRepository.findById(1L)).thenReturn(Optional.of(caracteristicaBicicleta));
+
+        RequestValidationException exception = Assertions.assertThrows(RequestValidationException.class, () -> {
+            bicicletaService.crear(bicicletaRequestDto);
+        });
+
+        Assertions.assertEquals("La lista de imagenes no puede estar vacia", exception.getMessage());
+    }
 }
