@@ -12,6 +12,8 @@ import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
 import com.dh.bmn.pagging.PaginatedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,10 +28,11 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
 
     private final IUsuarioRepository usuarioRepository;
 
+    private static final String secretKey = "586E3272357538782F413F4428472B4B6250655368566B597033733676397924";
+
     private PasswordEncoder passwordEncoder;
 
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
-
 
     @Override
     public void actualizar(UsuarioRequestDto usuarioRequestDto) {
@@ -113,3 +116,23 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
             return null;
         }
     }
+
+    @Override
+    public UsuarioResponseDto buscarPorToken(String token) {
+
+        // Decodificar el token JWT
+        Claims claims = Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token.replace("Bearer ", ""))
+                .getBody();
+
+        // Extraer el correo electrónico del usuario desde las reclamaciones del token
+        String email = claims.getSubject();
+
+        // Buscar al usuario por correo electrónico en la base de datos
+        Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
+
+        return objectMapper.convertValue(usuario, UsuarioResponseDto.class);
+    }
+
+}

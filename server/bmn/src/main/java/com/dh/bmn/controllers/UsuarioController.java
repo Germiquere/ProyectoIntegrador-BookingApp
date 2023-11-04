@@ -14,7 +14,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/bike-me-now/usuarios")
+@RequestMapping("/bike-me-now/api/usuarios")
 public class UsuarioController {
 
     private final IService<UsuarioResponseDto, UsuarioRequestDto> usuarioService;
@@ -25,7 +25,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    @Secured("ADMIN")
+    @Secured({ "ADMIN", "USER" })
     public ResponseEntity<UsuarioResponseDto> obtenerUsuarioPorId (@PathVariable Long id) {
         return new ResponseEntity<>(usuarioService.buscarPorId(id), HttpStatus.OK);
     }
@@ -50,10 +50,17 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioService.listarTodos(),HttpStatus.OK);
     }
 
-    @PutMapping()
+    @PutMapping
     @Secured({ "ADMIN", "USER" })
     public ResponseEntity<?> actualizarUsuario (@RequestBody @Valid UsuarioRequestDto usuarioRequestDto){
         usuarioService.actualizar(usuarioRequestDto);
         return new ResponseEntity<>(new JsonMessageDto("Usuario actualizado exitosamente",HttpStatus.OK.value()), HttpStatus.OK);
+    }
+
+    @GetMapping("/buscar-por-token")
+    @Secured({ "ADMIN", "USER" })
+    public ResponseEntity<UsuarioResponseDto> obtenerUsuarioPorToken(@RequestHeader("Authorization") String token) {
+        UsuarioResponseDto usuario = usuarioService.buscarPorToken(token);
+        return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 }

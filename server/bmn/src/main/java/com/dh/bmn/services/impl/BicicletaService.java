@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
 @Service
 public class BicicletaService implements IService<BicicletaResponseDto, BicicletaRequestDto>, ICaracteristicaBicicletaService {
 
-
     private final IBicicletaRepository bicicletaRepository;
 
     private final S3Service s3Service;
@@ -44,7 +43,6 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
     private final ICategoriaBicicletaRepository categoriaBicicletaRepository;
 
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
-
 
     @Autowired
     public BicicletaService(IBicicletaRepository bicicletaRepository, S3Service s3Service, ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository, ICategoriaBicicletaRepository categoriaBicicletaRepository) {
@@ -111,6 +109,11 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
                 .stream()
                 .map(bicicleta -> objectMapper.convertValue(bicicleta, BicicletaResponseDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public BicicletaResponseDto buscarPorToken(String token) {
+        return null;
     }
 
     private void validarYguardarImagenesBicicleta(BicicletaRequestDto bicicletaRequestDto, Bicicleta bicicleta) {

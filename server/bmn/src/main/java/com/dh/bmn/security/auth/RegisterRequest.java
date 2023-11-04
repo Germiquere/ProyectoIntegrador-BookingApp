@@ -1,5 +1,6 @@
 package com.dh.bmn.security.auth;
 
+import com.dh.bmn.security.user.Rol;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
