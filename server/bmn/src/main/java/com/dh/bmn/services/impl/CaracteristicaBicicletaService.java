@@ -12,7 +12,6 @@ import com.dh.bmn.util.MapperClass;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,7 +23,7 @@ public class CaracteristicaBicicletaService implements IService<CaracteristicaBi
 
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
-    public CaracteristicaBicicletaService(ICaracteristicaBicicletaRepository caracteristicaRepository, ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository) {
+    public CaracteristicaBicicletaService(ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository) {
         this.caracteristicaBicicletaRepository = caracteristicaBicicletaRepository;
     }
 
