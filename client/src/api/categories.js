@@ -20,6 +20,7 @@ export const getCategories = async () => {
 };
 
 export const postCategory = async (newBikeCategory) => {
+    const token = localStorage.getItem("token");
     try {
         console.log(newBikeCategory);
         // PASAR EL ENDPOINT DE NUESTRA API
@@ -29,8 +30,7 @@ export const postCategory = async (newBikeCategory) => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODgwNTc3NSwiZXhwIjoxNjk4ODA5Mzc1fQ.HNhF_Sm60i5tsiDK2wKNODKiI_IQt9qknXGAZcNlr10",
+                    Authorization: `Bearer ${token}`,
                 },
 
                 body: JSON.stringify(newBikeCategory),
@@ -50,10 +50,17 @@ export const postCategory = async (newBikeCategory) => {
     }
 };
 export const deleteCategory = async (id) => {
+    const token = localStorage.getItem("token");
     try {
-        const res = await fetch(`URL/${id}`, {
-            method: "DELETE",
-        });
+        const res = await fetch(
+            `http://localhost:8080/bike-me-now/api/categorias/${id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
         if (!res.ok) {
             // Crear un objeto de error personalizado con estado y ok
             const error = new Error("Error en la solicitud POST");

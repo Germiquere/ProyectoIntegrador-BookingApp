@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { CalendarAndSearchProvider } from "./context/CalendarSearchContext.jsx";
 import { CategoriesProvider } from "./context/CategoriesContext.jsx";
 import { BikesProvider } from "./context/BikesContext.jsx";
+import { UsersProvider } from "./context/UsersContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
@@ -13,7 +14,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <CalendarAndSearchProvider>
                 <CategoriesProvider>
                     <BikesProvider>
-                        <App />
+                        <UsersProvider>
+                            <App />
+                        </UsersProvider>
                     </BikesProvider>
                 </CategoriesProvider>
             </CalendarAndSearchProvider>

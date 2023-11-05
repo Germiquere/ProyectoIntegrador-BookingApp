@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { deleteCategory, getCategories, postCategory } from "../api/categories";
+import { deleteImage, postImage } from "../api/images";
 // CREO UN CONTEXT
 const CategoriesContext = createContext();
 // LO EXPORTO DESDE ACA YA USANDO EL USECONTEXT PARA NO TENER QUE IMPORTAR AMBAS COSAS EN OTRO COMPONENTE
@@ -58,8 +59,8 @@ export const CategoriesProvider = ({ children }) => {
         try {
             const newCategory = await postCategory(newBikeCategory);
             //   VUELVO A HACER EL FETCH DE LA DATA PARA ACTUALIZAR LAS CATEGORIAS
-            console.log(newCategory);
             fetchData();
+            return newCategory;
         } catch (err) {
             setError(err);
         } finally {
@@ -71,20 +72,45 @@ export const CategoriesProvider = ({ children }) => {
         setLoading(true);
         try {
             const deletedCategory = await deleteCategory(id);
+
             fetchData();
+            return deletedCategory;
         } catch (err) {
             setError(err);
         } finally {
             setLoading(false);
         }
     };
-    const cat = {
-        nombre: "derutini",
-        descripcion: "Una bici electrica",
-        imagen: {
-            key: "key",
-            url: "https://res.cloudinary.com/djslo5b3u/image/upload/v1697378118/bjlchzsoybajjimpz7aa.jpg",
-        },
+    // FUNCION PARA SUBIR UNA IMAGEN
+    const handlePostImages = async (image) => {
+        setLoading(true);
+        try {
+            const imageUrl = await postImage(image[0]);
+            return imageUrl;
+        } catch (err) {
+            setError(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+    // FUNCION PARA BORRAR LAS IMAGENES
+    const handleDeleteImages = async (image) => {
+        setLoading(true);
+        console.log("estoy aca por borrr imagenes");
+
+        try {
+            const deletedImage = await deleteImage(image[0].key);
+            console.log(deletedImage);
+            return deletedImage;
+        } catch (err) {
+            // TODO: CAMBIAR EL STATUS CODE CUANDO SE SOLUCIONE EL PROBLEMA EN EL BACK. DEBERIA SER UN 403 O UN 401
+            // if (err.status === 500) {
+            //     navigat("/auth/login", { replace: true });
+            // }
+            console.log(err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -100,9 +126,12 @@ export const CategoriesProvider = ({ children }) => {
                 error,
                 openManageCategories,
                 //METODOS
+                setError,
                 addNewCategory,
                 deleteACategory,
                 setOpenManageCategories,
+                handlePostImages,
+                handleDeleteImages,
             }}
         >
             {children}

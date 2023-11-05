@@ -75,6 +75,7 @@ export const getBikeById = async (id) => {
     }
 };
 export const postBike = async (bike) => {
+    const token = localStorage.getItem("token");
     try {
         // PASAR EL ENDPOINT DE NUESTRA API
         const res = await fetch(
@@ -83,8 +84,7 @@ export const postBike = async (bike) => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODg5NDc4MiwiZXhwIjoxNjk4ODk4MzgyfQ.BAyceQh4OhYiNTxXAUNwjkff3FU5ZUXap2nzkpg-i8E",
+                    Authorization: `Bearer ${token}`,
                 },
 
                 body: JSON.stringify(bike),
@@ -105,6 +105,7 @@ export const postBike = async (bike) => {
     }
 };
 export const deleteBike = async (id) => {
+    const token = localStorage.getItem("token");
     try {
         const res = await fetch(
             `http://localhost:8080/bike-me-now/api/bicicletas/${id}`,
@@ -112,8 +113,7 @@ export const deleteBike = async (id) => {
                 method: "DELETE",
                 headers: {
                     // "Content-Type": "application/json",
-                    Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODg5NDc4MiwiZXhwIjoxNjk4ODk4MzgyfQ.BAyceQh4OhYiNTxXAUNwjkff3FU5ZUXap2nzkpg-i8E",
+                    Authorization: `Bearer ${token}`,
                 },
             }
         );
@@ -133,7 +133,7 @@ export const deleteBike = async (id) => {
     }
 };
 export const updateBike = async (bike) => {
-    console.log(bike);
+    const token = localStorage.getItem("token");
     try {
         // PASAR EL ENDPOINT DE NUESTRA API
         const res = await fetch(
@@ -142,8 +142,7 @@ export const updateBike = async (bike) => {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODg5NDc4MiwiZXhwIjoxNjk4ODk4MzgyfQ.BAyceQh4OhYiNTxXAUNwjkff3FU5ZUXap2nzkpg-i8E",
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify(bike),
             }

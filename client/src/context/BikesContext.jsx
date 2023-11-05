@@ -139,8 +139,6 @@ export const BikesProvider = ({ children }) => {
             if (err.status === 500) {
                 navigate("/auth/login", { replace: true });
             }
-            console.log(err.status);
-            console.log(err.message);
         } finally {
             setLoading(false);
         }

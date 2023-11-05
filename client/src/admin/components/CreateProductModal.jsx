@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useBikesContext } from "../../context/BikesContext";
 import { Loader } from "../../ui/Loader";
 import { Tooltip } from "@mui/material";
+import { useCategoriesContext } from "../../context/CategoriesContext";
 export const CreateProductModal = () => {
     const {
         error,
@@ -18,6 +19,7 @@ export const CreateProductModal = () => {
         handleDeleteImages,
         setError,
     } = useBikesContext();
+    const { categoriesData } = useCategoriesContext();
     const { nombre, descripcion, precioAlquilerPorDia, categoria, imagenes } =
         formState;
     const [imageChange, setImageChange] = useState([]);
@@ -292,36 +294,15 @@ export const CreateProductModal = () => {
                                             Selecciona una categoria
                                         </option>
                                         {/*TODO: hacer el map con los options */}
-                                        <option
-                                            value="1"
-                                            className="text-black"
-                                        >
-                                            Electrica
-                                        </option>
-                                        <option
-                                            value="2"
-                                            className="text-black"
-                                        >
-                                            Ciudad
-                                        </option>
-                                        <option
-                                            value="3"
-                                            className="text-black"
-                                        >
-                                            Montaña
-                                        </option>
-                                        <option
-                                            value="4"
-                                            className="text-black"
-                                        >
-                                            Niños
-                                        </option>
-                                        <option
-                                            value="5"
-                                            className="text-black"
-                                        >
-                                            Ruta
-                                        </option>
+                                        {categoriesData.map((cat) => (
+                                            <option
+                                                value={cat.categoriaId}
+                                                className="text-black"
+                                                key={cat.categoriaId}
+                                            >
+                                                {cat.nombre}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                                 <p

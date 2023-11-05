@@ -4,9 +4,10 @@ import { Tooltip } from "@mui/material";
 import { useState } from "react";
 import { Navbar } from "./Navbar";
 import { ManageCategories } from "./ManageCategories";
+import { Loader } from "../../../ui/Loader";
 
 export const Manage = () => {
-    const { openManageCategories, setOpenManageCategories } =
+    const { openManageCategories, setOpenManageCategories, loading } =
         useCategoriesContext();
     const [currentComponent, setCurrentComponent] = useState("Categorias");
     return (
@@ -19,13 +20,13 @@ export const Manage = () => {
                     <div className=" flex justify-between items-center">
                         <h2 className="text-xl font-semibold flex gap-5 items-center">
                             <p>Administrar Categorías</p>
-                            {/* {loadingBikes && <Loader className={"text-white"} />} */}
+                            {loading && <Loader className={"text-white"} />}
                         </h2>
                         <Tooltip title="Cerrar">
                             <button
                                 className="flex  items-center justify-center middle none center rounded-full  h-10 w-10 font-sans text-xs font-bold uppercase  transition-all hover:bg-blackOpacity1 active:bg-tertiary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none "
                                 data-ripple-dark="true"
-                                // disabled={loadingBikes}
+                                disabled={loading}
                                 onClick={() => {
                                     setOpenManageCategories(false);
                                 }}
@@ -41,7 +42,7 @@ export const Manage = () => {
                 </div>
 
                 {/* MAIN */}
-                <div className=" p-5 min-h-[450px]  max-h-[450px] overflow-auto mb-16">
+                <div className=" p-5 min-h-[450px]  max-h-[450px] overflow-auto ">
                     {currentComponent === "Categorias" && <ManageCategories />}
                 </div>
             </div>

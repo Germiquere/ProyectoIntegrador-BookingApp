@@ -6,6 +6,7 @@ import { useBikesContext } from "../../context/BikesContext";
 import { deleteImage } from "../../api/images";
 import { ConfirmDelete } from "./ConfirmDelete";
 import { Tooltip } from "@mui/material";
+import { useCategoriesContext } from "../../context/CategoriesContext";
 
 export const EditProductModal = () => {
     const {
@@ -26,6 +27,7 @@ export const EditProductModal = () => {
         openConfirmDelete,
         setOpenConfirmDelete,
     } = useBikesContext();
+    const { categoriesData } = useCategoriesContext();
     const {
         nombre,
         descripcion,
@@ -156,6 +158,7 @@ export const EditProductModal = () => {
     // FUNCION PARA SOLAMENTE AGREGAR IMAGENES,Y QUE LAS MISMAS NO SE REPITAN EN EL CLIENTE
     const onFileInputChange = ({ target }) => {
         const selectedFiles = target.files;
+        console.log(selectedFiles);
         const validImages = [];
 
         for (let i = 0; i < selectedFiles.length; i++) {
@@ -308,18 +311,16 @@ export const EditProductModal = () => {
                                             Selecciona una categoria
                                         </option>
                                         {/*TODO: hacer el map con los options */}
-                                        <option
-                                            value="1"
-                                            className="text-black"
-                                        >
-                                            Ruta
-                                        </option>
-                                        <option
-                                            value="2"
-                                            className="text-black"
-                                        >
-                                            Electrica
-                                        </option>
+
+                                        {categoriesData.map((cat) => (
+                                            <option
+                                                key={cat.categoriaId}
+                                                value={cat.categoriaId}
+                                                className="text-black"
+                                            >
+                                                {cat.nombre}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                                 <p

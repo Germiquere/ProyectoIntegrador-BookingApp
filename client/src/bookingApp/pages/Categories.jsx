@@ -1,19 +1,19 @@
-import { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useCategoriesContext } from "../../context/CategoriesContext";
-import { SkeletonCardsSweiper } from "../components/sectionCategoriesAndRecommended/SkeletonCardsSweiper";
 import Section from "../components/Section";
 import { useBikesContext } from "../../context/BikesContext";
+import { SkeletonGridProducts } from "../components/sectionProducts/SkeletonGridProducts";
 
 export const Categories = () => {
     //TRAIGO EL HOOK PERSONALIZADO PARA TRAER LAS BICIS DESDE EL CONTEXT
     const { bikesData, loading, bikeByIdGet, bikeById } = useBikesContext();
     const { categoriesData, loading: loadingCategories } =
         useCategoriesContext();
-    console.log(categoriesData);
     const { pathname } = useLocation();
+    // DECODIFICAR LOS CARACTERES RAROS
+    const decodedPathname = decodeURIComponent(pathname);
     // QUITAR LA BARRA  DEL COMIENZO DEL PATHNAME
-    const currentPath = pathname.substring(1);
+    const currentPath = decodedPathname.substring(1);
     console.log(currentPath);
     // FUNCION PARA FILTRAR PRODUCTOS POR EL CURRENTPATH
     const filterBikes = (arr, bikeCategory) => {
@@ -40,14 +40,16 @@ export const Categories = () => {
         );
         return res;
     };
+    console.log(filteredBikes);
     const filteredCategory = filterCategory(categoriesData, currentPath);
     return (
         <Section>
             <div className="max-w-[1200px] mx-auto mt-3">
                 {loading && loadingCategories ? (
-                    // VER CUANDO TENGA TIEMPO DE HACERLE UN SKELETON
-                    <div className="h-32 w-ful">
-                        <p></p>
+                    <div className="grid grid-cols-1  gap-4  ssm:grid-cols-2  sm:grid-cols-3  md:grid-cols-4  lg:grid-cols-5  ">
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
+                            <SkeletonGridProducts key={index} />
+                        ))}
                     </div>
                 ) : (
                     <>
@@ -55,7 +57,7 @@ export const Categories = () => {
                             Bicicletas
                         </h2>
                         <h2 className="text-lg sm:text-xl  pb-2">
-                            {/* {filteredCategory.descripcion} */}
+                            {filteredCategory.descripcion}
                         </h2>
                         <div className="grid grid-cols-1  gap-4  ssm:grid-cols-2  sm:grid-cols-3  md:grid-cols-4  lg:grid-cols-5  ">
                             {filteredBikes.map((item) => (

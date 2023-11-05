@@ -1,4 +1,5 @@
 export const postImage = async (file) => {
+    const token = localStorage.getItem("token");
     if (!file) throw new Error("No hay ningúna imagen para subir");
     const formData = new FormData();
     formData.append("bucketName", "bikemenowbucket");
@@ -10,8 +11,7 @@ export const postImage = async (file) => {
             {
                 method: "POST",
                 headers: {
-                    Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODg5NDc4MiwiZXhwIjoxNjk4ODk4MzgyfQ.BAyceQh4OhYiNTxXAUNwjkff3FU5ZUXap2nzkpg-i8E",
+                    Authorization: `Bearer ${token}`,
                 },
                 body: formData,
             }
@@ -31,18 +31,17 @@ export const postImage = async (file) => {
 };
 //TODO: VER COMO TERMINA SIENDO ESTO
 export const deleteImage = async (key) => {
+    const token = localStorage.getItem("token");
     try {
         const res = await fetch(
             `http://localhost:8080/bike-me-now/api/s3/deleteFile?bucketName=bikemenowbucket&fileName=${key}`,
             {
                 method: "DELETE",
                 headers: {
-                    Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGVzIjpbIkFETUlOIl0sImlhdCI6MTY5ODg5NDc4MiwiZXhwIjoxNjk4ODk4MzgyfQ.BAyceQh4OhYiNTxXAUNwjkff3FU5ZUXap2nzkpg-i8E",
+                    Authorization: `Bearer ${token}`,
                 },
             }
         );
-        console.log(res);
         if (!res.ok) {
             let error = {
                 status: res.status,
