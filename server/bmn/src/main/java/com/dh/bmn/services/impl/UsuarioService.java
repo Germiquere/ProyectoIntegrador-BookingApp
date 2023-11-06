@@ -21,6 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -42,6 +44,8 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
 
         if (usuarioDB != null) {
             normalizarNombreApellido(usuarioRequestDto);
+            validarEmail(usuarioRequestDto.getEmail());
+            validarPassword(usuarioRequestDto.getPassword());
             usuarioDB = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
 
 
@@ -63,12 +67,14 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
 
         @Override
         public void crear (UsuarioRequestDto usuarioRequestDto){
-            normalizarNombreApellido(usuarioRequestDto);
 
             if (usuarioRepository.findByEmail(usuarioRequestDto.getEmail()).isPresent()) {
                 throw new ResourceAlreadyExistsException("El usuario ya existe", HttpStatus.CONFLICT.value());
             }
 
+            normalizarNombreApellido(usuarioRequestDto);
+            validarEmail(usuarioRequestDto.getEmail());
+            validarPassword(usuarioRequestDto.getPassword());
             validarRol(usuarioRequestDto.getRol());
             Usuario usuario = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
             String passwordEncriptada = passwordEncoder.encode(usuarioRequestDto.getPassword());
@@ -134,6 +140,28 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
         Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
 
         return objectMapper.convertValue(usuario, UsuarioResponseDto.class);
+    }
+
+    private Boolean validarEmail(String email){
+        if ((email.contains("@")) && (email.length() > 10 && email.length() < 30)) {
+            return true;
+        } else {
+            throw new RequestValidationException("El email tiene que tener entre 10 y 30 caracteres y contener un @", HttpStatus.BAD_REQUEST.value());
+        }
+    }
+
+    private Boolean validarPassword(String password){
+        String regex = "^[a-z0-9]{8,12}[^s][^$%&|<>#]$";
+
+        Pattern pattern = Pattern.compile(regex);
+
+        Matcher matcher = pattern.matcher(password);
+
+        if(matcher.matches()){
+            return true;
+        }else {
+            throw new RequestValidationException("La contraseña no cumple con los valores especificados ", HttpStatus.BAD_REQUEST.value());
+        }
     }
 
 }

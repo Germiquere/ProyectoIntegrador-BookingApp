@@ -3,6 +3,7 @@ package com.dh.bmn.unit;
 import com.dh.bmn.dtos.requests.UsuarioRequestDto;
 import com.dh.bmn.dtos.responses.UsuarioResponseDto;
 import com.dh.bmn.entity.Usuario;
+import com.dh.bmn.exceptions.RequestValidationException;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IUsuarioRepository;
@@ -50,7 +51,7 @@ public class UsuarioServiceTest {
     public void crearUsuario() {
         //Arrange
         UsuarioRequestDto usuarioRequestDto =
-                new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+                new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password576", Rol.USER);
         //Act
         usuarioService.crear(usuarioRequestDto);
         // Asserts
@@ -60,8 +61,8 @@ public class UsuarioServiceTest {
     @Test
     public void crearUsuarioThrowsResourceAlreadyExistsException() {
         //Arrange
-        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
-        Usuario usuarioEntity = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password576", Rol.USER);
+        Usuario usuarioEntity = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password576", Rol.USER);
 
         //Act
         when(usuarioRepository.findByEmail(usuarioRequestDto.getEmail())).thenReturn(Optional.of(usuarioEntity));
@@ -73,11 +74,35 @@ public class UsuarioServiceTest {
 
     }
 
+    @Test
+    public void crearUsuarioValidarEmailThrowsRequestValidationException() {
+        //Arrange
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perezgmail.com", "password576", Rol.USER);
+
+        // Asserts
+        Assertions.assertThrows(RequestValidationException.class, () -> {
+            usuarioService.crear(usuarioRequestDto);
+        });
+
+    }
+
+    @Test
+    public void crearUsuarioValidarPasswordThrowsRequestValidationException() {
+        //Arrange
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+
+        // Asserts
+        Assertions.assertThrows(RequestValidationException.class, () -> {
+            usuarioService.crear(usuarioRequestDto);
+        });
+
+    }
+
 
     @Test
     public void obtenerUsuarioPorId() {
         //Arrange
-        Usuario usuario = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        Usuario usuario = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password576", Rol.USER);
         UsuarioResponseDto usuarioEsperado = new UsuarioResponseDto(1L, "Juan", "Perez", "juan.perez@gmail.com", Rol.USER);
 
         //Act
@@ -100,7 +125,7 @@ public class UsuarioServiceTest {
     public void obtenerTodosLosUsuarios() {
         //Arrange
 
-        Usuario usuarioEntity = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        Usuario usuarioEntity = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password576", Rol.USER);
         List<Usuario> usuarios = new ArrayList<>();
         usuarios.add(usuarioEntity);
         UsuarioResponseDto usuarioEsperado = new UsuarioResponseDto(1L, "Juan", "Perez", "juan.perez@gmail.com", Rol.USER);
@@ -127,7 +152,7 @@ public class UsuarioServiceTest {
     @Test
     public void eliminarUsuario() {
         //Arrange
-        Usuario usuarioEntity = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        Usuario usuarioEntity = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password576", Rol.USER);
 
         //Act
         Mockito.when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioEntity));
@@ -150,8 +175,8 @@ public class UsuarioServiceTest {
     @Test
     public void actualizarUsuario() {
         //Arrange
-        Usuario usuarioEntity = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
-        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        Usuario usuarioEntity = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password576", Rol.USER);
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password576", Rol.USER);
 
         //Act
         Mockito.when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioEntity));
@@ -165,10 +190,34 @@ public class UsuarioServiceTest {
     @Test
     public void actualizarUsuarioThrowsResourceNotFoundException() {
 
-        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password576", Rol.USER);
         Mockito.when(usuarioRepository.findById(1L)).thenThrow(ResourceNotFoundException.class);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+            usuarioService.actualizar(usuarioRequestDto);
+        });
+    }
+
+    @Test
+    public void actualizarUsuarioValidarEmailThrowsRequestValidationException() {
+
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perezgmail.com", "password576", Rol.USER);
+        Usuario usuarioEntity = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password576", Rol.USER);
+        Mockito.when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioEntity));
+
+        Assertions.assertThrows(RequestValidationException.class, () -> {
+            usuarioService.actualizar(usuarioRequestDto);
+        });
+    }
+
+    @Test
+    public void actualizarUsuarioValidarPasswordThrowsRequestValidationException() {
+
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        Usuario usuarioEntity = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password576", Rol.USER);
+        Mockito.when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioEntity));
+
+        Assertions.assertThrows(RequestValidationException.class, () -> {
             usuarioService.actualizar(usuarioRequestDto);
         });
     }
