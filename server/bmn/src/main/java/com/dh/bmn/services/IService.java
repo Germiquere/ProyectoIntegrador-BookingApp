@@ -15,6 +15,7 @@ public interface IService <T, E>{
 
     public List<T> listarTodos();
 
+    //TODO ---> Analizar si se elimina de aca y su implementacion en el resto de los service y se coloca directamente en el service de bicicleta unicamente
     public PaginatedResponse<T> obtenerPaginacion(int numeroPagina, int limit, int offset);
 
 }

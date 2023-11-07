@@ -41,7 +41,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(authRequest ->
                         authRequest
-//                                .requestMatchers("/auth/**,").permitAll()
+                                //.requestMatchers("/auth/**,").permitAll()
                                 .requestMatchers("/bike-me-now/api/**").authenticated()
                                 .anyRequest().permitAll()
                 )

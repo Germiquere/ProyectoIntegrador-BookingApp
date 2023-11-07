@@ -7,125 +7,135 @@ import com.dh.bmn.exceptions.RequestValidationException;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IUsuarioRepository;
+import com.dh.bmn.security.auth.AuthService;
 import com.dh.bmn.security.user.Rol;
 import com.dh.bmn.services.IService;
-import com.dh.bmn.services.IUsuarioService;
 import com.dh.bmn.util.MapperClass;
 import com.dh.bmn.pagging.PaginatedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Service
-public class UsuarioService implements IService<UsuarioResponseDto, UsuarioRequestDto>, IUsuarioService<UsuarioResponseDto> {
+public class UsuarioService implements IService<UsuarioResponseDto, UsuarioRequestDto> {
 
     private final IUsuarioRepository usuarioRepository;
 
     private static final String secretKey = "586E3272357538782F413F4428472B4B6250655368566B597033733676397924";
 
-    private PasswordEncoder passwordEncoder;
-
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
-    @Override
+
+    @Autowired
+    public UsuarioService(IUsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+
+
     public void actualizar(UsuarioRequestDto usuarioRequestDto) {
+        Usuario usuarioDB = usuarioRepository.findById(usuarioRequestDto.getUsuarioId())
+                .orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
 
-        Usuario usuarioDB = usuarioRepository.findById(usuarioRequestDto.getUsuarioId()).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
+        // Actualiza solo los campos específicos que se proporcionan en el DTO
 
-        if (usuarioDB != null) {
-            normalizarNombreApellido(usuarioRequestDto);
-            validarEmail(usuarioRequestDto.getEmail());
-            validarPassword(usuarioRequestDto.getPassword());
-            usuarioDB = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
+        String nuevoNombre = usuarioRequestDto.getNombre();
+        if (nuevoNombre != null) {
+            usuarioDB.setNombre(nuevoNombre);
+        }
+
+        String nuevoApellido = usuarioRequestDto.getApellido();
+        if (nuevoApellido != null) {
+            usuarioDB.setApellido(nuevoApellido);
+        }
+
+        String nuevoEmail = usuarioRequestDto.getEmail();
+        if (nuevoEmail != null) {
+            AuthService.validarEmail(nuevoEmail);
+            usuarioDB.setEmail(nuevoEmail);
+        }
+
+        usuarioRepository.save(usuarioDB);
+    }
 
 
-            String nuevaPassword = usuarioRequestDto.getPassword();
-            if (nuevaPassword != null && !nuevaPassword.isEmpty()) {
-                String passwordEncriptada = passwordEncoder.encode(nuevaPassword);
-                usuarioDB.setPassword(passwordEncriptada);
-            }
+    public void cambiarRol(Long usuarioId, Rol nuevoRol) {
+        Usuario usuarioDB = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
 
+        if (nuevoRol == Rol.ADMIN || nuevoRol == Rol.USER) {
+            usuarioDB.setRol(nuevoRol);
             usuarioRepository.save(usuarioDB);
+        } else {
+            throw new RequestValidationException("No tienes permisos para cambiar el rol de este usuario.", HttpStatus.BAD_REQUEST.value());
         }
     }
 
-        @Override
-        public UsuarioResponseDto buscarPorId (Long id){
-            Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
-            return objectMapper.convertValue(usuario, UsuarioResponseDto.class);
+    @Override
+    public UsuarioResponseDto buscarPorId(Long id) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
+        return objectMapper.convertValue(usuario, UsuarioResponseDto.class);
+    }
+
+    //TODO ---> Ver de eliminar metodo y crear una interfaz UsuarioService con todos los metodos menos el de crear y utlizar esa interfaz para el service en lugar de IService.
+    @Override
+    public void crear(UsuarioRequestDto usuarioRequestDto) {
+
+        if (usuarioRepository.findByEmail(usuarioRequestDto.getEmail()).isPresent()) {
+            throw new ResourceAlreadyExistsException("El usuario ya existe", HttpStatus.CONFLICT.value());
         }
 
-        @Override
-        public void crear (UsuarioRequestDto usuarioRequestDto){
+        normalizarNombreApellido(usuarioRequestDto);
+        AuthService.validarEmail(usuarioRequestDto.getEmail());
 
-            if (usuarioRepository.findByEmail(usuarioRequestDto.getEmail()).isPresent()) {
-                throw new ResourceAlreadyExistsException("El usuario ya existe", HttpStatus.CONFLICT.value());
-            }
+        Usuario usuario = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
+//        String passwordEncriptada = passwordEncoder.encode(usuarioRequestDto.getPassword());
+//        usuario.setPassword(passwordEncriptada);
 
-            normalizarNombreApellido(usuarioRequestDto);
-            validarEmail(usuarioRequestDto.getEmail());
-            validarPassword(usuarioRequestDto.getPassword());
-            validarRol(usuarioRequestDto.getRol());
-            Usuario usuario = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
-            String passwordEncriptada = passwordEncoder.encode(usuarioRequestDto.getPassword());
-            usuario.setPassword(passwordEncriptada);
-
-            usuarioRepository.save(usuario);
-        }
-
-        @Override
-        public void borrarPorId (Long id){
-            Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
-            usuarioRepository.delete(usuario);
-        }
-
-        @Override
-        public List<UsuarioResponseDto> listarTodos () {
-            List<Usuario> listaUsuarios = Optional.of(usuarioRepository.findAll()).orElseThrow(() -> new ResourceNotFoundException("No se encontraron usuarios", HttpStatus.NOT_FOUND.value()));
-
-            return listaUsuarios
-                    .stream()
-                    .map(usuario -> objectMapper.convertValue(usuario, UsuarioResponseDto.class))
-                    .collect(Collectors.toList());
-        }
-
-        private void validarRol (Rol rol){
-
-            if (!rol.getValor().equals("USER") && !rol.getValor().equals("ADMIN")) {
-                throw new RequestValidationException("El rol especificado no existe", HttpStatus.BAD_REQUEST.value());
-            }
-        }
-
-        private void normalizarNombreApellido (UsuarioRequestDto usuarioRequestDto){
-
-            String inicialNombre = usuarioRequestDto.getNombre().substring(0, 1);
-            String restoNombre = usuarioRequestDto.getNombre().substring(1);
-            usuarioRequestDto.setNombre(inicialNombre.toUpperCase() + restoNombre.toLowerCase());
-
-            String inicialApellido = usuarioRequestDto.getApellido().substring(0, 1);
-            String restoApellido = usuarioRequestDto.getApellido().substring(1);
-            usuarioRequestDto.setApellido(inicialApellido.toUpperCase() + restoApellido.toLowerCase());
-
-        }
-
-        @Override
-        public PaginatedResponse<UsuarioResponseDto> obtenerPaginacion ( int numeroPagina, int limit, int offset){
-            return null;
-        }
-
+        usuarioRepository.save(usuario);
+    }
 
     @Override
-    public UsuarioResponseDto buscarPorToken(String token) {
+    public void borrarPorId(Long id) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
+        usuarioRepository.delete(usuario);
+    }
+
+    @Override
+    public List<UsuarioResponseDto> listarTodos() {
+        List<Usuario> listaUsuarios = Optional.of(usuarioRepository.findAll()).orElseThrow(() -> new ResourceNotFoundException("No se encontraron usuarios", HttpStatus.NOT_FOUND.value()));
+
+        return listaUsuarios
+                .stream()
+                .map(usuario -> objectMapper.convertValue(usuario, UsuarioResponseDto.class))
+                .collect(Collectors.toList());
+    }
+
+    private void normalizarNombreApellido(UsuarioRequestDto usuarioRequestDto) {
+
+        String inicialNombre = usuarioRequestDto.getNombre().substring(0, 1);
+        String restoNombre = usuarioRequestDto.getNombre().substring(1);
+        usuarioRequestDto.setNombre(inicialNombre.toUpperCase() + restoNombre.toLowerCase());
+
+        String inicialApellido = usuarioRequestDto.getApellido().substring(0, 1);
+        String restoApellido = usuarioRequestDto.getApellido().substring(1);
+        usuarioRequestDto.setApellido(inicialApellido.toUpperCase() + restoApellido.toLowerCase());
+
+    }
+
+    @Override
+    public PaginatedResponse<UsuarioResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
+        return null;
+    }
+
+
+    //@Override
+    public UsuarioResponseDto buscarUsuarioPorToken(String token) {
 
         // Decodificar el token JWT
         Claims claims = Jwts.parser()
@@ -140,28 +150,6 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
         Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
 
         return objectMapper.convertValue(usuario, UsuarioResponseDto.class);
-    }
-
-    private Boolean validarEmail(String email){
-        if ((email.contains("@")) && (email.length() > 10 && email.length() < 30)) {
-            return true;
-        } else {
-            throw new RequestValidationException("El email tiene que tener entre 10 y 30 caracteres y contener un @", HttpStatus.BAD_REQUEST.value());
-        }
-    }
-
-    private Boolean validarPassword(String password){
-        String regex = "^[a-z0-9]{8,12}[^s][^$%&|<>#]$";
-
-        Pattern pattern = Pattern.compile(regex);
-
-        Matcher matcher = pattern.matcher(password);
-
-        if(matcher.matches()){
-            return true;
-        }else {
-            throw new RequestValidationException("La contraseña no cumple con los valores especificados ", HttpStatus.BAD_REQUEST.value());
-        }
     }
 
 }

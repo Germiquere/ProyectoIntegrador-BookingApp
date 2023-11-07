@@ -25,9 +25,9 @@ public class AdminUserInitializer {
             adminUser.setNombre("Admin");
             adminUser.setApellido("Admin");
             adminUser.setEmail("admin@example.com");
-            String rawPassword = "contraseña";  // Contraseña sin codificar
-            String encodedPassword = passwordEncoder.encode(rawPassword);  // Codificar la contraseña
-            adminUser.setPassword(encodedPassword);  // Establecer la contraseña codificada
+            String rawPassword = "contraseña";
+            String encodedPassword = passwordEncoder.encode(rawPassword);
+            adminUser.setPassword(encodedPassword);
             adminUser.setRol(Rol.ADMIN);
             usuarioRepository.save(adminUser);
         }

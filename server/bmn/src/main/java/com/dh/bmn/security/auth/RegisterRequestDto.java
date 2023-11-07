@@ -1,36 +1,34 @@
-package com.dh.bmn.dtos.requests;
+package com.dh.bmn.security.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.validation.annotation.Validated;
 
-@Validated
-@Setter
-@Getter
-@AllArgsConstructor
+@Data
+@Builder
 @NoArgsConstructor
-public class UsuarioRequestDto {
-
-
-    private Long usuarioId;
+@AllArgsConstructor
+public class RegisterRequestDto {
 
     @NotNull(message = "El nombre no puede ser nulo" )
     @NotBlank(message = "El nombre no puede estar vacio" )
-    @Size(min = 3, max = 10)
     private String nombre;
 
     @NotNull(message = "El apellido no puede ser nulo" )
     @NotBlank(message = "El apellido no puede estar vacio" )
-    @Size(min = 2, max = 10)
     private String apellido;
 
     @NotNull(message = "El email no puede ser nulo" )
     @NotBlank(message = "El email no puede estar vacio" )
     private String email;
+
+    @NotNull(message = "La contraseña no puede ser nula" )
+    @NotBlank(message = "La contraseña no puede estar vacia" )
+    @Size(min = 8, max = 12)
+    private String password;
 
 }

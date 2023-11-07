@@ -64,7 +64,7 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicletaRequestDto> caracteristicaBicicletaList = List.of(caracteristicaBicicletaRequestDto);
         BicicletaRequestDto bicicletaRequestDto =
                 new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicaBicicletaList);
-        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com");
         ReservaRequestDto reservaRequestDto = new ReservaRequestDto(1L, usuarioRequestDto, bicicletaRequestDto, LocalDate.of(2023, 12, 23), LocalDate.of(2023, 12, 24));
         //Act
         reservaService.crear(reservaRequestDto);
@@ -85,7 +85,7 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicletaRequestDto> caracteristicaBicicletaList = List.of(caracteristicaBicicletaRequestDto);
         BicicletaRequestDto bicicletaRequestDto =
                 new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicaBicicletaList);
-        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com");
         ReservaRequestDto reservaRequestDto = new ReservaRequestDto(1L, usuarioRequestDto, bicicletaRequestDto, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
         CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
         List<CategoriaBicicleta> categoriaList = List.of(categoriaBicicleta);
@@ -232,7 +232,7 @@ public class ReservaServiceTest {
         CaracteristicaBicicletaRequestDto caracteristicaBicicletaRequestDto = new CaracteristicaBicicletaRequestDto(1L, "electrica", "icono");
         List<CaracteristicaBicicletaRequestDto> caracteristicaRequestList = List.of(caracteristicaBicicletaRequestDto);
         BicicletaRequestDto bicicletaRequestDto = new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaRequestList, imagenes,caracteristicaRequestList);
-        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com");
         ReservaRequestDto reservaRequestDto = new ReservaRequestDto(1L, usuarioRequestDto, bicicletaRequestDto, LocalDate.of(2023, 12, 23), LocalDate.of(2023, 12, 24));
         Reserva reservaEntity = new Reserva(1L, usuario, bicicleta, LocalDate.of(2023, 12, 23), LocalDate.of(2023, 12, 24));
 
@@ -255,7 +255,7 @@ public class ReservaServiceTest {
         CaracteristicaBicicletaRequestDto caracteristicaBicicletaRequestDto = new CaracteristicaBicicletaRequestDto(1L, "electrica", "icono");
         List<CaracteristicaBicicletaRequestDto> caracteristicaList = List.of(caracteristicaBicicletaRequestDto);
         BicicletaRequestDto bicicletaRequestDto = new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList);
-        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com");
         ReservaRequestDto reservaRequestDto = new ReservaRequestDto(1L, usuarioRequestDto, bicicletaRequestDto, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
         Mockito.when(reservaRepository.findById(1L)).thenThrow(ResourceNotFoundException.class);
 
@@ -320,7 +320,7 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicletaRequestDto> caracteristicaRequestList = List.of(caracteristicaBicicletaRequestDto);
         BicicletaRequestDto bicicletaRequestDto =
                 new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaRequestList, imagenes, caracteristicaRequestList);
-        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com");
         ReservaRequestDto reservaRequestDto = new ReservaRequestDto(1L, usuarioRequestDto, bicicletaRequestDto, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
         CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
         List<CategoriaBicicleta> categoriaList = List.of(categoriaBicicleta);
@@ -349,7 +349,7 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicletaRequestDto> caracteristicaRequestList = List.of(caracteristicaBicicletaRequestDto);
         BicicletaRequestDto bicicletaRequestDto =
                 new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaRequestList, imagenes, caracteristicaRequestList);
-        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com");
         ReservaRequestDto reservaRequestDto = new ReservaRequestDto(1L, usuarioRequestDto, bicicletaRequestDto, LocalDate.of(2023, 11, 02), LocalDate.of(2023, 11, 03));
         CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
         List<CategoriaBicicleta> categoriaList = List.of(categoriaBicicleta);
@@ -383,7 +383,7 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicletaRequestDto> caracteristicaRequestList = List.of(caracteristicaBicicletaRequestDto);
         BicicletaRequestDto bicicletaRequestDto =
                 new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaRequestList, imagenes, caracteristicaRequestList);
-        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com");
         ReservaRequestDto reservaRequestDto = new ReservaRequestDto(1L, usuarioRequestDto, bicicletaRequestDto, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
        IllegalDateException exception = Assertions.assertThrows(IllegalDateException .class, () -> {
             reservaService.crear(reservaRequestDto);
@@ -403,7 +403,7 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicletaRequestDto> caracteristicaRequestList = List.of(caracteristicaBicicletaRequestDto);
         BicicletaRequestDto bicicletaRequestDto =
                 new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaRequestList, imagenes, caracteristicaRequestList);
-        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com");
         ReservaRequestDto reservaRequestDto = new ReservaRequestDto(1L, usuarioRequestDto, bicicletaRequestDto, LocalDate.of(2023, 11, 19), LocalDate.of(2023, 11, 10));
         IllegalDateException exception = Assertions.assertThrows(IllegalDateException .class, () -> {
             reservaService.crear(reservaRequestDto);
