@@ -26,7 +26,7 @@ public class AuthController {
         return new ResponseEntity<>(new JsonMessageDto("Nuevo usuario registrado", HttpStatus.CREATED.value()), HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/reenviar-confirmacion")
+    @PostMapping(value = "/reenviar-email")
     public ResponseEntity<?> reenviarCorreoConfirmacion(@RequestParam String email) throws MessagingException {
         authService.reenviarCorreoConfirmacion(email);
         return new ResponseEntity<>(new JsonMessageDto("Correo de confirmación reenviado", HttpStatus.OK.value()), HttpStatus.OK);
