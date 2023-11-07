@@ -4,6 +4,7 @@ import com.dh.bmn.dtos.requests.UsuarioRequestDto;
 import com.dh.bmn.entity.Usuario;
 import com.dh.bmn.exceptions.RequestValidationException;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
+import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IUsuarioRepository;
 import com.dh.bmn.security.jwt.JwtService;
 import com.dh.bmn.security.user.Rol;
@@ -49,15 +50,16 @@ public class AuthService {
 
         if (usuarioRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new ResourceAlreadyExistsException("El usuario ya existe", HttpStatus.CONFLICT.value());
+        } else {
+            usuarioRepository.save(usuario);
+
+            emailService.sendWelcomeEmail(request.getEmail(), request.getNombre());
+
+            return AuthResponse.builder().build();
+            //.token(jwtService.getToken(usuario))
+            //.build();
         }
 
-        usuarioRepository.save(usuario);
-
-        emailService.sendWelcomeEmail(request.getEmail(), request.getNombre());
-
-        return AuthResponse.builder().build();
-                //.token(jwtService.getToken(usuario))
-                //.build();
     }
 
     private void normalizarNombreApellido(RegisterRequest request) {
@@ -70,5 +72,14 @@ public class AuthService {
         String restoApellido = request.getApellido().substring(1);
         request.setApellido(inicialApellido.toUpperCase() + restoApellido.toLowerCase());
 
+    }
+
+    public void reenviarCorreoConfirmacion(String email) throws MessagingException {
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado", HttpStatus.NOT_FOUND.value()));
+
+        // Genera un nuevo token (si lo utilizas) y envía un correo de confirmación
+        //String nuevoToken = jwtService.generarNuevoToken(usuario);
+        emailService.sendWelcomeEmail(email, usuario.getNombre());
     }
 }

@@ -77,11 +77,6 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
         return null;
     }
 
-    @Override
-    public CategoriaBicicletaResponseDto buscarPorToken(String token) {
-        return null;
-    }
-
     private void normalizarNombreDescripcion(CategoriaBicicletaRequestDto categoriaBicicletaRequestDto) {
 
         String inicialNombre = categoriaBicicletaRequestDto.getNombre().substring(0, 1);

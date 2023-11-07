@@ -3,7 +3,8 @@ package com.dh.bmn.controllers;
 import com.dh.bmn.dtos.JsonMessageDto;
 import com.dh.bmn.dtos.requests.UsuarioRequestDto;
 import com.dh.bmn.dtos.responses.UsuarioResponseDto;
-import com.dh.bmn.services.IService;
+import com.dh.bmn.security.user.Rol;
+import com.dh.bmn.services.impl.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,10 +18,10 @@ import java.util.List;
 @RequestMapping("/bike-me-now/api/usuarios")
 public class UsuarioController {
 
-    private final IService<UsuarioResponseDto, UsuarioRequestDto> usuarioService;
+    private final UsuarioService usuarioService;
 
     @Autowired
-    public UsuarioController(IService<UsuarioResponseDto, UsuarioRequestDto> usuarioService) {
+    public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
@@ -56,6 +57,27 @@ public class UsuarioController {
         usuarioService.actualizar(usuarioRequestDto);
         return new ResponseEntity<>(new JsonMessageDto("Usuario actualizado exitosamente",HttpStatus.OK.value()), HttpStatus.OK);
     }
+
+    @PutMapping("/{usuarioId}/cambiar-rol")
+    @Secured("ADMIN")
+    public ResponseEntity<?> cambiarRolUsuario(@PathVariable Long usuarioId, @RequestParam("rol") String nuevoRol) {
+        Rol rol = convertirStringARol(nuevoRol);
+        usuarioService.cambiarRol(usuarioId, rol);
+        return new ResponseEntity<>(new JsonMessageDto("Rol de usuario cambiado exitosamente", HttpStatus.OK.value()), HttpStatus.OK);
+    }
+
+    private Rol convertirStringARol(String nuevoRol) {
+        // Supongamos que tu enumeración Rol tiene valores válidos "ADMIN" y "USER".
+        if ("ADMIN".equalsIgnoreCase(nuevoRol)) {
+            return Rol.ADMIN;
+        } else if ("USER".equalsIgnoreCase(nuevoRol)) {
+            return Rol.USER;
+        } else {
+            // Puedes manejar casos en los que el valor es inválido, por ejemplo, lanzar una excepción o devolver un valor por defecto.
+            throw new IllegalArgumentException("Rol no válido: " + nuevoRol);
+        }
+    }
+    //PUT bike-me-now/api/usuarios/{id}/cambiar-rol?rol=ADMIN
 
     @GetMapping("/buscar-por-token")
     @Secured({ "ADMIN", "USER" })

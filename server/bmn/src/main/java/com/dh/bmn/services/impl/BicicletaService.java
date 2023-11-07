@@ -92,11 +92,6 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public BicicletaResponseDto buscarPorToken(String token) {
-        return null;
-    }
-
     private void validarYguardarImagenesBicicleta(BicicletaRequestDto bicicletaRequestDto, Bicicleta bicicleta) {
 
         for (Imagen imagen : bicicletaRequestDto.getImagenes()) {

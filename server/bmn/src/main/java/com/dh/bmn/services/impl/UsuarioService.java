@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,11 +31,11 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
 
     private static final String secretKey = "586E3272357538782F413F4428472B4B6250655368566B597033733676397924";
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
-    @Override
+    /*@Override
     public void actualizar(UsuarioRequestDto usuarioRequestDto){
 
         Usuario usuarioDB = usuarioRepository.findById(usuarioRequestDto.getUsuarioId()).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
@@ -48,8 +49,45 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
                 String passwordEncriptada = passwordEncoder.encode(nuevaPassword);
                 usuarioDB.setPassword(passwordEncriptada);
             }
-
+            usuarioDB.setRol(Rol.USER);
             usuarioRepository.save(usuarioDB);
+        }
+    }*/
+
+    public void actualizar(UsuarioRequestDto usuarioRequestDto) {
+        Usuario usuarioDB = usuarioRepository.findById(usuarioRequestDto.getUsuarioId())
+                .orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
+
+        // Actualizar solo los campos específicos que se proporcionan en el DTO
+        String nuevaNombre = usuarioRequestDto.getNombre();
+        if (nuevaNombre != null) {
+            usuarioDB.setNombre(nuevaNombre);
+        }
+
+        String nuevaApellido = usuarioRequestDto.getApellido();
+        if (nuevaApellido != null) {
+            usuarioDB.setApellido(nuevaApellido);
+        }
+
+        String nuevoEmail = usuarioRequestDto.getEmail();
+        if (nuevoEmail != null) {
+            usuarioDB.setEmail(nuevoEmail);
+        }
+
+        // Asegurarte de que el rol y la contraseña no se cambien
+        usuarioRepository.save(usuarioDB);
+    }
+
+
+    public void cambiarRol(Long usuarioId, Rol nuevoRol) {
+        Usuario usuarioDB = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new ResourceNotFoundException("El usuario no existe", HttpStatus.NOT_FOUND.value()));
+
+        if (nuevoRol == Rol.ADMIN || nuevoRol == Rol.USER) {
+            usuarioDB.setRol(nuevoRol);
+            usuarioRepository.save(usuarioDB);
+        } else {
+            throw new RequestValidationException("No tienes permisos para cambiar el rol de este usuario.", HttpStatus.BAD_REQUEST.value());
         }
     }
 
@@ -67,10 +105,10 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
             throw new ResourceAlreadyExistsException("El usuario ya existe", HttpStatus.CONFLICT.value());
         }
 
-        validarRol(usuarioRequestDto.getRol());
+        //validarRol(usuarioRequestDto.getRol());
         Usuario usuario = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
-        String passwordEncriptada = passwordEncoder.encode(usuarioRequestDto.getPassword());
-        usuario.setPassword(passwordEncriptada);
+        //String passwordEncriptada = passwordEncoder.encode(usuarioRequestDto.getPassword());
+        //usuario.setPassword(passwordEncriptada);
 
         usuarioRepository.save(usuario);
     }
@@ -115,7 +153,7 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
 
     }
 
-    @Override
+    //@Override
     public UsuarioResponseDto buscarPorToken(String token) {
 
         // Decodificar el token JWT

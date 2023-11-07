@@ -35,13 +35,12 @@ public class UsuarioRequestDto {
     @NotBlank(message = "El email no puede estar vacio" )
     private String email;
 
-    @NotNull(message = "La contraseña no puede ser nula" )
-    @NotBlank(message = "La contraseña no puede estar vacia" )
-    @Size(min = 8, max = 12)
-    private String password;
+    //@NotNull(message = "La contraseña no puede ser nula" )
+    //@NotBlank(message = "La contraseña no puede estar vacia" )
+    //@Size(min = 8, max = 12)
+    //private String password;
 
-    @NotNull(message = "El rol no puede ser nulo")
-    private Rol rol;
-
+    //@NotNull(message = "El rol no puede ser nulo")
+    //private Rol rol;
 
 }
