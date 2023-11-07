@@ -88,16 +88,20 @@ public class AuthService {
         emailService.sendWelcomeEmail(email, usuario.getNombre());
     }
 
-    public static Boolean validarEmail(String email) {
-        if ((email.contains("@")) && (email.length() > 10 && email.length() < 30)) {
+    public static boolean validarEmail(String email) {
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        if (matcher.matches()) {
             return true;
         } else {
-            throw new RequestValidationException("El email tiene que tener entre 10 y 30 caracteres y contener un @", HttpStatus.BAD_REQUEST.value());
+            throw new RequestValidationException("El email no cumple con los valores especificados", HttpStatus.BAD_REQUEST.value());
         }
     }
 
+
     public static Boolean validarPassword(String password) {
-        String regex = "^[a-z0-9]{8,12}[^s][^$%&|<>#]$";
+        String regex = "^[a-z0-9s]{8,12}[^s][^$%&|<>#]$";
 
         Pattern pattern = Pattern.compile(regex);
 
@@ -106,7 +110,7 @@ public class AuthService {
         if (matcher.matches()) {
             return true;
         } else {
-            throw new RequestValidationException("La contraseña no cumple con los valores especificados ", HttpStatus.BAD_REQUEST.value());
+            throw new RequestValidationException("La contraseña no cumple con los valores especificados", HttpStatus.BAD_REQUEST.value());
         }
     }
 }
