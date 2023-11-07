@@ -13,7 +13,7 @@ export const Header = ({ user }) => {
   const renderUserLinks = () => {
     if (user) {
       return (
-        <div className='flex items-center'>
+        <div className='flex items-center relative'>
           <Link className='w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white text-md hover:bg-secondary mr-2'>
             {user.name.charAt(0).toUpperCase()}
           </Link>
@@ -21,6 +21,30 @@ export const Header = ({ user }) => {
           <div className='cursor-pointer' onClick={toggleDropdown}>
             <IoIosArrowDown />
           </div>
+
+          {isDropdownOpen && (
+            <div
+              className={`absolute top-[55px] right-0 bg-white border border-gray-300 p-2 rounded-lg shadow-lg transition-opacity  ${
+                isDropdownOpen ? 'opacity-100' : 'opacity-0'
+              }duration-300 ease-in-out`}
+            >
+              <div className='flex flex-col items-center'>
+                <button
+                  className='min-w-[180px] middle none center  rounded-full border border-primary py-3 px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-tertiary active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none '
+                  data-ripple-dark='true'
+                >
+                  Administracion
+                </button>
+
+                <button
+                  className='min-w-[180px] middle none center  rounded-full border border-primary py-3 px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-tertiary active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none mt-2'
+                  data-ripple-dark='true'
+                >
+                  Cerrar sesión
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       );
     } else {
@@ -46,33 +70,6 @@ export const Header = ({ user }) => {
         </div>
         {renderUserLinks()}
       </div>
-
-      {isDropdownOpen && (
-        <div
-          className={`absolute top-[55px] right-[5px] bg-white border border-gray-300 p-2 rounded-lg shadow-lg transition-opacity  xl:right-[355px] ${
-            isDropdownOpen ? 'opacity-100' : 'opacity-0'
-          }duration-300 ease-in-out`}
-        >
-          <div className='flex flex-col items-center'>
-            <div className='flex items-center'>
-              <p className='w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white text-md  mr-2'>
-                {user.name.charAt(0).toUpperCase()}
-              </p>
-              <p className='text-black mr-2 font-bold'>
-                {user.name} {user.apellido}
-                <p className='font-semibold'>{user.email}</p>
-              </p>
-            </div>
-
-            <button
-              className=' middle none center  rounded-full border border-primary py-3 px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-tertiary active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none mt-4'
-              data-ripple-dark='true'
-            >
-              Cerrar sesión
-            </button>
-          </div>
-        </div>
-      )}
     </header>
   );
 };
