@@ -210,6 +210,7 @@ export function UsersProvider({ children }) {
                 setIsRegistered,
                 registerUser,
                 setErrorAuth,
+                logout,
             }}
         >
             {children}

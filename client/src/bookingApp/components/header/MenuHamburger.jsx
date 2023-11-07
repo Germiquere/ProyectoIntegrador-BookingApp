@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaBars } from "react-icons/fa";
+import { Link } from "react-router-dom";
 export const MenuHamburger = () => {
     let [open, setOpen] = useState(false);
     return (
@@ -17,20 +18,24 @@ export const MenuHamburger = () => {
                 }`}
             >
                 <div className="">
-                    <button
-                        className="middle none center rounded-full border border-primary w-[120px] h-[40px] py-3 px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-tertiary active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                        data-ripple-dark="true"
-                    >
-                        Ingresar
-                    </button>
+                    <Link to="/auth/login">
+                        <button
+                            className="middle none center rounded-full border border-primary w-[120px] h-[40px] py-3 px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-tertiary active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            data-ripple-dark="true"
+                        >
+                            Ingresar
+                        </button>
+                    </Link>
                 </div>
                 <div className="">
-                    <button
-                        className="middle none center rounded-full bg-primary w-[120px] h-[40px] py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm transition-all hover:shadow-secondary active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                        data-ripple-light="true"
-                    >
-                        Registrarse
-                    </button>
+                    <Link to="/auth/register">
+                        <button
+                            className="middle none center rounded-full bg-primary w-[120px] h-[40px] py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm transition-all hover:shadow-secondary active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            data-ripple-light="true"
+                        >
+                            Registrarse
+                        </button>
+                    </Link>
                 </div>
             </div>
         </>
