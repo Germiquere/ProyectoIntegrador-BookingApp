@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getUser, getUsers } from "../api/users";
-import { login } from "../api/auth";
+import { login, register } from "../api/auth";
 import { useForm } from "../hooks/useForm";
 import { useNavigate } from "react-router-dom";
 
@@ -40,6 +40,9 @@ export function UsersProvider({ children }) {
         isAuthenticated: false,
         rol: "",
     });
+    // REGISTER
+    const [userEmail, setUserEmail] = useState("");
+    const [isRegistered, setIsRegistered] = useState(false);
     const { isAuthenticated, rol } = authUser;
 
     // -----------USUARIO-----------
@@ -103,6 +106,22 @@ export function UsersProvider({ children }) {
     //         alert("token expired");
     //     }, 300 * 1000);
     // };
+    const registerUser = async (user) => {
+        setLoadingAuth(true);
+        try {
+            const data = await register(user);
+            console.log(data);
+            return data;
+        } catch (err) {
+            // if (err.status === 403) {
+            //     navigate("/auth/login", { replace: true });
+            // }
+            console.log(err.status);
+            setErrorAuth(err);
+        } finally {
+            setLoadingAuth(false);
+        }
+    };
     const loginUser = async (user) => {
         // MANEJO EL ESTADO  DEL LOADING EN TRUE
         setLoadingAuth(true);
@@ -148,7 +167,6 @@ export function UsersProvider({ children }) {
             }
         }
     };
-    console.log(errorUser);
     // SOLO HACER EL FETCH DE LOS USUARIOS SI HAY UN USUARIO LOGUEADO Y SI EL ROLL ES ADMIN
     // useEffect(() => {
     //     fetchUsersData();
@@ -178,6 +196,9 @@ export function UsersProvider({ children }) {
                 isAuthenticated,
                 rol,
                 errorAuth,
+                userEmail,
+                isRegistered,
+                loadingAuth,
                 // METODOS
                 onInputChange,
                 onResetForm,
@@ -185,6 +206,10 @@ export function UsersProvider({ children }) {
                 setOpenEditUserModal,
                 loginUser,
                 fetchUserData,
+                setUserEmail,
+                setIsRegistered,
+                registerUser,
+                setErrorAuth,
             }}
         >
             {children}
