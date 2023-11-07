@@ -7,9 +7,12 @@ import { Categories } from "../pages/Categories";
 import { AdminRouter } from "../../admin/routes/AdminRouter";
 import { useCategoriesContext } from "../../context/CategoriesContext";
 import { SearchProducts } from "../pages/SearchProducts";
+import { useUsersContext } from "../../context/UsersContext";
 
 export const BookingAppRouter = () => {
     const { categoriesData } = useCategoriesContext();
+    const { isAuthenticated, rol } = useUsersContext();
+    console.log(rol, isAuthenticated);
     return (
         <Routes>
             <Route path="/" element={<BookingLayout />}>
@@ -22,7 +25,10 @@ export const BookingAppRouter = () => {
                             element={<Categories />}
                         />
                     ))}
-                <Route path="admin/*" element={<AdminRouter />} />
+                {isAuthenticated && rol === "admin" && (
+                    <Route path="admin/*" element={<AdminRouter />} />
+                )}
+
                 <Route path="/description/:id" element={<Description />} />
                 <Route path="/items" element={<SearchProducts />} />
 

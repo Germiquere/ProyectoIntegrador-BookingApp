@@ -1,7 +1,7 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { ProductsPage } from "../pages/ProductsPage";
 import { AdminLayout } from "../layout/AdminLayout";
-import { Categories } from "../../bookingApp/pages/Categories";
+
 import { UsersPage } from "../pages/UsersPage";
 
 export const AdminRouter = () => {

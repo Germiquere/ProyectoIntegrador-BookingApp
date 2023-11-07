@@ -13,7 +13,6 @@ export function CalendarAndSearchProvider({ children }) {
     const [openCalendarAndSearch, setOpenCalendarAndSearch] = useState(false);
     const { onInputChange, formState, setFormState, onResetForm } =
         useForm(formData);
-    console.log(formState);
     const handleOpenCalendarAndSearch = () => {
         setOpenCalendarAndSearch(!openCalendarAndSearch);
     };

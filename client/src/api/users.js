@@ -1,8 +1,8 @@
 // USERS
 export const getUser = async () => {
+    console.log("Estoy aca");
     try {
-        const token = localStorage.getItem("token");
-        console.log(token);
+        const { token } = JSON.parse(localStorage.getItem("accessToken"));
         const res = await fetch(
             "http://localhost:8080/bike-me-now/api/usuarios/buscar-por-token",
             {
@@ -34,7 +34,7 @@ export const getUser = async () => {
 
 export const getUsers = async () => {
     try {
-        const token = localStorage.getItem("token");
+        const { token } = JSON.parse(localStorage.getItem("accessToken"));
         const res = await fetch(
             "http://localhost:8080/bike-me-now/api/usuarios",
             {
@@ -65,7 +65,7 @@ export const getUsers = async () => {
 };
 export const updateUser = async (user) => {
     try {
-        const token = localStorage.getItem("token");
+        const { token } = JSON.parse(localStorage.getItem("accessToken"));
         const res = await fetch(
             `http://localhost:8080/bike-me-now/bicicletas/`,
             {
@@ -100,7 +100,7 @@ export const updateUser = async (user) => {
 };
 export const deleteUser = async (id) => {
     try {
-        const token = localStorage.getItem("token");
+        const { token } = JSON.parse(localStorage.getItem("accessToken"));
         const res = await fetch(
             `http://localhost:8080/bike-me-now/bicicletas/${id}`,
             {

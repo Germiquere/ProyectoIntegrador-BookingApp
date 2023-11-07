@@ -36,18 +36,31 @@ export function UsersProvider({ children }) {
     // AUTH
     const [loadingAuth, setLoadingAuth] = useState(false);
     const [errorAuth, setErrorAuth] = useState(null);
+    const [authUser, setAuthUser] = useState({
+        isAuthenticated: false,
+        rol: "",
+    });
+    const { isAuthenticated, rol } = authUser;
+
     // -----------USUARIO-----------
     // FUNCION PARA OBTENER EL USUARIO LOGUEADO
     const fetchUserData = async () => {
         // MANEJO EL ESTADO  DEL LOADING EN TRUE
-        setLoadingUsers(true);
+        setLoadingUser(true);
         try {
             const data = await getUser();
             setUserData(data);
+            // SETEO EL ROL Y QUE ESTA AUTENTICADO
+            setAuthUser({
+                isAuthenticated: true,
+                rol: data.rol,
+            });
+            return data;
         } catch (err) {
-            if (err.status === 403) {
-                navigate("/auth/login", { replace: true });
-            }
+            // if (err.status === 403) {
+            //     navigate("/auth/login", { replace: true });
+            // }
+            console.log("estoy por tirar un error al loguear");
             setErrorUser(err);
         } finally {
             setLoadingUser(false);
@@ -73,26 +86,35 @@ export function UsersProvider({ children }) {
     // --------AUTH--------
     // FUNCION PARA LOGOUT DEL USUARIO
     const logout = () => {
-        localStorage.removeItem("token");
+        localStorage.removeItem("accessToken");
         // TODO: QUITAR TAMBIEN LA INFORMACION DEL USUARIO
         setUserData([]);
+        setAuthUser({
+            isAuthenticated: false,
+            rol: "",
+        });
         navitage("/");
     };
     // FUNCION DEL TIMER DEL TOKEN
-    const logoutTimer = () => {
-        setTimeout(() => {
-            // TODO: EJECUTAR LA FUNCION DE LOGOUT
-            logout();
-            alert("token expired");
-        }, 3600 * 1000);
-    };
+    // const logoutTimer = () => {
+    //     setTimeout(() => {
+    //         // TODO: EJECUTAR LA FUNCION DE LOGOUT
+    //         logout();
+    //         alert("token expired");
+    //     }, 300 * 1000);
+    // };
     const loginUser = async (user) => {
         // MANEJO EL ESTADO  DEL LOADING EN TRUE
         setLoadingAuth(true);
         try {
             const data = await login(user);
-            localStorage.setItem("token", data.token);
-            logoutTimer();
+            const exp = Math.floor(Date.now() / 1000) + 300;
+            const accessToken = {
+                token: data.token,
+                exp,
+            };
+            localStorage.setItem("accessToken", JSON.stringify(accessToken));
+            // logoutTimer();
         } catch (err) {
             // if (err.status === 403) {
             //     navigate("/auth/login", { replace: true });
@@ -102,11 +124,35 @@ export function UsersProvider({ children }) {
             setLoadingAuth(false);
         }
     };
+    // FUNCION PARA VER EN CUANTO TIEMPO EXPIRA EL TOKEN
+    const tokenExpTime = async () => {
+        const token = JSON.parse(localStorage.getItem("accessToken"));
+        const now = Math.floor(Date.now() / 1000);
 
+        if (token) {
+            console.log("hay token");
+            const time = token.exp - now;
+            console.log(token.exp);
+            console.log(now);
+            console.log(time);
+
+            if (time > 0) {
+                await fetchUserData();
+                setTimeout(() => {
+                    logout();
+                    console.log("token expired");
+                }, time * 1000);
+            } else {
+                console.log("hice el logout sin estar con tiempo");
+                logout();
+            }
+        }
+    };
+    console.log(errorUser);
     // SOLO HACER EL FETCH DE LOS USUARIOS SI HAY UN USUARIO LOGUEADO Y SI EL ROLL ES ADMIN
-    useEffect(() => {
-        fetchUsersData();
-    }, []);
+    // useEffect(() => {
+    //     fetchUsersData();
+    // }, []);
     // SOLO HACER EL FETCH DEL USUARIO SI ESTA LOGUEADO,ES DECIR AUTENTICADO
     const user = {
         email: "admin@example.com",
@@ -114,22 +160,31 @@ export function UsersProvider({ children }) {
     };
     useEffect(() => {
         // fetchUserData();
-        loginUser(user);
+        // loginUser(user);
+        tokenExpTime();
     }, []);
     return (
         <UsersContext.Provider
             value={{
                 // PROPIEDADES
+                loadingUser,
+                userData,
+                errorUser,
                 usersData,
                 loadingUsers,
                 errorUsers,
                 usersFormState,
                 openEditUserModal,
+                isAuthenticated,
+                rol,
+                errorAuth,
                 // METODOS
                 onInputChange,
                 onResetForm,
                 setFormState,
                 setOpenEditUserModal,
+                loginUser,
+                fetchUserData,
             }}
         >
             {children}

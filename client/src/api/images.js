@@ -1,5 +1,6 @@
 export const postImage = async (file) => {
-    const token = localStorage.getItem("token");
+    const { token } = JSON.parse(localStorage.getItem("accessToken"));
+
     if (!file) throw new Error("No hay ningúna imagen para subir");
     const formData = new FormData();
     formData.append("bucketName", "bikemenowbucket");
@@ -31,7 +32,8 @@ export const postImage = async (file) => {
 };
 //TODO: VER COMO TERMINA SIENDO ESTO
 export const deleteImage = async (key) => {
-    const token = localStorage.getItem("token");
+    const { token } = JSON.parse(localStorage.getItem("accessToken"));
+
     try {
         const res = await fetch(
             `http://localhost:8080/bike-me-now/api/s3/deleteFile?bucketName=bikemenowbucket&fileName=${key}`,

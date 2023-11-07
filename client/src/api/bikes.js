@@ -75,7 +75,7 @@ export const getBikeById = async (id) => {
     }
 };
 export const postBike = async (bike) => {
-    const token = localStorage.getItem("token");
+    const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
         // PASAR EL ENDPOINT DE NUESTRA API
         const res = await fetch(
@@ -105,7 +105,7 @@ export const postBike = async (bike) => {
     }
 };
 export const deleteBike = async (id) => {
-    const token = localStorage.getItem("token");
+    const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
         const res = await fetch(
             `http://localhost:8080/bike-me-now/api/bicicletas/${id}`,
@@ -133,7 +133,7 @@ export const deleteBike = async (id) => {
     }
 };
 export const updateBike = async (bike) => {
-    const token = localStorage.getItem("token");
+    const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
         // PASAR EL ENDPOINT DE NUESTRA API
         const res = await fetch(
