@@ -92,6 +92,7 @@ public class AuthService {
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
+
         if (matcher.matches()) {
             return true;
         } else {
@@ -101,10 +102,8 @@ public class AuthService {
 
 
     public static Boolean validarPassword(String password) {
-        String regex = "^[a-z0-9s]{8,12}[^s][^$%&|<>#]$";
-
+        String regex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)[A-Za-z\\d]{8,12}$";
         Pattern pattern = Pattern.compile(regex);
-
         Matcher matcher = pattern.matcher(password);
 
         if (matcher.matches()) {
