@@ -68,10 +68,6 @@ export const CreateProductModal = () => {
         const hasMatch = categorias.some(
             (categoria) => categoria.categoriaId == value
         );
-        //     // setErros({
-        //     //     ...erros,
-        //     //     categoria: value.trim() === "",
-        //     // });
         console.log(hasMatch);
         if (!hasMatch && value.trim()) {
             onCategoryChange(e);
@@ -577,7 +573,7 @@ export const CreateProductModal = () => {
                                                     >
                                                         <div className="flex gap-2 items-center">
                                                             <i
-                                                                className={`fa-solid ${characteristicData.icono}`}
+                                                                className={`${characteristicData.icono}`}
                                                             ></i>
                                                             <p>
                                                                 {

@@ -1,8 +1,14 @@
 import { useBikesContext } from "../../context/BikesContext";
 import { SkeletonTableProducts } from "./SkeletonTableProducts";
 export const TableProducts = () => {
-    const { loading, bikesData, setFormState, setOpenEditProductModal } =
-        useBikesContext();
+    const {
+        loading,
+        bikesData,
+        setFormState,
+        setOpenEditProductModal,
+        formState,
+    } = useBikesContext();
+    console.log(formState);
     return (
         <div className="flex flex-col gap-2">
             {loading
@@ -13,19 +19,18 @@ export const TableProducts = () => {
                       <div key={bike.bicicletaId}>
                           <div
                               onClick={() => {
-                                  setOpenEditProductModal(true);
                                   setFormState({
                                       bicicletaId: bike.bicicletaId,
                                       nombre: bike.nombre,
                                       descripcion: bike.descripcion,
                                       precioAlquilerPorDia:
                                           bike.precioAlquilerPorDia,
-                                      categoria: {
-                                          categoriaId:
-                                              bike.categoria.categoriaId,
-                                      },
+                                      categorias: bike.categorias,
                                       imagenes: bike.imagenes,
+                                      caracteristicas: bike.caracteristicas,
                                   });
+                                  console.log(bike);
+                                  setOpenEditProductModal(true);
                               }}
                               className="cursor-pointer flex gap-8 justify-between items-center rounded-xl text-xs p-3 bg-white shadow-md border border-gray-200 relative hover:bg-gray-100"
                           >

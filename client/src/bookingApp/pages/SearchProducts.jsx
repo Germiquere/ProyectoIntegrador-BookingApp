@@ -10,12 +10,9 @@ import { useBikesContext } from "../../context/BikesContext";
 import { useCategoriesContext } from "../../context/CategoriesContext";
 import Fuse from "fuse.js";
 export const SearchProducts = () => {
-    const {
-        handleOpenCalendarAndSearch,
-        onResetForm,
-        formState,
-        setFormState,
-    } = useContext(CalendarAndSearchContext);
+    const { handleOpenCalendarAndSearch, formState, setFormState } = useContext(
+        CalendarAndSearchContext
+    );
     const { bikesData } = useBikesContext();
     const { categoriesData } = useCategoriesContext();
     const location = useLocation();
@@ -30,14 +27,11 @@ export const SearchProducts = () => {
     // FUSE SEARCH
     const [fuse, setFuse] = useState(null);
     const fuseOptions = {
-        keys: ["nombre", "categoria.nombre"],
+        keys: ["nombre"],
         includeScore: true,
         threshold: 0.3,
     };
-    useEffect(() => {
-        const fuseInstance = new Fuse(bikesData, fuseOptions);
-        setFuse(fuseInstance);
-    }, [bikesData]);
+
     // FUNCION PARA MANEJAR EL SUBMIT
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -54,7 +48,6 @@ export const SearchProducts = () => {
     // FUNCION PARA FILTRAR LAS BICICLETAS POR CATEGORIAS Y NOMBRE
     const filterBicycles = () => {
         let filteredBicycles = bikesData;
-        console.log(formState.search);
         if (formState.search && fuse) {
             const searchResults = fuse.search(formState.search);
 
@@ -66,12 +59,20 @@ export const SearchProducts = () => {
             );
         }
 
+        // if (selectedCategories.length > 0) {
+        //     filteredBicycles = filteredBicycles.filter((bike) =>
+        //         selectedCategories.includes(bike.categoria.nombre.toLowerCase())
+        //     );
+        // }
         if (selectedCategories.length > 0) {
-            filteredBicycles = filteredBicycles.filter((bike) =>
-                selectedCategories.includes(bike.categoria.nombre.toLowerCase())
-            );
+            filteredBicycles = filteredBicycles.filter((bike) => {
+                return bike.categorias.some((categoria) => {
+                    return selectedCategories.includes(
+                        categoria.nombre.toLowerCase()
+                    );
+                });
+            });
         }
-
         return filteredBicycles;
     };
     // FUNCION PARA MOSTRAR LAS BICIS SEGUN EL FILTRO
@@ -104,7 +105,10 @@ export const SearchProducts = () => {
         const filteredResults = filterBicycles();
         setFilteredBicycles(filteredResults);
     }, [selectedCategories]);
-
+    useEffect(() => {
+        const fuseInstance = new Fuse(bikesData, fuseOptions);
+        setFuse(fuseInstance);
+    }, [bikesData]);
     return (
         <>
             {/* SECTION HERO */}
@@ -141,57 +145,77 @@ export const SearchProducts = () => {
             </Section>
             {/* SECTION PRODUCTS AND FILTER */}
             <Section>
-                <div className={` max-w-[1200px] mx-auto`}>
-                    {/* CARDS */}
-                    <div className="grid grid-cols-1  gap-4  ssm:grid-cols-2  sm:grid-cols-3  md:grid-cols-4 ">
-                        {filteredBicycles.map((bike) => (
-                            <div
-                                className={` mt-8 mb-8 rounded-xl transition-transform transform-gpu duration-300 shadow-md hover:-translate-y-1 hover:scale-105 
-`}
-                                // key={item.bicicletaId}
-                            >
-                                <Link to={`/description/1`} className="">
-                                    <div>
-                                        <img
-                                            className="rounded-t-xl  w-full h-48 object-contain"
-                                            src={bike.imagenes[0].url}
-                                            alt={bike.nombre}
-                                        />
-                                    </div>
-
-                                    <p className="pl-4 pt-4">{bike.nombre}</p>
-                                    <p className="p-4 font-bold ">
-                                        Desde ${bike.precioAlquilerPorDia}/día
-                                    </p>
-                                </Link>
-                            </div>
-                        ))}
-                    </div>
+                <div className={` max-w-[1200px] mx-auto flex `}>
                     {/* FILTROS */}
-                    <div>
-                        {categoriesData.map((category) => (
-                            <div
-                                key={category.categoriaId}
-                                onClick={() => {
-                                    handleCategoryChange(
-                                        category.nombre.toLowerCase()
-                                    );
-                                    setFormState({
-                                        ...formState,
-                                        search: "",
-                                    });
-                                }}
-                                className={`cursor-pointer ${
-                                    selectedCategories.includes(
-                                        category.nombre.toLowerCase()
-                                    )
-                                        ? "text-primary"
-                                        : ""
-                                }`}
-                            >
-                                {category.nombre}
-                            </div>
-                        ))}
+                    <div className="flex flex-col gap-2 w-60">
+                        <h3 className="text-lg sm:text-2xl font-semibold w-full">
+                            Filtros
+                        </h3>
+                        <div>
+                            <h4 className="text-lg font-semibold">
+                                Categorías
+                            </h4>
+                            {categoriesData.map((category) => (
+                                <div
+                                    key={category.categoriaId}
+                                    onClick={() => {
+                                        handleCategoryChange(
+                                            category.nombre.toLowerCase()
+                                        );
+                                        setFormState({
+                                            ...formState,
+                                            search: "",
+                                        });
+                                    }}
+                                    className={`flex gap-2 items-center cursor-pointer
+                                `}
+                                >
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedCategories.nombre.includes(
+                                            category.nombre
+                                        )}
+                                    />
+                                    <p>{category.nombre}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    {/* CARDS */}
+                    <div className="flex flex-col gap-2">
+                        <h4 className="text-lg font-semibold">
+                            {`${filteredBicycles.length} artículos`}
+                        </h4>
+                        <div className="grid grid-cols-1  gap-4  ssm:grid-cols-2  sm:grid-cols-3  md:grid-cols-4 ">
+                            {filteredBicycles.map((bike) => (
+                                <div
+                                    className={` mt-8 mb-8 rounded-xl transition-transform transform-gpu duration-300 shadow-md hover:-translate-y-1 hover:scale-105 
+`}
+                                    key={bike.bicicletaId}
+                                >
+                                    <Link
+                                        to={`/description/${bike.bicicletaId}`}
+                                        className=""
+                                    >
+                                        <div>
+                                            <img
+                                                className="rounded-t-xl  w-full h-48 object-contain"
+                                                src={bike.imagenes[0].url}
+                                                alt={bike.nombre}
+                                            />
+                                        </div>
+
+                                        <p className="pl-4 pt-4">
+                                            {bike.nombre}
+                                        </p>
+                                        <p className="p-4 font-bold ">
+                                            Desde ${bike.precioAlquilerPorDia}
+                                            /día
+                                        </p>
+                                    </Link>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </Section>

@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { BsXLg, BsCurrencyDollar, BsCloudUpload } from "react-icons/bs";
+import { BsXLg, BsCurrencyDollar, BsCloudUpload, BsX } from "react-icons/bs";
 import { useEffect } from "react";
 import { Loader } from "../../ui/Loader";
 import { useBikesContext } from "../../context/BikesContext";
@@ -7,6 +7,7 @@ import { deleteImage } from "../../api/images";
 import { ConfirmDelete } from "./ConfirmDelete";
 import { Tooltip } from "@mui/material";
 import { useCategoriesContext } from "../../context/CategoriesContext";
+import { useCharacteristicsContext } from "../../context/CharacteristicsContext";
 
 export const EditProductModal = () => {
     const {
@@ -26,26 +27,35 @@ export const EditProductModal = () => {
         setFormState,
         openConfirmDelete,
         setOpenConfirmDelete,
+        onCaractChange,
     } = useBikesContext();
     const { categoriesData } = useCategoriesContext();
+    const { characteristicsData } = useCharacteristicsContext();
     const {
         nombre,
         descripcion,
         precioAlquilerPorDia,
-        categoria,
+        categorias,
         imagenes,
         bicicletaId,
+        caracteristicas,
     } = formState;
     const [imageChange, setImageChange] = useState([]);
     const fileInputRef = useRef(null);
+    const selectRef = useRef(null);
+    const selectCatRef = useRef(null);
     const [erros, setErros] = useState({
         nombre: false,
         categoria: false,
         precioAlquilerPorDia: false,
         imagenes: false,
+        caracteristicas: false,
+        descripcion: false,
     });
     const [imagesToDelete, setImagesToDelete] = useState([]);
     const [hasErrorImg, setHasErrorImg] = useState(false);
+    const [hasErrorCat, setHasErrorCat] = useState(false);
+    const [hasErrorCaract, setHasErrorCaract] = useState(false);
     // FUNCION PARA MANEJAR EL CAMBIO DE INPUT Y SUS ERRORES
     const handleInputChange = (e, toNumber = false) => {
         const { name, value } = e.target;
@@ -59,29 +69,81 @@ export const EditProductModal = () => {
     // FUNCION PARA MANEJAR EL CAMBIO DE CATEGORIA Y SUS ERRORES
     const handleCategoryChange = (e) => {
         const { name, value } = e.target;
-        onCategoryChange(e);
-        setErros({
-            ...erros,
-            categoria: value.trim() === "",
+        // COMPROBAMOS QUE NO ESTE LA CATEGORIA AGREGADA,
+        const hasMatch = categorias.some(
+            (categoria) => categoria.categoriaId == value
+        );
+        console.log(hasMatch);
+        if (!hasMatch && value.trim()) {
+            onCategoryChange(e);
+        }
+        setError("");
+    };
+    const handleCaracteristicsChange = (e) => {
+        const { name, value } = e.target;
+        // COMPROBAMOS QUE NO ESTE LA CATEGORIA AGREGADA,
+        const hasMatch = caracteristicas.some(
+            (caract) => caract.caracteristicaId == value
+        );
+        //     // setErros({
+        //     //     ...erros,
+        //     //     categoria: value.trim() === "",
+        //     // });
+        console.log(hasMatch);
+        if (!hasMatch && value.trim()) {
+            onCaractChange(e);
+        }
+    };
+    const handleCategoryDeletefromFormstate = (id) => {
+        const updatedCategorias = categorias.filter(
+            (category) => category.categoriaId !== id
+        );
+        setFormState({
+            ...formState,
+            categorias: updatedCategorias,
         });
+        selectCatRef.current.value = "";
+    };
+    const handleCharacteristicDeletefromFormstate = (id) => {
+        const updatedCaracts = caracteristicas.filter(
+            (caract) => caract.caracteristicaId !== id
+        );
+        setFormState({
+            ...formState,
+            caracteristicas: updatedCaracts,
+        });
+        selectRef.current.value = "";
     };
     // FUNCION PARA VALIDACIONES
     const handleValidations = () => {
         let hasError = false;
-        if (
-            typeof categoria.categoriaId === "string" &&
-            categoria.categoriaId.trim() === ""
-        ) {
+        if (categorias.length === 0) {
             setErros((prevErrors) => ({
                 ...prevErrors,
                 categoria: true,
             }));
+            setHasErrorCat(true);
+            hasError = true;
+        }
+        if (caracteristicas.length === 0) {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                caracteristicas: true,
+            }));
+            setHasErrorCaract(true);
             hasError = true;
         }
         if (nombre.trim() === "") {
             setErros((prevErrors) => ({
                 ...prevErrors,
                 nombre: true,
+            }));
+            hasError = true;
+        }
+        if (descripcion.trim() === "") {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                descripcion: true,
             }));
             hasError = true;
         }
@@ -209,6 +271,26 @@ export const EditProductModal = () => {
             setHasErrorImg(false);
         }
     }, [imageChange, imagenes]);
+    useEffect(() => {
+        if (categorias.length !== 0) {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                categoria: false,
+            }));
+            // handleValidations();
+            setHasErrorCat(false);
+        }
+    }, [categorias]);
+    useEffect(() => {
+        if (caracteristicas.length !== 0) {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                caracteristicas: false,
+            }));
+            // handleValidations();
+            setHasErrorCaract(false);
+        }
+    }, [caracteristicas]);
     return (
         <>
             <div
@@ -288,19 +370,16 @@ export const EditProductModal = () => {
                             {/* CATEGORIA */}
                             <div>
                                 <label className="text-base font-semibold mb-2">
-                                    Categoria *
+                                    Categorías *
                                 </label>
                                 {/* TODO: en base al value del select, cambia el color del texto a text-graty-400 o "" */}
                                 <div
-                                    className={`relative h-11 w-full min-w-[200px]  border-[1px]  border-gray-100 overflow-hidden shadow-md rounded-xl ${
-                                        categoria.categoriaId
-                                            ? ""
-                                            : "text-gray-400"
-                                    }`}
+                                    className={`relative h-11 w-full min-w-[200px]  border-[1px]  border-gray-100 overflow-hidden shadow-md rounded-xl text-gray-400`}
                                 >
                                     <select
+                                        ref={selectCatRef}
                                         name="categoria"
-                                        value={categoria.categoriaId}
+                                        value={categorias.categoriaId}
                                         onChange={handleCategoryChange}
                                         className="peer h-full w-full p-2 font-sans text-sm font-normal  outline outline-0 transition-all focus:outline-0 disabled:bg-blue-gray-50"
                                     >
@@ -308,7 +387,7 @@ export const EditProductModal = () => {
                                             value=""
                                             className="text-gray-400"
                                         >
-                                            Selecciona una categoria
+                                            Selecciona una categoría
                                         </option>
                                         {/*TODO: hacer el map con los options */}
 
@@ -332,8 +411,124 @@ export const EditProductModal = () => {
                                 >
                                     Campo obligatorio
                                 </p>
-                            </div>
 
+                                <div className="flex gap-2 flex-wrap">
+                                    {categoriesData.map((categoryData) => {
+                                        const matchingCategory =
+                                            categorias.find(
+                                                (category) =>
+                                                    category.categoriaId ===
+                                                    categoryData.categoriaId
+                                            );
+
+                                        if (matchingCategory) {
+                                            return (
+                                                <div
+                                                    className="flex gap-2 items-center text-white p-1 bg-primary rounded-md cursor-pointer hover:bg-secondary "
+                                                    key={
+                                                        categoryData.categoriaId
+                                                    }
+                                                    onClick={() =>
+                                                        handleCategoryDeletefromFormstate(
+                                                            categoryData.categoriaId
+                                                        )
+                                                    }
+                                                >
+                                                    <p>{categoryData.nombre}</p>
+                                                    <BsX className="text-lg " />
+                                                </div>
+                                            );
+                                        }
+                                        return null; // O puedes devolver un elemento nulo si no hay coincidencia
+                                    })}
+                                </div>
+                            </div>
+                            {/* CARACTERISTICAS */}
+                            <div>
+                                <label className="text-base font-semibold mb-2">
+                                    Características *
+                                </label>
+                                {/* TODO: en base al value del select, cambia el color del texto a text-graty-400 o "" */}
+                                <div
+                                    className={`relative h-11 w-full min-w-[200px]  border-[1px]  border-gray-100 overflow-hidden shadow-md rounded-xl $`}
+                                >
+                                    <select
+                                        ref={selectRef}
+                                        name="caracteristica"
+                                        value={caracteristicas.caracteristicaId}
+                                        onChange={handleCaracteristicsChange}
+                                        className={`peer h-full w-full p-2 font-sans text-sm font-normal outline outline-0 transition-all focus:outline-0 disabled:bg-blue-gray-50 text-gray-400`}
+                                    >
+                                        <option
+                                            value=""
+                                            className="text-gray-400"
+                                        >
+                                            Selecciona una característica
+                                        </option>
+                                        {characteristicsData.map((cat) => (
+                                            <option
+                                                key={cat.caracteristicaId}
+                                                value={cat.caracteristicaId}
+                                                className="text-black"
+                                            >
+                                                {cat.nombre}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <p
+                                    className={`pt-1 text-xs text-red-500 ${
+                                        erros.caracteristicas
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                    }`}
+                                >
+                                    Campo obligatorio
+                                </p>
+
+                                <div className="flex gap-2 flex-wrap">
+                                    {characteristicsData.map(
+                                        (characteristicData) => {
+                                            const matchingCategory =
+                                                caracteristicas.find(
+                                                    (characteristic) =>
+                                                        characteristic.caracteristicaId ===
+                                                        characteristicData.caracteristicaId
+                                                );
+
+                                            if (matchingCategory) {
+                                                return (
+                                                    <div
+                                                        className="flex gap-2 items-center text-white p-1 pl-2 bg-primary rounded-md cursor-pointer hover:bg-secondary "
+                                                        key={
+                                                            characteristicData.caracteristicaId
+                                                        }
+                                                        onClick={() =>
+                                                            handleCharacteristicDeletefromFormstate(
+                                                                characteristicData.caracteristicaId
+                                                            )
+                                                        }
+                                                    >
+                                                        <div className="flex gap-2 items-center">
+                                                            <i
+                                                                className={`${characteristicData.icono}`}
+                                                            ></i>
+                                                            <p>
+                                                                {
+                                                                    characteristicData.nombre
+                                                                }
+                                                            </p>
+                                                        </div>
+
+                                                        <BsX className="text-lg " />
+                                                    </div>
+                                                );
+                                            }
+                                            return null; // O puedes devolver un elemento nulo si no hay coincidencia
+                                        }
+                                    )}
+                                </div>
+                            </div>
                             {/* PRECIO POR DIA */}
                             <div>
                                 <label className="text-base font-semibold mb-2">

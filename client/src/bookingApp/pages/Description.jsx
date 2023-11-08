@@ -38,7 +38,7 @@ export const Description = () => {
 
     const goBack = () => {
         // cambiar a la ruta que  quiero que me redirija
-        navigate("/");
+        navigate(-1);
     };
 
     const [openImgGallery, setOpenImgGallery] = useState(false);
@@ -152,7 +152,7 @@ export const Description = () => {
                                     <h3 className="text-lg sm:text-2xl font-semibold ">
                                         Características
                                     </h3>
-                                    <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
+                                    <div className="w-full  grid grid-cols-1 lg:grid-cols-2 gap-5">
                                         {bikeById?.caracteristicas?.map(
                                             (caract) => (
                                                 <div
@@ -162,7 +162,7 @@ export const Description = () => {
                                                     }
                                                 >
                                                     <i
-                                                        className={`fa-solid ${caract.icono} text-primary`}
+                                                        className={`${caract.icono} text-primary`}
                                                     ></i>
                                                     <p>{caract.nombre}</p>
                                                 </div>
