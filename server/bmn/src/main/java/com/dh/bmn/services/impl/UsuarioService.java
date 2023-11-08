@@ -54,10 +54,10 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
             usuarioDB.setApellido(nuevoApellido);
         }
 
-        String nuevoEmail = usuarioRequestDto.getEmail();
-        if (nuevoEmail != null) {
-            AuthService.validarEmail(nuevoEmail);
-            usuarioDB.setEmail(nuevoEmail);
+        String nuevoMail = usuarioRequestDto.getEmail();
+        if (nuevoMail != null) {
+            AuthService.validarMail(nuevoMail);
+            usuarioDB.setEmail(nuevoMail);
         }
 
         usuarioRepository.save(usuarioDB);
@@ -91,7 +91,7 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
         }
 
         normalizarNombreApellido(usuarioRequestDto);
-        AuthService.validarEmail(usuarioRequestDto.getEmail());
+        AuthService.validarMail(usuarioRequestDto.getEmail());
 
         Usuario usuario = objectMapper.convertValue(usuarioRequestDto, Usuario.class);
 //        String passwordEncriptada = passwordEncoder.encode(usuarioRequestDto.getPassword());

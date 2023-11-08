@@ -40,7 +40,7 @@ public class AuthService {
 
     public AuthResponseDto register(RegisterRequestDto request) throws MessagingException {
 
-        validarEmail(request.getEmail());
+        validarMail(request.getEmail());
         validarPassword(request.getPassword());
 
         Usuario usuario = Usuario.builder()
@@ -88,7 +88,7 @@ public class AuthService {
         emailService.sendWelcomeEmail(email, usuario.getNombre());
     }
 
-    public static boolean validarEmail(String email) {
+    public static boolean validarMail(String email) {
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
