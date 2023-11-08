@@ -153,9 +153,14 @@ export const Description = () => {
                                         Características
                                     </h3>
                                     <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
-                                        {bikeById.caracteristicas.map(
+                                        {bikeById?.caracteristicas?.map(
                                             (caract) => (
-                                                <div className="flex gap-2 items-center text-lg">
+                                                <div
+                                                    className="flex gap-2 items-center text-lg"
+                                                    key={
+                                                        caract.caracteristicaId
+                                                    }
+                                                >
                                                     <i
                                                         className={`fa-solid ${caract.icono} text-primary`}
                                                     ></i>
