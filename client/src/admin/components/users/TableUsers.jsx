@@ -2,7 +2,8 @@ import { useUsersContext } from "../../../context/UsersContext";
 import { SkeletonTableUsers } from "./SkeletonTableUsers";
 
 export const TableUsers = () => {
-    const { usersData, loadingUsers, setOpenEditUserModal } = useUsersContext();
+    const { usersData, loadingUsers, setOpenEditUserModal, setUsersFormState } =
+        useUsersContext();
     return (
         <div className="flex flex-col gap-2">
             {loadingUsers
@@ -29,6 +30,10 @@ export const TableUsers = () => {
                               //   }}
                               onClick={() => {
                                   setOpenEditUserModal(true);
+                                  setUsersFormState({
+                                      usuarioId: user.usuarioId,
+                                      rol: user.rol,
+                                  });
                               }}
                               className="cursor-pointer flex gap-8 justify-between items-center rounded-xl text-xs p-3 bg-white shadow-md border border-gray-200 relative hover:bg-gray-100"
                           >

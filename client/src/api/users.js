@@ -133,3 +133,34 @@ export const deleteUser = async (id) => {
         throw error;
     }
 };
+export const putUserRol = async (user) => {
+    try {
+        const { token } = JSON.parse(localStorage.getItem("accessToken"));
+        const res = await fetch(
+            `http://localhost:8080/bike-me-now/api/usuarios/${user.usuarioId}/cambiar-rol?rol=${user.rol}`,
+            {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    // "Content-Type": "application/json",
+                },
+                // body: JSON.stringify(user),
+            }
+        );
+
+        if (!res.ok) {
+            let error = {
+                status: res.status,
+                ok: false,
+                message: "Error en la solicitud PUT",
+            };
+
+            throw error;
+        }
+
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        throw error;
+    }
+};

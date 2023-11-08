@@ -14,7 +14,6 @@ export const Categories = () => {
     const decodedPathname = decodeURIComponent(pathname);
     // QUITAR LA BARRA  DEL COMIENZO DEL PATHNAME
     const currentPath = decodedPathname.substring(1);
-    console.log(currentPath);
     // FUNCION PARA FILTRAR PRODUCTOS POR EL CURRENTPATH
     const filterBikes = (arr, bikeCategory) => {
         // TODO: CHECKEAR COMO VIENE EL OBJETO DE LA CATEGORIA Y CAMBIAR EN BASE A ESO EL ITEM.NAME
@@ -22,9 +21,12 @@ export const Categories = () => {
             return [];
         }
 
-        const res = arr.filter(
-            (item) => item.categoria.nombre.toLowerCase() == bikeCategory
+        const res = arr.filter((item) =>
+            item.categorias.some(
+                (cat) => cat.nombre.toLowerCase() === bikeCategory.toLowerCase()
+            )
         );
+
         return res;
     };
     const filteredBikes = filterBikes(bikesData, currentPath);
@@ -40,7 +42,7 @@ export const Categories = () => {
         );
         return res;
     };
-    console.log(filteredBikes);
+
     const filteredCategory = filterCategory(categoriesData, currentPath);
     return (
         <Section>
@@ -90,11 +92,6 @@ export const Categories = () => {
                             ))}
                         </div>
                     </>
-                    // filteredBikes.map((item) => (
-                    //     <div className="" key={item.nombre}>
-                    //         {item.nombre}
-                    //     </div>
-                    // ))
                 )}
             </div>
         </Section>

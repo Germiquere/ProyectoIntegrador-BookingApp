@@ -12,7 +12,7 @@ import { useUsersContext } from "../../context/UsersContext";
 export const BookingAppRouter = () => {
     const { categoriesData } = useCategoriesContext();
     const { isAuthenticated, rol } = useUsersContext();
-    console.log(rol, isAuthenticated);
+    // console.log(categoriesData[0].categoriaId);
     return (
         <Routes>
             <Route path="/" element={<BookingLayout />}>

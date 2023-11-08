@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getUser, getUsers } from "../api/users";
-import { login, register } from "../api/auth";
+import { getUser, getUsers, putUserRol } from "../api/users";
+import { login, register, sendEmail } from "../api/auth";
 import { useForm } from "../hooks/useForm";
 import { useNavigate } from "react-router-dom";
 
@@ -26,7 +26,7 @@ export function UsersProvider({ children }) {
         formState: usersFormState,
         onInputChange,
         onResetForm,
-        setFormState,
+        setFormState: setUsersFormState,
     } = useForm(usersFormData);
     // USUARIO
     const [userData, setUserData] = useState([]);
@@ -99,13 +99,13 @@ export function UsersProvider({ children }) {
         navitage("/");
     };
     // FUNCION DEL TIMER DEL TOKEN
-    // const logoutTimer = () => {
-    //     setTimeout(() => {
-    //         // TODO: EJECUTAR LA FUNCION DE LOGOUT
-    //         logout();
-    //         alert("token expired");
-    //     }, 300 * 1000);
-    // };
+    const logoutTimer = () => {
+        setTimeout(() => {
+            // TODO: EJECUTAR LA FUNCION DE LOGOUT
+            logout();
+            alert("token expired");
+        }, 3600 * 1000);
+    };
     const registerUser = async (user) => {
         setLoadingAuth(true);
         try {
@@ -127,13 +127,13 @@ export function UsersProvider({ children }) {
         setLoadingAuth(true);
         try {
             const data = await login(user);
-            const exp = Math.floor(Date.now() / 1000) + 300;
+            const exp = Math.floor(Date.now() / 1000) + 3600;
             const accessToken = {
                 token: data.token,
                 exp,
             };
             localStorage.setItem("accessToken", JSON.stringify(accessToken));
-            // logoutTimer();
+            logoutTimer();
         } catch (err) {
             // if (err.status === 403) {
             //     navigate("/auth/login", { replace: true });
@@ -143,6 +143,38 @@ export function UsersProvider({ children }) {
             setLoadingAuth(false);
         }
     };
+    const editUserRole = async (user) => {
+        // MANEJO EL ESTADO  DEL LOADING EN TRUE
+        setLoadingAuth(true);
+        try {
+            const editedUser = await putUserRol(user);
+            fetchUsersData();
+            return editedUser;
+        } catch (err) {
+            if (err.status === 403) {
+                navigate("/auth/login", { replace: true });
+            }
+            setErrorAuth(err);
+        } finally {
+            setLoadingAuth(false);
+        }
+    };
+    const sendEmailAgain = async (email) => {
+        // MANEJO EL ESTADO  DEL LOADING EN TRUE
+        setLoadingAuth(true);
+        try {
+            const mail = await sendEmail(email);
+            return mail;
+        } catch (err) {
+            if (err.status === 403) {
+                navigate("/auth/login", { replace: true });
+            }
+            setErrorAuth(err);
+        } finally {
+            setLoadingAuth(false);
+        }
+    };
+
     // FUNCION PARA VER EN CUANTO TIEMPO EXPIRA EL TOKEN
     const tokenExpTime = async () => {
         const token = JSON.parse(localStorage.getItem("accessToken"));
@@ -167,18 +199,7 @@ export function UsersProvider({ children }) {
             }
         }
     };
-    // SOLO HACER EL FETCH DE LOS USUARIOS SI HAY UN USUARIO LOGUEADO Y SI EL ROLL ES ADMIN
-    // useEffect(() => {
-    //     fetchUsersData();
-    // }, []);
-    // SOLO HACER EL FETCH DEL USUARIO SI ESTA LOGUEADO,ES DECIR AUTENTICADO
-    const user = {
-        email: "admin@example.com",
-        password: "contraseña",
-    };
     useEffect(() => {
-        // fetchUserData();
-        // loginUser(user);
         tokenExpTime();
     }, []);
     return (
@@ -202,7 +223,6 @@ export function UsersProvider({ children }) {
                 // METODOS
                 onInputChange,
                 onResetForm,
-                setFormState,
                 setOpenEditUserModal,
                 loginUser,
                 fetchUserData,
@@ -211,6 +231,10 @@ export function UsersProvider({ children }) {
                 registerUser,
                 setErrorAuth,
                 logout,
+                fetchUsersData,
+                editUserRole,
+                setUsersFormState,
+                sendEmailAgain,
             }}
         >
             {children}

@@ -1,10 +1,13 @@
 import { useRef, useState } from "react";
-import { BsXLg, BsCurrencyDollar, BsCloudUpload } from "react-icons/bs";
+import { BsXLg, BsCurrencyDollar, BsCloudUpload, BsX } from "react-icons/bs";
 import { useEffect } from "react";
 import { useBikesContext } from "../../context/BikesContext";
 import { Loader } from "../../ui/Loader";
 import { Tooltip } from "@mui/material";
 import { useCategoriesContext } from "../../context/CategoriesContext";
+
+import Select from "react-select";
+import { useCharacteristicsContext } from "../../context/CharacteristicsContext";
 export const CreateProductModal = () => {
     const {
         error,
@@ -18,19 +21,36 @@ export const CreateProductModal = () => {
         handlePostImages,
         handleDeleteImages,
         setError,
+        setFormState,
+        onCaractChange,
     } = useBikesContext();
     const { categoriesData } = useCategoriesContext();
-    const { nombre, descripcion, precioAlquilerPorDia, categoria, imagenes } =
-        formState;
+    const { characteristicsData } = useCharacteristicsContext();
+    const {
+        nombre,
+        descripcion,
+        precioAlquilerPorDia,
+        categorias,
+        imagenes,
+        caracteristicas,
+    } = formState;
     const [imageChange, setImageChange] = useState([]);
+    // const [selectedOption, setSelectedOption] = useState("");
     const fileInputRef = useRef(null);
+    const selectRef = useRef(null);
+    const selectCatRef = useRef(null);
+
     const [erros, setErros] = useState({
         nombre: false,
         categoria: false,
         precioAlquilerPorDia: false,
         imagenes: false,
+        caracteristicas: false,
+        descripcion: false,
     });
     const [hasErrorImg, setHasErrorImg] = useState(false);
+    const [hasErrorCat, setHasErrorCat] = useState(false);
+    const [hasErrorCaract, setHasErrorCaract] = useState(false);
     // FUNCION PARA MANEJAR EL CAMBIO DE INPUT Y SUS ERRORES
     const handleInputChange = (e, toNumber = false) => {
         const { name, value } = e.target;
@@ -44,29 +64,85 @@ export const CreateProductModal = () => {
     // FUNCION PARA MANEJAR EL CAMBIO DE CATEGORIA Y SUS ERRORES
     const handleCategoryChange = (e) => {
         const { name, value } = e.target;
-        onCategoryChange(e);
-        setErros({
-            ...erros,
-            categoria: value.trim() === "",
+        // COMPROBAMOS QUE NO ESTE LA CATEGORIA AGREGADA,
+        const hasMatch = categorias.some(
+            (categoria) => categoria.categoriaId == value
+        );
+        //     // setErros({
+        //     //     ...erros,
+        //     //     categoria: value.trim() === "",
+        //     // });
+        console.log(hasMatch);
+        if (!hasMatch && value.trim()) {
+            onCategoryChange(e);
+        }
+        setError("");
+    };
+    const handleCaracteristicsChange = (e) => {
+        const { name, value } = e.target;
+        // COMPROBAMOS QUE NO ESTE LA CATEGORIA AGREGADA,
+        const hasMatch = caracteristicas.some(
+            (caract) => caract.caracteristicaId == value
+        );
+        //     // setErros({
+        //     //     ...erros,
+        //     //     categoria: value.trim() === "",
+        //     // });
+        console.log(hasMatch);
+        if (!hasMatch && value.trim()) {
+            onCaractChange(e);
+        }
+    };
+    const handleCategoryDeletefromFormstate = (id) => {
+        const updatedCategorias = categorias.filter(
+            (category) => category.categoriaId !== id
+        );
+        setFormState({
+            ...formState,
+            categorias: updatedCategorias,
         });
+        selectCatRef.current.value = "";
+    };
+    const handleCharacteristicDeletefromFormstate = (id) => {
+        const updatedCaracts = caracteristicas.filter(
+            (caract) => caract.caracteristicaId !== id
+        );
+        setFormState({
+            ...formState,
+            caracteristicas: updatedCaracts,
+        });
+        selectRef.current.value = "";
     };
     // FUNCION PARA VALIDACIONES
     const handleValidations = () => {
         let hasError = false;
-        if (
-            typeof categoria.categoriaId === "string" &&
-            categoria.categoriaId.trim() === ""
-        ) {
+        if (categorias.length === 0) {
             setErros((prevErrors) => ({
                 ...prevErrors,
                 categoria: true,
             }));
+            setHasErrorCat(true);
+            hasError = true;
+        }
+        if (caracteristicas.length === 0) {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                caracteristicas: true,
+            }));
+            setHasErrorCaract(true);
             hasError = true;
         }
         if (nombre.trim() === "") {
             setErros((prevErrors) => ({
                 ...prevErrors,
                 nombre: true,
+            }));
+            hasError = true;
+        }
+        if (descripcion.trim() === "") {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                descripcion: true,
             }));
             hasError = true;
         }
@@ -116,7 +192,6 @@ export const CreateProductModal = () => {
                     setError(false);
                 } else {
                     handleDeleteImages(imageUrls);
-                    console.log("se borraron las imagenes");
                 }
             }
         }
@@ -192,15 +267,50 @@ export const CreateProductModal = () => {
                 ...prevErrors,
                 imagenes: false,
             }));
-            handleValidations();
+            // handleValidations();
             setHasErrorImg(false);
         }
     }, [imageChange]);
+    useEffect(() => {
+        if (categorias.length !== 0) {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                categoria: false,
+            }));
+            // handleValidations();
+            setHasErrorCat(false);
+        }
+    }, [categorias]);
+    useEffect(() => {
+        if (caracteristicas.length !== 0) {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                caracteristicas: false,
+            }));
+            // handleValidations();
+            setHasErrorCaract(false);
+        }
+    }, [caracteristicas]);
+    // const options = categoriesData?.map((cat) => ({
+    //     value: cat.categoriaId,
+    //     label: cat.nombre,
+    // }));
+    // useEffect(() => {
+    //     if (selectedOption) {
+    //         const selectedCategories = selectedOption.map((option) => ({
+    //             categoriaId: option.value,
+    //         }));
 
+    //         setFormState({
+    //             ...formState,
+    //             categorias: selectedCategories,
+    //         });
+    //     }
+    // }, [selectedOption]);
     return (
         <>
             <div
-                className={` rounded-xl max-h-[600px] overflow-hidden bg-white  fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-[1200px] min-w-[700px] mx-auto transition-opacity duration-200 z-50 `}
+                className={` rounded-xl max-h-[600px] overflow-hidden bg-white  fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  w-[700px] mx-auto transition-opacity duration-200 z-50 `}
             >
                 {/* HEADER */}
                 <div className=" w-full h-16  flex justify-between p-3 border-b-[1px] border-gray-300 bg-primary text-white">
@@ -268,22 +378,74 @@ export const CreateProductModal = () => {
                                     Ya existe un producto con ese nombre
                                 </p>
                             </div>
+                            {/* ------------------------------------ */}
+                            {/* <Select
+                                    defaultInputValue={selectedOption}
+                                    onChange={setSelectedOption}
+                                    className="shadow-md"
+                                    options={options}
+                                    isMulti
+                                    placeholder={"Seleciona categorias"}
+                                    isSearchable
+                                    noOptionsMessage={() =>
+                                        "Ninguna categoria encontrada"
+                                    }
+                                    styles={{
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            borderWidth: 0,
+                                            borderRadius: 10,
+                                            boxShadow: "none",
+                                        }),
+                                        container: (baseStyles, state) => ({
+                                            ...baseStyles,
+
+                                            borderRadius: 10,
+                                        }),
+                                        multiValueRemove: (
+                                            baseStyles,
+                                            state
+                                        ) => ({
+                                            ...baseStyles,
+                                            color: "white",
+                                            borderRadius: 10,
+                                            "&:hover": {
+                                                backgroundColor: "#0274AE",
+                                                color: "white",
+                                            },
+                                        }),
+                                        multiValue: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            backgroundColor: "#0274AE",
+                                            borderRadius: 5,
+                                            "&:hover": {
+                                                backgroundColor: "#0274AE",
+                                                color: "white",
+                                            },
+                                        }),
+                                        multiValueLabel: (
+                                            baseStyles,
+                                            state
+                                        ) => ({
+                                            ...baseStyles,
+                                            color: "white",
+                                        }),
+                                    }}
+                                /> */}
+                            {/* ------------------------------------ */}
                             {/* CATEGORIA */}
                             <div>
                                 <label className="text-base font-semibold mb-2">
-                                    Categoria *
+                                    Categorías *
                                 </label>
                                 {/* TODO: en base al value del select, cambia el color del texto a text-graty-400 o "" */}
                                 <div
-                                    className={`relative h-11 w-full min-w-[200px]  border-[1px]  border-gray-100 overflow-hidden shadow-md rounded-xl ${
-                                        categoria.categoriaId
-                                            ? ""
-                                            : "text-gray-400"
-                                    }`}
+                                    className={`relative h-11 w-full min-w-[200px]  border-[1px]  border-gray-100 overflow-hidden shadow-md rounded-xl text-gray-400`}
                                 >
                                     <select
+                                        ref={selectCatRef}
                                         name="categoria"
-                                        value={categoria.categoriaId}
+                                        value={categorias.categoriaId}
                                         onChange={handleCategoryChange}
                                         className="peer h-full w-full p-2 font-sans text-sm font-normal  outline outline-0 transition-all focus:outline-0 disabled:bg-blue-gray-50"
                                     >
@@ -291,14 +453,15 @@ export const CreateProductModal = () => {
                                             value=""
                                             className="text-gray-400"
                                         >
-                                            Selecciona una categoria
+                                            Selecciona una categoría
                                         </option>
                                         {/*TODO: hacer el map con los options */}
+
                                         {categoriesData.map((cat) => (
                                             <option
+                                                key={cat.categoriaId}
                                                 value={cat.categoriaId}
                                                 className="text-black"
-                                                key={cat.categoriaId}
                                             >
                                                 {cat.nombre}
                                             </option>
@@ -314,12 +477,128 @@ export const CreateProductModal = () => {
                                 >
                                     Campo obligatorio
                                 </p>
-                            </div>
 
+                                <div className="flex gap-2 flex-wrap">
+                                    {categoriesData.map((categoryData) => {
+                                        const matchingCategory =
+                                            categorias.find(
+                                                (category) =>
+                                                    category.categoriaId ===
+                                                    categoryData.categoriaId
+                                            );
+
+                                        if (matchingCategory) {
+                                            return (
+                                                <div
+                                                    className="flex gap-2 items-center text-white p-1 bg-primary rounded-md cursor-pointer hover:bg-secondary "
+                                                    key={
+                                                        categoryData.categoriaId
+                                                    }
+                                                    onClick={() =>
+                                                        handleCategoryDeletefromFormstate(
+                                                            categoryData.categoriaId
+                                                        )
+                                                    }
+                                                >
+                                                    <p>{categoryData.nombre}</p>
+                                                    <BsX className="text-lg " />
+                                                </div>
+                                            );
+                                        }
+                                        return null; // O puedes devolver un elemento nulo si no hay coincidencia
+                                    })}
+                                </div>
+                            </div>
+                            {/* CARACTERISTICS */}
+                            <div>
+                                <label className="text-base font-semibold mb-2">
+                                    Características *
+                                </label>
+                                {/* TODO: en base al value del select, cambia el color del texto a text-graty-400 o "" */}
+                                <div
+                                    className={`relative h-11 w-full min-w-[200px]  border-[1px]  border-gray-100 overflow-hidden shadow-md rounded-xl $`}
+                                >
+                                    <select
+                                        ref={selectRef}
+                                        name="caracteristica"
+                                        value={caracteristicas.caracteristicaId}
+                                        onChange={handleCaracteristicsChange}
+                                        className={`peer h-full w-full p-2 font-sans text-sm font-normal outline outline-0 transition-all focus:outline-0 disabled:bg-blue-gray-50 text-gray-400`}
+                                    >
+                                        <option
+                                            value=""
+                                            className="text-gray-400"
+                                        >
+                                            Selecciona una característica
+                                        </option>
+                                        {characteristicsData.map((cat) => (
+                                            <option
+                                                key={cat.caracteristicaId}
+                                                value={cat.caracteristicaId}
+                                                className="text-black"
+                                            >
+                                                {cat.nombre}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <p
+                                    className={`pt-1 text-xs text-red-500 ${
+                                        erros.caracteristicas
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                    }`}
+                                >
+                                    Campo obligatorio
+                                </p>
+
+                                <div className="flex gap-2 flex-wrap">
+                                    {characteristicsData.map(
+                                        (characteristicData) => {
+                                            const matchingCategory =
+                                                caracteristicas.find(
+                                                    (characteristic) =>
+                                                        characteristic.caracteristicaId ===
+                                                        characteristicData.caracteristicaId
+                                                );
+
+                                            if (matchingCategory) {
+                                                return (
+                                                    <div
+                                                        className="flex gap-2 items-center text-white p-1 pl-2 bg-primary rounded-md cursor-pointer hover:bg-secondary "
+                                                        key={
+                                                            characteristicData.caracteristicaId
+                                                        }
+                                                        onClick={() =>
+                                                            handleCharacteristicDeletefromFormstate(
+                                                                characteristicData.caracteristicaId
+                                                            )
+                                                        }
+                                                    >
+                                                        <div className="flex gap-2 items-center">
+                                                            <i
+                                                                className={`fa-solid ${characteristicData.icono}`}
+                                                            ></i>
+                                                            <p>
+                                                                {
+                                                                    characteristicData.nombre
+                                                                }
+                                                            </p>
+                                                        </div>
+
+                                                        <BsX className="text-lg " />
+                                                    </div>
+                                                );
+                                            }
+                                            return null; // O puedes devolver un elemento nulo si no hay coincidencia
+                                        }
+                                    )}
+                                </div>
+                            </div>
                             {/* PRECIO POR DIA */}
                             <div>
                                 <label className="text-base font-semibold mb-2">
-                                    Precio por dia *
+                                    Precio por día *
                                 </label>
                                 <div className="relative h-11 w-full min-w-[200px] shadow-md rounded-xl border-[1px]  border-gray-100 overflow-hidden">
                                     {/*TODO: si el value del input es vacio que sea text-gray-400 sino "" */}
@@ -363,7 +642,7 @@ export const CreateProductModal = () => {
                             {/* TEXT AREA */}
                             <div>
                                 <label className="text-base font-semibold mb-2">
-                                    Descripcion
+                                    Descripción *
                                 </label>
                                 <textarea
                                     className=" p-2 w-full outline outline-0 shadow-md border-[1px] rounded-xl overflow-hidden border-gray-100 "
@@ -372,8 +651,17 @@ export const CreateProductModal = () => {
                                     rows={4}
                                     value={descripcion}
                                     name="descripcion"
-                                    onChange={onInputChange}
+                                    onChange={handleInputChange}
                                 ></textarea>
+                                <p
+                                    className={` pt-1 text-xs text-red-500 ${
+                                        erros.descripcion
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                    }`}
+                                >
+                                    Campo obligatorio
+                                </p>
                             </div>
                             {/* IMAGENES */}
                             <div className="relative">

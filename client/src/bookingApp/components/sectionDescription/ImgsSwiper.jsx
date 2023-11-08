@@ -33,8 +33,8 @@ export default ({ data }) => {
                           <SkeletonCardsSweiper />
                       </SwiperSlide>
                   ))
-                : data.imagenes.map((item) => (
-                      <SwiperSlide key={item.key}>
+                : data.imagenes.map((item, index) => (
+                      <SwiperSlide key={index}>
                           <div className="h-full w-full">
                               <img
                                   className="max-h-[400px]  w-full object-contain "

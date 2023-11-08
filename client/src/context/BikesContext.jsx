@@ -19,11 +19,9 @@ const formData = {
     nombre: "",
     descripcion: "",
     precioAlquilerPorDia: "",
-
-    categoria: {
-        categoriaId: "",
-    },
+    categorias: [],
     imagenes: [],
+    caracteristicas: [],
     // id: "",
 };
 export const BikesProvider = ({ children }) => {
@@ -43,9 +41,18 @@ export const BikesProvider = ({ children }) => {
         const categoriaId = value === "" ? "" : parseFloat(value);
         setFormState({
             ...formState,
-            categoria: {
-                categoriaId: categoriaId,
-            },
+            categorias: [...formState.categorias, { categoriaId: categoriaId }],
+        });
+    };
+    const onCaractChange = ({ target }) => {
+        const { value } = target;
+        const caracteristicaId = value === "" ? "" : parseFloat(value);
+        setFormState({
+            ...formState,
+            caracteristicas: [
+                ...formState.caracteristicas,
+                { caracteristicaId: caracteristicaId },
+            ],
         });
     };
     const fetchData = async () => {
@@ -152,7 +159,6 @@ export const BikesProvider = ({ children }) => {
             fetchData();
             return updatedBike;
         } catch (err) {
-            console.log(err.status);
             setError(err);
         } finally {
             setLoading(false);
@@ -191,6 +197,7 @@ export const BikesProvider = ({ children }) => {
                 addNewBike,
                 deleteABike,
                 onCategoryChange,
+                onCaractChange,
                 onInputChange,
                 onResetForm,
                 setOpenNewProductModal,

@@ -136,15 +136,37 @@ export const Description = () => {
                     </div>
                     {/* seccion del costado derecho */}
                     <div className=" flex flex-col    p-3 gap-3  h-full lg:h-auto border-[1px] border-gray-200 rounded-xl">
-                        <div className="flex flex-col sm:flex-row  gap-2 h-full justify-between">
-                            <div className="flex flex-col gap-2 flex-1">
-                                <h3 className="text-lg sm:text-2xl font-semibold w-full">
-                                    Caracteristicas
-                                </h3>
-                                <div className="max-w-[1000px]">
-                                    <LineaBreak text={bikeById.descripcion} />
+                        <div className="flex flex-col sm:flex-row  gap-2 h-full justify-between ">
+                            <div className="flex flex-col flex-1 gap-5">
+                                <div className="flex flex-col gap-2">
+                                    <h3 className="text-lg sm:text-2xl font-semibold">
+                                        Descripción
+                                    </h3>
+                                    <div className="max-w-[1000px]">
+                                        <LineaBreak
+                                            text={bikeById.descripcion}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <h3 className="text-lg sm:text-2xl font-semibold ">
+                                        Características
+                                    </h3>
+                                    <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
+                                        {bikeById.caracteristicas.map(
+                                            (caract) => (
+                                                <div className="flex gap-2 items-center text-lg">
+                                                    <i
+                                                        className={`fa-solid ${caract.icono} text-primary`}
+                                                    ></i>
+                                                    <p>{caract.nombre}</p>
+                                                </div>
+                                            )
+                                        )}
+                                    </div>
                                 </div>
                             </div>
+
                             {/* div de la derecha */}
                             <div className="flex flex-col w-full sm:w-[300px] gap-3 rounded-xl shadow-xl p-3 border-[1px] border-gray-100">
                                 <h3 className="text-lg sm:text-2xl font-semibold w-full">

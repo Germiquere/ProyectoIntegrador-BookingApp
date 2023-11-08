@@ -2,9 +2,22 @@ import { BsXLg, BsCurrencyDollar, BsCloudUpload } from "react-icons/bs";
 
 import { Tooltip } from "@mui/material";
 import { useUsersContext } from "../../../context/UsersContext";
+import { useForm } from "../../../hooks/useForm";
 
 export const EditRolModal = () => {
-    const { setOpenEditUserModal, usersData } = useUsersContext();
+    const {
+        setOpenEditUserModal,
+        usersData,
+        editUserRole,
+        usersFormState,
+        onInputChange,
+    } = useUsersContext();
+    const { usuarioId, rol } = usersFormState;
+    const handleSave = async () => {
+        console.log(usersFormState);
+        const user = await editUserRole(usersFormState);
+        console.log(user);
+    };
     return (
         <>
             <div
@@ -61,9 +74,10 @@ export const EditRolModal = () => {
                                     // }
                                 >
                                     <select
-                                        name="Rol"
-                                        // value={categoria.categoriaId}
-                                        // onChange={handleCategoryChange}
+                                        name="rol"
+                                        value={rol}
+                                        onChange={onInputChange}
+                                        disabled={rol === "admin"}
                                         className="peer h-full w-full p-2 font-sans text-sm font-normal  outline outline-0 transition-all focus:outline-0 disabled:bg-blue-gray-50"
                                     >
                                         <option
@@ -73,13 +87,13 @@ export const EditRolModal = () => {
                                             Selecciona un rol
                                         </option>
                                         <option
-                                            value="USER"
+                                            value="user"
                                             className="text-black"
                                         >
                                             User
                                         </option>
                                         <option
-                                            value="ADMIN"
+                                            value="admin"
                                             className="text-black"
                                         >
                                             Admin
@@ -97,7 +111,7 @@ export const EditRolModal = () => {
                             className="middle none center  rounded-full bg-primary py-2 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm  transition-all  hover:shadow-secondary  active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                             data-ripple-light="true"
                             // disabled={loadingBikes}
-                            // onClick={handleSave}
+                            onClick={handleSave}
                         >
                             GUARDAR
                         </button>

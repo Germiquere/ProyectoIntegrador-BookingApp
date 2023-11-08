@@ -8,7 +8,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 export const ImgSwiper = ({ handleToggleImgGallery, data }) => {
-    console.log(data.imagenes);
     return (
         <Swiper
             className="relative hidden md:block "
@@ -28,8 +27,8 @@ export const ImgSwiper = ({ handleToggleImgGallery, data }) => {
             slidesPerView={1}
             loop
         >
-            {data.imagenes.map((item) => (
-                <SwiperSlide key={item.key}>
+            {data.imagenes.map((item, index) => (
+                <SwiperSlide key={index}>
                     <div
                     //     className="bg-contain bg-fixed
                     // bg-no-repeat

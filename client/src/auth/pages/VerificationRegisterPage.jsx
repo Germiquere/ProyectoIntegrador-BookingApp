@@ -1,9 +1,20 @@
 import Section from "../../bookingApp/components/Section";
 import { Link } from "react-router-dom";
 import { useUsersContext } from "../../context/UsersContext";
+import { SentEmailModal } from "../components/verification/SentEmailModal";
+import { useState } from "react";
+import { Loader } from "../../ui/Loader";
 
 export const VerificationRegisterPage = () => {
-    const { userEmail, setIsRegistered } = useUsersContext();
+    const { userEmail, setIsRegistered, sendEmailAgain, loadingAuth } =
+        useUsersContext();
+    const [openSendEmail, setOpenSendEmail] = useState(false);
+    const handleSendEmail = async () => {
+        const sentEmail = await sendEmailAgain(userEmail);
+        if (sentEmail) {
+            setOpenSendEmail(true);
+        }
+    };
     return (
         <Section>
             <div className="max-w-[1200px] mx-auto flex flex-col items-center gap-8">
@@ -23,7 +34,10 @@ export const VerificationRegisterPage = () => {
                 </div>
                 <div className="flex gap-2">
                     <p>¿No te llego el correo?</p>
-                    <button className="text-primary">Volver a enviar</button>
+                    <button className="text-primary" onClick={handleSendEmail}>
+                        Volver a enviar
+                    </button>
+                    {loadingAuth && <Loader className={"text-primary"} />}
                 </div>
                 <div className="flex flex-col items-center gap-3">
                     <p>¿Deseas ingresar?</p>
@@ -37,6 +51,9 @@ export const VerificationRegisterPage = () => {
                         </button>
                     </Link>
                 </div>
+                {openSendEmail && (
+                    <SentEmailModal setOpenSendEmail={setOpenSendEmail} />
+                )}
             </div>
         </Section>
     );

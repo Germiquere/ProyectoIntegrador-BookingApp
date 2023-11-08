@@ -7,6 +7,7 @@ import { CalendarAndSearchProvider } from "./context/CalendarSearchContext.jsx";
 import { CategoriesProvider } from "./context/CategoriesContext.jsx";
 import { BikesProvider } from "./context/BikesContext.jsx";
 import { UsersProvider } from "./context/UsersContext.jsx";
+import { CharacteristicsProvider } from "./context/CharacteristicsContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 <CategoriesProvider>
                     <BikesProvider>
                         <UsersProvider>
-                            <App />
+                            <CharacteristicsProvider>
+                                <App />
+                            </CharacteristicsProvider>
                         </UsersProvider>
                     </BikesProvider>
                 </CategoriesProvider>
