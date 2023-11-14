@@ -66,4 +66,10 @@ public class ReservaController {
     public ResponseEntity<List<ReservaResponseDto>> obtenerReservasPorUsuario(@PathVariable Long id) {
         return new ResponseEntity<>(reservaService.obtenerReservasPorUsuario(id), HttpStatus.OK);
     }
+
+    @GetMapping("/bicicletas/{id}")
+    @Secured("ADMIN")
+    public ResponseEntity<List<ReservaResponseDto>> obtenerReservasPorBicicleta(@PathVariable Long id) {
+        return new ResponseEntity<>(reservaService.obtenerReservasPorBicicleta(id), HttpStatus.OK);
+    }
 }

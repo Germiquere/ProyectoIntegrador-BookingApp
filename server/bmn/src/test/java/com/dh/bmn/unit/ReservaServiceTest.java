@@ -309,6 +309,52 @@ public class ReservaServiceTest {
         });
     }
 
+
+
+    @Test
+    public void obtenerReservasPorIdBicicleta() throws MalformedURLException {
+        //Arrange
+        Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
+        List<Imagen> imagenes = List.of(imagen);
+        CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
+        List<CategoriaBicicleta> categoriaList = List.of(categoriaBicicleta);
+        CaracteristicaBicicleta caracteristicaBicicleta = new CaracteristicaBicicleta(1L, "electrica", "icono");
+        List<CaracteristicaBicicleta> caracteristicaList = List.of(caracteristicaBicicleta);
+        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList);
+        Usuario usuario = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        Reserva reservaEntity = new Reserva(1L, usuario, bicicleta, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
+        List<Reserva> reservas = new ArrayList<>();
+        reservas.add(reservaEntity);
+        ImagenResponseDto imagenResponseDto = new ImagenResponseDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
+        CategoriaBicicletaResponseDto categoriaBicicletaResponseDto = new CategoriaBicicletaResponseDto(1L, "Montaña", "Bicicleta de montaña", imagenResponseDto);
+        List<ImagenResponseDto> imagenesResponse = List.of(imagenResponseDto);
+        List<CategoriaBicicletaResponseDto> categoriaResponseList = List.of(categoriaBicicletaResponseDto);
+        CaracteristicaBicicletaResponseDto caracteristicaBicicletaResponseDto = new CaracteristicaBicicletaResponseDto(1L, "electrica", "icono");
+        List<CaracteristicaBicicletaResponseDto> caracteristicResponseList = List.of(caracteristicaBicicletaResponseDto);
+        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaResponseList, imagenesResponse, caracteristicResponseList);
+        UsuarioResponseDto usuarioEsperado = new UsuarioResponseDto(1L, "Juan", "Perez", "juan.perez@gmail.com", Rol.USER);
+        ReservaResponseDto reservaEsperada = new ReservaResponseDto(1L,usuarioEsperado, bicicletaEsperada,LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
+        List<ReservaResponseDto> reservaResponseLista = new ArrayList<>();
+        reservaResponseLista.add(reservaEsperada);
+
+        //Act
+        Mockito.when(reservaRepository.findReservasByBicicletaId(1L)).thenReturn(reservas);
+        List<ReservaResponseDto> reservaLista = reservaService.obtenerReservasPorBicicleta(1L);
+
+        // Asserts
+        Assertions.assertEquals(reservaResponseLista.size(), reservaLista.size());
+    }
+
+    @Test
+    public void obtenerReservasPorBicicletaThrowsResourceNotFoundException() {
+
+        Mockito.when(reservaRepository.findReservasByBicicletaId(1L)).thenThrow(ResourceNotFoundException.class);
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+            reservaService.obtenerReservasPorBicicleta(1L);
+        });
+    }
+
     @Test
     public void validarSiExisteReservaPreviaEnMetodoCrearThrowsResourceAlreadyExistsException() throws MalformedURLException {
         Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));

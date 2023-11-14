@@ -110,6 +110,18 @@ public class ReservaService implements IService<ReservaResponseDto, ReservaReque
 
     }
 
+    public List<ReservaResponseDto> obtenerReservasPorBicicleta(Long bicicletaId) {
+
+        bicicletaService.buscarPorId(bicicletaId);
+
+        List<Reserva> reservas =  Optional.of(reservaRepository.findReservasByBicicletaId(bicicletaId)).orElseThrow(() -> new ResourceNotFoundException("No hay reservas registradas para esa bicicleta", HttpStatus.NOT_FOUND.value()));
+        return reservas
+                .stream()
+                .map(reserva -> objectMapper.convertValue(reserva, ReservaResponseDto.class))
+                .collect(Collectors.toList());
+
+    }
+
     private void validarSiExisteReservaPrevia(ReservaRequestDto reservaRequestDto){
 
         if (reservaRepository.findByBicicletaAndFechaInicioAndFechaFin(reservaRequestDto.getBicicleta().getBicicletaId(), reservaRequestDto.getFechaInicio(), reservaRequestDto.getFechaFin()).isPresent()) {
