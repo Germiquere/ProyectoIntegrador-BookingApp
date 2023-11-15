@@ -44,8 +44,6 @@ public class Bicicleta implements Serializable {
     private List<Imagen> imagenes;
 
 
-
-    //@JsonIgnore
     @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "bicicleta_caracteristica",
@@ -70,4 +68,12 @@ public class Bicicleta implements Serializable {
             caracteristica.getBicicletas().remove(this);
         }
     }
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "bicicleta_politica",
+            joinColumns = @JoinColumn(name = "bicicleta_id"),
+            inverseJoinColumns = @JoinColumn(name = "politica_id")
+    )
+    private List<Politica> politicas;
 }

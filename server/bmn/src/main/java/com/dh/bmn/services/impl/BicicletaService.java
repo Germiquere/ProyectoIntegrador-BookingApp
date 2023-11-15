@@ -3,18 +3,16 @@ package com.dh.bmn.services.impl;
 import com.dh.bmn.dtos.requests.BicicletaRequestDto;
 import com.dh.bmn.dtos.requests.CaracteristicaBicicletaRequestDto;
 import com.dh.bmn.dtos.requests.CategoriaBicicletaRequestDto;
+import com.dh.bmn.dtos.requests.PoliticaRequestDto;
 import com.dh.bmn.dtos.responses.BicicletaResponseDto;
-import com.dh.bmn.entity.CaracteristicaBicicleta;
-import com.dh.bmn.entity.CategoriaBicicleta;
-import com.dh.bmn.entity.Imagen;
-import com.dh.bmn.entity.Bicicleta;
+import com.dh.bmn.entity.*;
 import com.dh.bmn.exceptions.RequestValidationException;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IBicicletaRepository;
 import com.dh.bmn.repositories.ICaracteristicaBicicletaRepository;
 import com.dh.bmn.repositories.ICategoriaBicicletaRepository;
-import com.dh.bmn.services.ICaracteristicaBicicletaService;
+import com.dh.bmn.repositories.IPoliticaRepository;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
 import com.dh.bmn.pagging.PaginatedResponse;
@@ -31,7 +29,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class BicicletaService implements IService<BicicletaResponseDto, BicicletaRequestDto>, ICaracteristicaBicicletaService {
+public class BicicletaService implements IService<BicicletaResponseDto, BicicletaRequestDto> {
 
     private final IBicicletaRepository bicicletaRepository;
 
@@ -41,14 +39,17 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
     private final ICategoriaBicicletaRepository categoriaBicicletaRepository;
 
+    private final IPoliticaRepository politicaRepository;
+
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
     @Autowired
-    public BicicletaService(IBicicletaRepository bicicletaRepository, S3Service s3Service, ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository, ICategoriaBicicletaRepository categoriaBicicletaRepository) {
+    public BicicletaService(IBicicletaRepository bicicletaRepository, S3Service s3Service, ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository, ICategoriaBicicletaRepository categoriaBicicletaRepository, IPoliticaRepository politicaRepository) {
         this.bicicletaRepository = bicicletaRepository;
         this.s3Service = s3Service;
         this.caracteristicaBicicletaRepository = caracteristicaBicicletaRepository;
         this.categoriaBicicletaRepository = categoriaBicicletaRepository;
+        this.politicaRepository = politicaRepository;
     }
 
     @Override
@@ -62,6 +63,7 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
             guardarCategoriasBicicleta(bicicletaRequestDto, bicicletaDB);
             guardarCaracteriticasBicicleta(bicicletaRequestDto, bicicletaDB);
+            guardarPoliticas(bicicletaRequestDto, bicicletaDB);
             validarListaImagenesVacia(bicicletaRequestDto);
             validarYguardarImagenesBicicleta(bicicletaRequestDto, bicicletaDB);
             bicicletaRepository.save(bicicletaDB);
@@ -88,6 +90,7 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
         guardarCategoriasBicicleta(bicicletaRequestDto, bicicleta);
         guardarCaracteriticasBicicleta(bicicletaRequestDto, bicicleta);
+        guardarPoliticas(bicicletaRequestDto, bicicleta);
         validarListaImagenesVacia(bicicletaRequestDto);
         validarYguardarImagenesBicicleta(bicicletaRequestDto, bicicleta);
         bicicletaRepository.save(bicicleta);
@@ -146,6 +149,20 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         bicicleta.setCaracteristicas(caracteristicas);
     }
 
+
+    private void guardarPoliticas(BicicletaRequestDto bicicletaRequestDto, Bicicleta bicicleta) {
+
+        List<Politica> politicas = new ArrayList<>();
+        for (PoliticaRequestDto politicaRequestDto : bicicletaRequestDto.getPoliticas()) {
+            Optional<Politica> politicaOptional = politicaRepository.findById(politicaRequestDto.getPoliticaId());
+            Politica politica = politicaOptional.orElseThrow(() -> new ResourceNotFoundException("La politica con ID " + politicaRequestDto.getPoliticaId() + " no existe", HttpStatus.NOT_FOUND.value()));
+
+            politicas.add(politica);
+        }
+
+        bicicleta.setPoliticas(politicas);
+    }
+
     private void validarListaImagenesVacia(BicicletaRequestDto bicicletaRequestDto) {
 
         if (bicicletaRequestDto.getImagenes().isEmpty()) {
@@ -185,28 +202,6 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         paginationData.setLimit(bicicletas.getPageable().getPageSize());
 
         return new PaginatedResponse<>(bicicletasDtoList, paginationData);
-    }
-
-    public void agregarCaracteristicaABicicleta(Long bicicletaId, Long caracteristicaId) {
-        Bicicleta bicicleta = bicicletaRepository.findById(bicicletaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Bicicleta no encontrada con ID: " + bicicletaId, HttpStatus.NOT_FOUND.value()));
-
-        CaracteristicaBicicleta caracteristica = caracteristicaBicicletaRepository.findById(caracteristicaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Característica no encontrada con ID: " + caracteristicaId, HttpStatus.NOT_FOUND.value()));
-
-        bicicleta.addCaracteristica(caracteristica);
-        bicicletaRepository.save(bicicleta);
-    }
-
-    public void quitarCaracteristicaDeBicicleta(Long bicicletaId, Long caracteristicaId) {
-        Bicicleta bicicleta = bicicletaRepository.findById(bicicletaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Bicicleta no encontrada con ID: " + bicicletaId, HttpStatus.NOT_FOUND.value()));
-
-        CaracteristicaBicicleta caracteristica = caracteristicaBicicletaRepository.findById(caracteristicaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Característica no encontrada con ID: " + caracteristicaId, HttpStatus.NOT_FOUND.value()));
-
-        bicicleta.removeCaracteristica(caracteristica);
-        bicicletaRepository.save(bicicleta);
     }
 
 }

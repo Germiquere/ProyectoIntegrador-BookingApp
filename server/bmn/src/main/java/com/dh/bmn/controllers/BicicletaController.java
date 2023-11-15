@@ -3,7 +3,6 @@ package com.dh.bmn.controllers;
 import com.dh.bmn.dtos.JsonMessageDto;
 import com.dh.bmn.dtos.requests.BicicletaRequestDto;
 import com.dh.bmn.dtos.responses.BicicletaResponseDto;
-import com.dh.bmn.services.ICaracteristicaBicicletaService;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.pagging.PaginatedResponse;
 import jakarta.validation.Valid;
@@ -21,17 +20,15 @@ public class BicicletaController {
 
 
     private final IService<BicicletaResponseDto, BicicletaRequestDto> bicicletaService;
-    private final ICaracteristicaBicicletaService caracteristicaBicicletaService;
 
 
     @Autowired
-    public BicicletaController(IService<BicicletaResponseDto, BicicletaRequestDto> bicicletaService, ICaracteristicaBicicletaService caracteristicaBicicletaService) {
-        this.bicicletaService = bicicletaService;
-        this.caracteristicaBicicletaService = caracteristicaBicicletaService;
+    public BicicletaController(IService<BicicletaResponseDto, BicicletaRequestDto> bicicletaService1){
+        this.bicicletaService = bicicletaService1;
     }
 
     @GetMapping("/bicicletas/{id}")
-
+    @Secured({ "ADMIN", "USER" })
     public ResponseEntity<BicicletaResponseDto> obtenerBicicletaPorId (@PathVariable Long id) {
         return new ResponseEntity<>(bicicletaService.buscarPorId(id), HttpStatus.OK);
     }
@@ -70,18 +67,6 @@ public class BicicletaController {
             @RequestParam(defaultValue = "0") int offset) {
         PaginatedResponse<BicicletaResponseDto> paginatedResponse = bicicletaService.obtenerPaginacion(numeroPagina, limit, offset);
         return new ResponseEntity<>(paginatedResponse, HttpStatus.OK);
-    }
-
-    @PostMapping("/{bicicletaId}/caracteristicas/{caracteristicaId}")
-    public ResponseEntity<String> agregarCaracteristicaABicicleta(@PathVariable Long bicicletaId, @PathVariable Long caracteristicaId) {
-        caracteristicaBicicletaService.agregarCaracteristicaABicicleta(bicicletaId, caracteristicaId);
-        return ResponseEntity.ok("Característica agregada a la bicicleta con éxito.");
-    }
-
-    @DeleteMapping("/{bicicletaId}/caracteristicas/{caracteristicaId}")
-    public ResponseEntity<String> quitarCaracteristicaDeBicicleta(@PathVariable Long bicicletaId, @PathVariable Long caracteristicaId) {
-        caracteristicaBicicletaService.quitarCaracteristicaDeBicicleta(bicicletaId, caracteristicaId);
-        return ResponseEntity.ok("Característica quitada de la bicicleta con éxito.");
     }
 
     /*private ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerPaginacion(int numeroPagina, int limit, int offset) {
