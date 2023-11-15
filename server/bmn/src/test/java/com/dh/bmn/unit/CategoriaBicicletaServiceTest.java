@@ -39,7 +39,7 @@ public class CategoriaBicicletaServiceTest {
     @BeforeEach
     public void setup() {
         categoriaBicicletaRepository = mock(ICategoriaBicicletaRepository.class);
-        categoriaBicicletaService = new CategoriaBicicletaService(categoriaBicicletaRepository);
+        //categoriaBicicletaService = new CategoriaBicicletaService(categoriaBicicletaRepository, bicicletaRepository);
     }
 
     @Test

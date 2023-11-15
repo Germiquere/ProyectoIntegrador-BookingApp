@@ -2,9 +2,11 @@ package com.dh.bmn.services.impl;
 
 import com.dh.bmn.dtos.requests.CategoriaBicicletaRequestDto;
 import com.dh.bmn.dtos.responses.CategoriaBicicletaResponseDto;
+import com.dh.bmn.entity.Bicicleta;
 import com.dh.bmn.entity.CategoriaBicicleta;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
+import com.dh.bmn.repositories.IBicicletaRepository;
 import com.dh.bmn.repositories.ICategoriaBicicletaRepository;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
@@ -22,11 +24,14 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
 
     private final ICategoriaBicicletaRepository categoriaBicicletaRepository;
 
+    private final IBicicletaRepository bicicletaRepository;
+
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
     @Autowired
-    public CategoriaBicicletaService(ICategoriaBicicletaRepository categoriaBicicletaRepository) {
+    public CategoriaBicicletaService(ICategoriaBicicletaRepository categoriaBicicletaRepository, IBicicletaRepository bicicletaRepository) {
         this.categoriaBicicletaRepository = categoriaBicicletaRepository;
+        this.bicicletaRepository = bicicletaRepository;
     }
 
     @Override
@@ -60,9 +65,18 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
         categoriaBicicletaRepository.save(categoria);
     }
 
-    @Override
+    /*@Override
     public void borrarPorId(Long id){
         CategoriaBicicleta categoria = categoriaBicicletaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La categoria no existe", HttpStatus.NOT_FOUND.value()));
+        categoriaBicicletaRepository.delete(categoria);
+    }*/
+    @Override
+    public void borrarPorId(Long id) {
+        CategoriaBicicleta categoria = categoriaBicicletaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La categoria no existe", HttpStatus.NOT_FOUND.value()));
+        for (Bicicleta bicicleta : bicicletaRepository.findAll()) {
+            bicicleta.getCategorias().remove(categoria);
+            bicicletaRepository.save(bicicleta);
+        }
         categoriaBicicletaRepository.delete(categoria);
     }
 
