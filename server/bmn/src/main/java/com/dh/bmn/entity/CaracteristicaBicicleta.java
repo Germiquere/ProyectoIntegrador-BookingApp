@@ -29,15 +29,9 @@ public class CaracteristicaBicicleta implements Serializable {
     @Column
     private String icono;
 
-
     @JsonIgnore
     @ManyToMany(mappedBy = "caracteristicas", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-
     private List<Bicicleta> bicicletas;
 
-    public CaracteristicaBicicleta(Long caracteristicaId, String nombre, String icono) {
-        this.caracteristicaId = caracteristicaId;
-        this.nombre = nombre;
-        this.icono = icono;
-    }
+
 }

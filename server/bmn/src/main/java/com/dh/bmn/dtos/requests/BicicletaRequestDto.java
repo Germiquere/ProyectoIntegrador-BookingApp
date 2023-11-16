@@ -39,5 +39,7 @@ public class BicicletaRequestDto {
 
     private List <CaracteristicaBicicletaRequestDto> caracteristicas;
 
+    private List <PoliticaRequestDto> politicas;
+
 }
 
