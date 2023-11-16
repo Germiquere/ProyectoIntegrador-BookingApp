@@ -2,16 +2,20 @@ package com.dh.bmn.services.impl;
 
 import com.dh.bmn.dtos.requests.CaracteristicaBicicletaRequestDto;
 import com.dh.bmn.dtos.responses.CaracteristicaBicicletaResponseDto;
+import com.dh.bmn.entity.Bicicleta;
 import com.dh.bmn.entity.CaracteristicaBicicleta;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.pagging.PaginatedResponse;
+import com.dh.bmn.repositories.IBicicletaRepository;
 import com.dh.bmn.repositories.ICaracteristicaBicicletaRepository;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,8 +27,11 @@ public class CaracteristicaBicicletaService implements IService<CaracteristicaBi
 
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
-    public CaracteristicaBicicletaService(ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository) {
+    private final IBicicletaRepository bicicletaRepository;
+
+    public CaracteristicaBicicletaService(ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository,IBicicletaRepository biciletaRepository ) {
         this.caracteristicaBicicletaRepository = caracteristicaBicicletaRepository;
+        this.bicicletaRepository = biciletaRepository;
     }
 
     @Override
@@ -40,6 +47,7 @@ public class CaracteristicaBicicletaService implements IService<CaracteristicaBi
         }
     }
 
+    @Transactional
     @Override
     public CaracteristicaBicicletaResponseDto buscarPorId(Long id) {
         CaracteristicaBicicleta caracteristicaBicicleta = caracteristicaBicicletaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La caracteristica especificada no existe", HttpStatus.NOT_FOUND.value()));
@@ -61,6 +69,14 @@ public class CaracteristicaBicicletaService implements IService<CaracteristicaBi
     @Override
     public void borrarPorId(Long id) {
         CaracteristicaBicicleta caracteristica = caracteristicaBicicletaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La característica no existe", HttpStatus.NOT_FOUND.value()));
+
+        List<Bicicleta> bicicletasAsociadas = caracteristica.getBicicletas();
+
+        for (Bicicleta bicicleta : bicicletasAsociadas) {
+            bicicleta.getCaracteristicas().remove(caracteristica);
+            bicicletaRepository.save(bicicleta);
+        }
+
         caracteristicaBicicletaRepository.delete(caracteristica);
     }
 

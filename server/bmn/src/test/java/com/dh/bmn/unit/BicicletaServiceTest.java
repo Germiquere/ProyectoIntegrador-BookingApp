@@ -60,7 +60,7 @@ public class BicicletaServiceTest {
         categoriaBicicletaRepository = mock(ICategoriaBicicletaRepository.class);
         caracteristicaBicicletaRepository = mock(ICaracteristicaBicicletaRepository.class);
         s3Service = mock(S3Service.class);
-        bicicletaService = new BicicletaService(bicicletaRepository, s3Service, caracteristicaBicicletaRepository, categoriaBicicletaRepository);
+        bicicletaService = new BicicletaService(bicicletaRepository, s3Service, caracteristicaBicicletaRepository, categoriaBicicletaRepository, politicaRepository);
     }
 
     @Test
