@@ -265,7 +265,7 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         CaracteristicaBicicleta caracteristica = caracteristicaBicicletaRepository.findById(caracteristicaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Característica no encontrada con ID: " + caracteristicaId, HttpStatus.NOT_FOUND.value()));
 
-        bicicleta.addCaracteristica(caracteristica);
+        //bicicleta.addCaracteristica(caracteristica);
         bicicletaRepository.save(bicicleta);
     }
 
@@ -276,7 +276,7 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         CaracteristicaBicicleta caracteristica = caracteristicaBicicletaRepository.findById(caracteristicaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Característica no encontrada con ID: " + caracteristicaId, HttpStatus.NOT_FOUND.value()));
 
-        bicicleta.removeCaracteristica(caracteristica);
+        //bicicleta.removeCaracteristica(caracteristica);
         bicicletaRepository.save(bicicleta);
     }
 
