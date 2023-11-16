@@ -257,27 +257,4 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         return new PaginatedResponse<>(resultadosDto, paginationData);
     }
 
-
-    public void agregarCaracteristicaABicicleta(Long bicicletaId, Long caracteristicaId) {
-        Bicicleta bicicleta = bicicletaRepository.findById(bicicletaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Bicicleta no encontrada con ID: " + bicicletaId, HttpStatus.NOT_FOUND.value()));
-
-        CaracteristicaBicicleta caracteristica = caracteristicaBicicletaRepository.findById(caracteristicaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Característica no encontrada con ID: " + caracteristicaId, HttpStatus.NOT_FOUND.value()));
-
-        //bicicleta.addCaracteristica(caracteristica);
-        bicicletaRepository.save(bicicleta);
-    }
-
-    public void quitarCaracteristicaDeBicicleta(Long bicicletaId, Long caracteristicaId) {
-        Bicicleta bicicleta = bicicletaRepository.findById(bicicletaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Bicicleta no encontrada con ID: " + bicicletaId, HttpStatus.NOT_FOUND.value()));
-
-        CaracteristicaBicicleta caracteristica = caracteristicaBicicletaRepository.findById(caracteristicaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Característica no encontrada con ID: " + caracteristicaId, HttpStatus.NOT_FOUND.value()));
-
-        //bicicleta.removeCaracteristica(caracteristica);
-        bicicletaRepository.save(bicicleta);
-    }
-
 }
