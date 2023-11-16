@@ -26,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -186,6 +187,59 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
         return new PaginatedResponse<>(bicicletasDtoList, paginationData);
     }
+
+    /*public PaginatedResponse<BicicletaResponseDto> buscarBicicletas(String query, int limit, int offset) {
+        // Realiza la consulta sin paginación
+        List<Bicicleta> resultados = bicicletaRepository.buscarBicicletasPorQuery(query);
+
+        // Aplica la paginación manualmente
+        int totalResultados = resultados.size();
+        int endIndex = Math.min(offset + limit, totalResultados);
+        List<Bicicleta> resultadosPaginados = resultados.subList(offset, endIndex);
+
+        // Convierte la lista paginada de entidades a lista de DTOs
+        List<BicicletaResponseDto> resultadosDto = resultadosPaginados.stream()
+                .map(bicicleta -> objectMapper.convertValue(bicicleta, BicicletaResponseDto.class))
+                .collect(Collectors.toList());
+
+        // Crea y devuelve la respuesta paginada
+        PaginationData paginationData = new PaginationData();
+        paginationData.setTotal(totalResultados);
+        paginationData.setPrimary_results(resultadosPaginados.size());
+        paginationData.setOffset(offset);
+        paginationData.setLimit(limit);
+
+        return new PaginatedResponse<>(resultadosDto, paginationData);
+    }*/
+
+    @Transactional(readOnly = true)
+    public PaginatedResponse<BicicletaResponseDto> buscarBicicletas(String query, int limit, int offset) {
+        List<String> words = Arrays.asList(query.split("\\s+"));
+        List<Bicicleta> resultados = bicicletaRepository.buscarBicicletasPorQuery(query, words);
+
+        // Aplica la paginación manualmente
+        int totalResultados = resultados.size();
+        int endIndex = Math.min(offset + limit, totalResultados);
+        List<Bicicleta> resultadosPaginados = resultados.subList(offset, endIndex);
+
+        // Convierte la lista paginada de entidades a lista de DTOs
+        List<BicicletaResponseDto> resultadosDto = resultadosPaginados.stream()
+                .map(bicicleta -> objectMapper.convertValue(bicicleta, BicicletaResponseDto.class))
+                .collect(Collectors.toList());
+
+        // Crea y devuelve la respuesta paginada
+        PaginationData paginationData = new PaginationData();
+        paginationData.setTotal(totalResultados);
+        paginationData.setPrimary_results(resultadosPaginados.size());
+        paginationData.setOffset(offset);
+        paginationData.setLimit(limit);
+
+
+        paginationData.setTotal(totalResultados);
+        //paginationData.setPrimary
+        return new PaginatedResponse<>(resultadosDto, paginationData);
+    }
+
 
     public void agregarCaracteristicaABicicleta(Long bicicletaId, Long caracteristicaId) {
         Bicicleta bicicleta = bicicletaRepository.findById(bicicletaId)

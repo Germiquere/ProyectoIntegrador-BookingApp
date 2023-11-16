@@ -6,6 +6,7 @@ import com.dh.bmn.dtos.responses.BicicletaResponseDto;
 import com.dh.bmn.services.ICaracteristicaBicicletaService;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.pagging.PaginatedResponse;
+import com.dh.bmn.services.impl.BicicletaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,12 +21,13 @@ import java.util.List;
 public class BicicletaController {
 
 
-    private final IService<BicicletaResponseDto, BicicletaRequestDto> bicicletaService;
+    //private final IService<BicicletaResponseDto, BicicletaRequestDto> bicicletaService;
+    private final BicicletaService bicicletaService;
     private final ICaracteristicaBicicletaService caracteristicaBicicletaService;
 
 
     @Autowired
-    public BicicletaController(IService<BicicletaResponseDto, BicicletaRequestDto> bicicletaService, ICaracteristicaBicicletaService caracteristicaBicicletaService) {
+    public BicicletaController(BicicletaService bicicletaService, ICaracteristicaBicicletaService caracteristicaBicicletaService) {
         this.bicicletaService = bicicletaService;
         this.caracteristicaBicicletaService = caracteristicaBicicletaService;
     }
@@ -63,14 +65,32 @@ public class BicicletaController {
         return new ResponseEntity<>(new JsonMessageDto("Bicicleta actualizada exitosamente", HttpStatus.OK.value()), HttpStatus.OK);
     }
 
-    @GetMapping("/bicicletas/page/{numeroPagina}")
+    /*@GetMapping("/bicicletas/page/{numeroPagina}")
     public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerPaginaBicicletas(
             @PathVariable int numeroPagina,
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam(defaultValue = "0") int offset) {
         PaginatedResponse<BicicletaResponseDto> paginatedResponse = bicicletaService.obtenerPaginacion(numeroPagina, limit, offset);
         return new ResponseEntity<>(paginatedResponse, HttpStatus.OK);
+    }*/
+
+    @GetMapping("/bicicletas/page/{numeroPagina}/search")
+    public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> buscarBicicletas(
+            @RequestParam String query,
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(defaultValue = "0") int offset) {
+        PaginatedResponse<BicicletaResponseDto> paginatedResponse = bicicletaService.buscarBicicletas(query, limit, offset);
+        return new ResponseEntity<>(paginatedResponse, HttpStatus.OK);
     }
+    /*public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> buscarBicicletas(
+            @PathVariable int numeroPagina,
+            @RequestParam String q,
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(defaultValue = "0") int offset) {
+        PaginatedResponse<BicicletaResponseDto> paginatedResponse = bicicletaService.buscarBicicletas(q, limit, offset);
+        return new ResponseEntity<>(paginatedResponse, HttpStatus.OK);
+    }*/
+
 
     @PostMapping("/{bicicletaId}/caracteristicas/{caracteristicaId}")
     public ResponseEntity<String> agregarCaracteristicaABicicleta(@PathVariable Long bicicletaId, @PathVariable Long caracteristicaId) {
