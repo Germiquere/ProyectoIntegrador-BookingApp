@@ -37,5 +37,4 @@ public interface IBicicletaRepository extends JpaRepository<Bicicleta, Long> {
             "   OR LOWER(cat.nombre) IN :words ")  // Nueva condición para buscar palabras en categorías
     List<Bicicleta> buscarBicicletasPorQuery(@Param("query") String query, @Param("words") List<String> words);
 
-
 }

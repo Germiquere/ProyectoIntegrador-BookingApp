@@ -2,9 +2,7 @@ package com.dh.bmn.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -44,8 +42,6 @@ public class Bicicleta implements Serializable {
     private List<Imagen> imagenes;
 
 
-
-    //@JsonIgnore
     @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "bicicleta_caracteristica",
@@ -56,18 +52,26 @@ public class Bicicleta implements Serializable {
     private List<CaracteristicaBicicleta> caracteristicas;
 
 
-    public void addCaracteristica(CaracteristicaBicicleta caracteristica) {
-        if (caracteristicas == null) {
-            caracteristicas = new ArrayList<>();
-        }
-        caracteristicas.add(caracteristica);
-        caracteristica.getBicicletas().add(this);
-    }
+//    public void addCaracteristica(CaracteristicaBicicleta caracteristica) {
+//        if (caracteristicas == null) {
+//            caracteristicas = new ArrayList<>();
+//        }
+//        caracteristicas.add(caracteristica);
+//        caracteristica.getBicicletas().add(this);
+//    }
+//
+//    public void removeCaracteristica(CaracteristicaBicicleta caracteristica) {
+//        if (caracteristicas != null) {
+//            caracteristicas.remove(caracteristica);
+//            caracteristica.getBicicletas().remove(this);
+//        }
+//    }
 
-    public void removeCaracteristica(CaracteristicaBicicleta caracteristica) {
-        if (caracteristicas != null) {
-            caracteristicas.remove(caracteristica);
-            caracteristica.getBicicletas().remove(this);
-        }
-    }
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "bicicleta_politica",
+            joinColumns = @JoinColumn(name = "bicicleta_id"),
+            inverseJoinColumns = @JoinColumn(name = "politica_id")
+    )
+    private List<Politica> politicas;
 }
