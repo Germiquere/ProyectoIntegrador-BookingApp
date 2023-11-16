@@ -42,7 +42,7 @@ public class PoliticaService implements IService<PoliticaResponseDto, PoliticaRe
 
         if (politicaDB != null) {
 
-            normalizarNombreDescripcion(politicaRequestDto);
+            normalizarTituloDescripcion(politicaRequestDto);
             politicaDB = objectMapper.convertValue(politicaRequestDto, Politica.class);
             politicaRepository.save(politicaDB);
         }
@@ -57,7 +57,7 @@ public class PoliticaService implements IService<PoliticaResponseDto, PoliticaRe
 
     @Override
     public void crear(PoliticaRequestDto politicaRequestDto) {
-        normalizarNombreDescripcion(politicaRequestDto);
+        normalizarTituloDescripcion(politicaRequestDto);
 
         if (politicaRepository.findByTitulo(politicaRequestDto.getTitulo()).isPresent()) {
             throw new ResourceAlreadyExistsException("La política que estas intentando crear ya existe", HttpStatus.CONFLICT.value());
@@ -97,7 +97,7 @@ public class PoliticaService implements IService<PoliticaResponseDto, PoliticaRe
         return null;
     }
 
-    private void normalizarNombreDescripcion(PoliticaRequestDto politicaRequestDto){
+    private void normalizarTituloDescripcion(PoliticaRequestDto politicaRequestDto){
 
         String inicialTitulo = politicaRequestDto.getTitulo().substring(0, 1);
         String restoTitulo = politicaRequestDto.getTitulo().substring(1);

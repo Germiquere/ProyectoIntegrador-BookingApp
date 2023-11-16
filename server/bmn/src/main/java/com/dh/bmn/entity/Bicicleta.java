@@ -2,9 +2,7 @@ package com.dh.bmn.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -54,20 +52,20 @@ public class Bicicleta implements Serializable {
     private List<CaracteristicaBicicleta> caracteristicas;
 
 
-    public void addCaracteristica(CaracteristicaBicicleta caracteristica) {
-        if (caracteristicas == null) {
-            caracteristicas = new ArrayList<>();
-        }
-        caracteristicas.add(caracteristica);
-        caracteristica.getBicicletas().add(this);
-    }
-
-    public void removeCaracteristica(CaracteristicaBicicleta caracteristica) {
-        if (caracteristicas != null) {
-            caracteristicas.remove(caracteristica);
-            caracteristica.getBicicletas().remove(this);
-        }
-    }
+//    public void addCaracteristica(CaracteristicaBicicleta caracteristica) {
+//        if (caracteristicas == null) {
+//            caracteristicas = new ArrayList<>();
+//        }
+//        caracteristicas.add(caracteristica);
+//        caracteristica.getBicicletas().add(this);
+//    }
+//
+//    public void removeCaracteristica(CaracteristicaBicicleta caracteristica) {
+//        if (caracteristicas != null) {
+//            caracteristicas.remove(caracteristica);
+//            caracteristica.getBicicletas().remove(this);
+//        }
+//    }
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
