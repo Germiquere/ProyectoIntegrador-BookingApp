@@ -23,14 +23,16 @@ export const VerificationRegisterPage = () => {
                         src="https://res.cloudinary.com/djslo5b3u/image/upload/v1699321812/ThanksImage_fmi6pn.svg"
                         alt="Imagen de verificacion"
                     />
-                    <h1 className="text-primary font-bold text-5xl">
+                    <h1 className="text-primary font-bold  text-3xl ssm:text-4xl sm:text-5xl">
                         Muchas gracias!
                     </h1>
-                    <p className="w-1/2 text-center text-base text-grayTertiary">
-                        Ahora eres un miembro de BikeMeNow. Te hemos enviado un
-                        mensaje de verificación al correo{" "}
+                    <div className="flex flex-col gap-1 justify-center items-center">
+                        <p className="ssm:max-w-[350px] text-center text-base text-grayTertiary">
+                            Ahora eres un miembro de BikeMeNow. Te enviámos un
+                            mensaje de verificación al correo:
+                        </p>
                         <strong>{userEmail}</strong>
-                    </p>
+                    </div>
                 </div>
                 <div className="flex gap-2">
                     <p>¿No te llego el correo?</p>

@@ -7,7 +7,6 @@ import { useUsersContext } from "../../context/UsersContext";
 
 export const AuthRouter = () => {
     const { isRegistered } = useUsersContext();
-    console.log(isRegistered);
     return (
         <Routes>
             <Route element={<AuthLayout />}>

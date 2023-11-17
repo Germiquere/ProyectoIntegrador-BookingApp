@@ -17,6 +17,7 @@ export const EditRolModal = () => {
         console.log(usersFormState);
         const user = await editUserRole(usersFormState);
         console.log(user);
+        setOpenEditUserModal(false);
     };
     return (
         <>

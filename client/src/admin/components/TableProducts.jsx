@@ -8,7 +8,6 @@ export const TableProducts = () => {
         setOpenEditProductModal,
         formState,
     } = useBikesContext();
-    console.log(formState);
     return (
         <div className="flex flex-col gap-2">
             {loading
@@ -29,7 +28,6 @@ export const TableProducts = () => {
                                       imagenes: bike.imagenes,
                                       caracteristicas: bike.caracteristicas,
                                   });
-                                  console.log(bike);
                                   setOpenEditProductModal(true);
                               }}
                               className="cursor-pointer flex gap-8 justify-between items-center rounded-xl text-xs p-3 bg-white shadow-md border border-gray-200 relative hover:bg-gray-100"

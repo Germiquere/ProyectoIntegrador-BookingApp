@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Section from "../../bookingApp/components/Section";
 import React, { useState } from "react";
 import { VscEyeClosed, VscEye } from "react-icons/vsc";
@@ -9,7 +9,12 @@ const formData = {
     email: "admin@example.com",
     password: "contraseña",
 };
+// const formData = {
+//     email: "",
+//     password: "",
+// };
 export const LoginPage = () => {
+    const location = useLocation();
     const {
         formState,
         onInputChange,
@@ -24,13 +29,12 @@ export const LoginPage = () => {
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formState);
 
         try {
             await loginUser(formState);
             const user = await fetchUserData();
             if (user) {
-                navigate("/");
+                navigate(location.state.prevUrl + location.state.prevSearch);
             }
         } catch (error) {
             // Maneja errores si ocurren durante la autenticación o la obtención de datos
@@ -68,7 +72,7 @@ export const LoginPage = () => {
                             name="password"
                             type={showPassword ? "text" : "password"}
                             className=" shadow-md rounded-lg peer h-full p-2 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50"
-                            placeholder="**************"
+                            placeholder="bikemenoW123"
                             value={password}
                             onChange={onInputChange}
                         />

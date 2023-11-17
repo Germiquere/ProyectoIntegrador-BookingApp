@@ -19,7 +19,6 @@ export function CharacteristicsProvider({ children }) {
             const data = await getCharacteristics();
             // TENER EN CUENTA COMO VIENE MI DATA
             setCharacteristicsData(data);
-            console.log(data);
         } catch (err) {
             setError(err);
         } finally {

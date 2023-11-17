@@ -30,6 +30,7 @@ export const login = async (user) => {
 };
 export const register = async (user) => {
     console.log("estoy pro registrar");
+
     try {
         const res = await fetch(`http://localhost:8080/auth/registrar`, {
             method: "POST",
@@ -61,10 +62,11 @@ export const register = async (user) => {
     }
 };
 export const sendEmail = async (email) => {
-    console.log("estoy pro registrar");
+    //  `http://localhost:8080/auth/reenviar-email?email=${email}`
+    // `http://localhost:8080/auth/reenviar-confirmacion?email=${email}`
     try {
         const res = await fetch(
-            `http://localhost:8080/auth/reenviar-confirmacion?email=${email}`,
+            `http://localhost:8080/auth/reenviar-email?email=${email}`,
             {
                 method: "POST",
                 headers: {

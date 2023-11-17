@@ -181,11 +181,7 @@ export function UsersProvider({ children }) {
         const now = Math.floor(Date.now() / 1000);
 
         if (token) {
-            console.log("hay token");
             const time = token.exp - now;
-            console.log(token.exp);
-            console.log(now);
-            console.log(time);
 
             if (time > 0) {
                 await fetchUserData();

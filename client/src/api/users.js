@@ -1,6 +1,5 @@
 // USERS
 export const getUser = async () => {
-    console.log("Estoy aca");
     try {
         const { token } = JSON.parse(localStorage.getItem("accessToken"));
         const res = await fetch(

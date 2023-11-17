@@ -3,6 +3,7 @@ import {
     deleteBike,
     getBikeById,
     getBikes,
+    getBikesByPagination,
     postBike,
     updateBike,
 } from "../api/bikes";
@@ -26,7 +27,11 @@ const formData = {
 };
 export const BikesProvider = ({ children }) => {
     const [bikesData, setBikesData] = useState([]);
+    const [bikesDataPaginated, setBikesDataPaginated] = useState([]);
+
     const [loading, setLoading] = useState(false);
+    const [loadingPagination, setLoadingPagination] = useState(false);
+
     const [error, setError] = useState("");
     const [bikeById, setBikeById] = useState([]);
     const [openNewProductModal, setOpenNewProductModal] = useState(false);
@@ -70,6 +75,21 @@ export const BikesProvider = ({ children }) => {
             setLoading(false);
         }
     };
+    const fetchPaginatedData = async (page) => {
+        setLoadingPagination(true);
+        try {
+            // LLAMO A LA FUNCION GET DEL ARCHIVO categories.js
+            const data = await getBikesByPagination(page);
+            console.log(data);
+            // TENER EN CUENTA COMO VIENE MI DATA
+            setBikesDataPaginated(data);
+        } catch (err) {
+            setError(err);
+        } finally {
+            // MANEJO EL ESTADO DEL LOADING EN FALSE UNA  VEZ TERMINADO EL FETCH YA SEA EXITOSO O NO
+            setLoadingPagination(false);
+        }
+    };
     const bikeByIdGet = async (id) => {
         // MANEJO EL ESTADO  DEL LOADING EN TRUE
         setLoading(true);
@@ -89,7 +109,6 @@ export const BikesProvider = ({ children }) => {
         setLoading(true);
         try {
             const newBike = await postBike(bike);
-            console.log(newBike);
             //   VUELVO A HACER EL FETCH DE LA DATA PARA ACTUALIZAR LAS CATEGORIAS
             fetchData();
             return newBike;
@@ -131,8 +150,6 @@ export const BikesProvider = ({ children }) => {
     // FUNCION PARA BORRAR LAS IMAGENES
     const handleDeleteImages = async (images) => {
         setLoading(true);
-        console.log("estoy aca por borrr imagenes");
-        console.log(images);
         try {
             const imagePromises = [];
             for (const image of images) {
@@ -192,6 +209,8 @@ export const BikesProvider = ({ children }) => {
                 openNewProductModal,
                 openEditProductModal,
                 openConfirmDelete,
+                bikesDataPaginated,
+                loadingPagination,
                 //METODOS
                 bikeByIdGet,
                 addNewBike,
@@ -208,6 +227,7 @@ export const BikesProvider = ({ children }) => {
                 setError,
                 updateABike,
                 handleDeleteImages,
+                fetchPaginatedData,
             }}
         >
             {children}

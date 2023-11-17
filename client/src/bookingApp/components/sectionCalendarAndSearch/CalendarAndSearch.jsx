@@ -17,7 +17,7 @@ export const CalendarAndSearch = () => {
         navigate(
             `/items?search=${search}${
                 startDate ? `&startDate=${startDate}` : ""
-            }${endDate ? `&endDate=${endDate}` : ""}`
+            }${endDate ? `&endDate=${endDate}` : ""}&page=1`
         );
     };
     return (

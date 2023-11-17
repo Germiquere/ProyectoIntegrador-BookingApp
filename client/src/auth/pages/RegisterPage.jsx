@@ -16,12 +16,19 @@ export const RegisterPage = () => {
     } = useUsersContext();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        nombre: "laura",
-        apellido: "blandon",
-        email: "joaquintbraicovich@gmail.com",
-        password: "asdasd123",
-        confirmPassword: "asdasd123",
+        nombre: "german",
+        apellido: "miquere",
+        email: "german150703.miquere@gmail.com",
+        password: "asdasd123A",
+        confirmPassword: "asdasd123A",
     });
+    // const [formData, setFormData] = useState({
+    //     nombre: "",
+    //     apellido: "",
+    //     email: "",
+    //     password: "",
+    //     confirmPassword: "",
+    // });
 
     const [fieldErrors, setFieldErrors] = useState({
         name: "",
@@ -48,7 +55,6 @@ export const RegisterPage = () => {
             hasError = true;
         } else {
             newFieldErrors.name = "";
-            hasError = false;
         }
 
         if (formData.apellido.length < 3 || /\d/.test(formData.apellido)) {
@@ -56,7 +62,6 @@ export const RegisterPage = () => {
             hasError = true;
         } else {
             newFieldErrors.lname = "";
-            hasError = false;
         }
 
         if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -64,19 +69,18 @@ export const RegisterPage = () => {
             hasError = true;
         } else {
             newFieldErrors.email = "";
-            hasError = false;
         }
 
         if (
             formData.password.length < 8 ||
-            !/[A-Za-z]/.test(formData.password) ||
+            formData.password > 12 ||
+            !/[A-Z]/.test(formData.password) ||
             !/\d/.test(formData.password)
         ) {
-            newFieldErrors.password = "Debe contener 8 min y un número.";
+            newFieldErrors.password = "La contraseña no es valida";
             hasError = true;
         } else {
             newFieldErrors.password = "";
-            hasError = false;
         }
 
         if (formData.confirmPassword !== formData.password) {
@@ -84,7 +88,6 @@ export const RegisterPage = () => {
             hasError = true;
         } else {
             newFieldErrors.confirmPassword = "";
-            hasError = false;
         }
 
         setFieldErrors(newFieldErrors);
@@ -154,7 +157,7 @@ export const RegisterPage = () => {
                             )}
                         </div>
                     </div>
-                    <div className="relative min-w-[250px] flex flex-col sm:min-w-[500px]">
+                    <div className="relative w-full flex flex-col sm:min-w-[500px]">
                         <label className="font-semibold mb-2">
                             Correo electrónico *
                         </label>
@@ -184,7 +187,7 @@ export const RegisterPage = () => {
                             type={showPassword ? "text" : "password"}
                             required
                             className=" shadow-md rounded-lg peer h-full p-2 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50"
-                            placeholder="********"
+                            placeholder="bikemenoW123"
                             value={formData.password}
                             onChange={handleInputChange}
                         />
@@ -193,7 +196,10 @@ export const RegisterPage = () => {
                                 {fieldErrors.password}
                             </span>
                         )}
-
+                        <span className=" w-full text-xs pt-1">
+                            Debe contener entre 8 y 12 caracteres, al menos una
+                            letra mayúscula y un número.
+                        </span>
                         <span
                             className="absolute  right-0 top-10 pr-3 cursor-pointer text-lg"
                             onClick={() => setShowPassword(!showPassword)}
@@ -201,7 +207,7 @@ export const RegisterPage = () => {
                             {showPassword ? <VscEyeClosed /> : <VscEye />}
                         </span>
                     </div>
-                    <div className="relative min-w-[250px] flex flex-col sm:min-w-[500px]">
+                    <div className="relative w-full flex flex-col sm:min-w-[500px]">
                         <label className="font-semibold mb-2">
                             Confirmar contraseña *
                         </label>
@@ -211,7 +217,7 @@ export const RegisterPage = () => {
                             type={showPassword ? "text" : "password"}
                             required
                             className=" shadow-md rounded-lg peer h-full p-2 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50"
-                            placeholder="********"
+                            placeholder="bikemenoW123"
                             value={formData.confirmPassword}
                             onChange={handleInputChange}
                         />
