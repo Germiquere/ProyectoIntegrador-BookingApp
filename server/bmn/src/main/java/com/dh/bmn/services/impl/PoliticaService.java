@@ -74,11 +74,12 @@ public class PoliticaService implements IService<PoliticaResponseDto, PoliticaRe
 
         List<Bicicleta> bicicletasAsociadas = politica.getBicicletas();
 
-        for (Bicicleta bicicleta : bicicletasAsociadas) {
-            bicicleta.getPoliticas().remove(politica);
-            bicicletaRepository.save(bicicleta);
+        if (bicicletasAsociadas != null) {
+            for (Bicicleta bicicleta : bicicletasAsociadas) {
+                bicicleta.getPoliticas().remove(politica);
+                bicicletaRepository.save(bicicleta);
+            }
         }
-
         politicaRepository.delete(politica);
     }
 
