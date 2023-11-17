@@ -69,9 +69,7 @@ public class CaracteristicaBicicletaService implements IService<CaracteristicaBi
     public void borrarPorId(Long id) {
         CaracteristicaBicicleta caracteristica = caracteristicaBicicletaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La característica no existe", HttpStatus.NOT_FOUND.value()));
 
-        List<Bicicleta> bicicletasAsociadas = caracteristica.getBicicletas();
-
-        for (Bicicleta bicicleta : bicicletasAsociadas) {
+        for (Bicicleta bicicleta : bicicletaRepository.findAll()) {
             bicicleta.getCaracteristicas().remove(caracteristica);
             bicicletaRepository.save(bicicleta);
         }
