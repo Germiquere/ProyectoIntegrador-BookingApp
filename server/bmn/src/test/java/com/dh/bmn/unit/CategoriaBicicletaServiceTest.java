@@ -4,10 +4,10 @@ import com.dh.bmn.dtos.requests.CategoriaBicicletaRequestDto;
 import com.dh.bmn.dtos.requests.ImagenRequestDto;
 import com.dh.bmn.dtos.responses.CategoriaBicicletaResponseDto;
 import com.dh.bmn.dtos.responses.ImagenResponseDto;
-import com.dh.bmn.entity.CategoriaBicicleta;
-import com.dh.bmn.entity.Imagen;
+import com.dh.bmn.entity.*;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
+import com.dh.bmn.repositories.IBicicletaRepository;
 import com.dh.bmn.repositories.ICategoriaBicicletaRepository;
 import com.dh.bmn.services.impl.CategoriaBicicletaService;
 import org.junit.jupiter.api.Assertions;
@@ -33,13 +33,16 @@ public class CategoriaBicicletaServiceTest {
 
     @Mock
     private ICategoriaBicicletaRepository categoriaBicicletaRepository;
+
+    @Mock
+    private IBicicletaRepository bicicletaRepository;
     @InjectMocks
     private CategoriaBicicletaService categoriaBicicletaService;
 
     @BeforeEach
     public void setup() {
         categoriaBicicletaRepository = mock(ICategoriaBicicletaRepository.class);
-        //categoriaBicicletaService = new CategoriaBicicletaService(categoriaBicicletaRepository, bicicletaRepository);
+        categoriaBicicletaService = new CategoriaBicicletaService(categoriaBicicletaRepository, bicicletaRepository);
     }
 
     @Test
@@ -135,15 +138,25 @@ public class CategoriaBicicletaServiceTest {
     public void eliminarCategoriaBicicleta() throws MalformedURLException {
         //Arrange
         Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
-        CategoriaBicicleta categoriaBicicletaEntity = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
+        List<Imagen> imagenes = List.of(imagen);
+        CaracteristicaBicicleta caracteristicaBicicleta = new CaracteristicaBicicleta(1L, "Precio", "icono");
+        List<CaracteristicaBicicleta> caracteristicaList = List.of(caracteristicaBicicleta);
+        CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
+        List<CategoriaBicicleta> categoriaList = new ArrayList<>(List.of(categoriaBicicleta));
+        Politica politica = new Politica(1L, "Politica", "Descripcion politica");
+        List<Politica> politicaBicicletaList = List.of(politica);
 
+
+        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
+        List<Bicicleta> bicicletaList = List.of(bicicleta);
         //Act
-        Mockito.when(categoriaBicicletaRepository.findById(1L)).thenReturn(Optional.of(categoriaBicicletaEntity));
-        doNothing().when(categoriaBicicletaRepository).delete(categoriaBicicletaEntity);
+        Mockito.when(categoriaBicicletaRepository.findById(1L)).thenReturn(Optional.of(categoriaBicicleta));
+        Mockito.when(bicicletaRepository.findAll()).thenReturn(bicicletaList);
+        doNothing().when(categoriaBicicletaRepository).delete(categoriaBicicleta);
         categoriaBicicletaService.borrarPorId(1L);
 
         // Asserts
-        verify(categoriaBicicletaRepository, times(1)).delete(categoriaBicicletaEntity);
+        verify(categoriaBicicletaRepository, times(1)).delete(categoriaBicicleta);
     }
 
     @Test
