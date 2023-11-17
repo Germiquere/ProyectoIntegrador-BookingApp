@@ -50,6 +50,7 @@ export const postCategory = async (newBikeCategory) => {
     }
 };
 export const deleteCategory = async (id) => {
+    console.log("estoy por borrar la categoria");
     const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
         const res = await fetch(
