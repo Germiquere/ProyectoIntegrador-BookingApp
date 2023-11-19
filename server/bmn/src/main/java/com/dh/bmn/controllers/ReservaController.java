@@ -15,7 +15,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/bike-me-now/api/reservas")
+@RequestMapping("/bike-me-now")
 public class ReservaController {
 
     private final IService<ReservaResponseDto, ReservaRequestDto> iReservaService;
@@ -28,47 +28,47 @@ public class ReservaController {
         this.reservaService = reservaService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("api/reservas/{id}")
     @Secured({ "ADMIN", "USER" })
     public ResponseEntity<ReservaResponseDto> obtenerReservaPorId (@PathVariable Long id)  {
         return new ResponseEntity<>(iReservaService.buscarPorId(id), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/api/reservas")
     @Secured({ "ADMIN", "USER" })
     public ResponseEntity<?> registrarReserva (@RequestBody @Valid ReservaRequestDto reservaRequestDto) {
         iReservaService.crear(reservaRequestDto);
         return new ResponseEntity<>(new JsonMessageDto("Nueva reserva registrada",HttpStatus.CREATED.value()), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/reservas/{id}")
     @Secured({ "ADMIN", "USER" })
     public ResponseEntity<?> eliminarReservaPorId (@PathVariable Long id) {
         iReservaService.borrarPorId(id);
         return new ResponseEntity<>(new JsonMessageDto("Reserva eliminada exitosamente",HttpStatus.OK.value()), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/api/reservas")
     @Secured("ADMIN")
     public ResponseEntity<List<ReservaResponseDto>> listarReservas () {
         return new ResponseEntity<>(iReservaService.listarTodos(),HttpStatus.OK);
     }
 
-    @PutMapping()
+    @PutMapping("/api/reservas")
     @Secured({ "ADMIN", "USER" })
     public ResponseEntity<?> actualizarReserva (@RequestBody @Valid ReservaRequestDto reservaRequestDto) {
         iReservaService.actualizar(reservaRequestDto);
         return new ResponseEntity<>(new JsonMessageDto("Reserva actualizada exitosamente",HttpStatus.OK.value()), HttpStatus.OK);
     }
 
-    @GetMapping("/usuarios/{id}")
+    @GetMapping("/api/reservas/usuarios/{id}")
     @Secured("ADMIN")
     public ResponseEntity<List<ReservaResponseDto>> obtenerReservasPorUsuario(@PathVariable Long id) {
         return new ResponseEntity<>(reservaService.obtenerReservasPorUsuario(id), HttpStatus.OK);
     }
 
-    @GetMapping("/bicicletas/{id}")
-    @Secured("ADMIN")
+    @GetMapping("/reservas/bicicletas/{id}")
+    //@Secured("ADMIN")
     public ResponseEntity<List<ReservaResponseDto>> obtenerReservasPorBicicleta(@PathVariable Long id) {
         return new ResponseEntity<>(reservaService.obtenerReservasPorBicicleta(id), HttpStatus.OK);
     }
