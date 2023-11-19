@@ -26,7 +26,7 @@ public class PoliticaController {
     }
 
 
-    @GetMapping("/politicas/{id}")
+    @GetMapping("/api/politicas/{id}")
     @Secured({ "ADMIN", "USER" })
     public ResponseEntity<PoliticaResponseDto> obtenerPoliticaPorId (@PathVariable Long id) {
         return new ResponseEntity<>(politicaService.buscarPorId(id), HttpStatus.OK);
@@ -46,7 +46,7 @@ public class PoliticaController {
         return new ResponseEntity<>(new JsonMessageDto("Política eliminada.",HttpStatus.OK.value()), HttpStatus.OK);
     }
 
-    @GetMapping ("/politicas")
+    @GetMapping ("/api/politicas")
     @Secured({ "ADMIN", "USER" })
     public ResponseEntity<List<PoliticaResponseDto>> listarPoliticas(){
         return new ResponseEntity<>(politicaService.listarTodos(), HttpStatus.OK);
