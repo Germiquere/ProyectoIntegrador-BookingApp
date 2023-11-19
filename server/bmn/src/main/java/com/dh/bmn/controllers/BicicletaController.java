@@ -33,7 +33,6 @@ public class BicicletaController {
     }
 
     @GetMapping("/bicicletas/{id}")
-    @Secured({ "ADMIN", "USER" })
     public ResponseEntity<BicicletaResponseDto> obtenerBicicletaPorId (@PathVariable Long id) {
         return new ResponseEntity<>(bicicletaService.buscarPorId(id), HttpStatus.OK);
     }
