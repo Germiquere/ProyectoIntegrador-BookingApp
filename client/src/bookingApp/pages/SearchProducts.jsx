@@ -12,7 +12,6 @@ import queryString from "query-string";
 import { useBikesContext } from "../../context/BikesContext";
 import { useCategoriesContext } from "../../context/CategoriesContext";
 import Fuse from "fuse.js";
-import { Pagination } from "../../ui/Pagination";
 export const SearchProducts = () => {
     const { handleOpenCalendarAndSearch, formState, setFormState } = useContext(
         CalendarAndSearchContext
@@ -144,9 +143,9 @@ export const SearchProducts = () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [openFilters]);
-    useEffect(() => {
-        fetchPaginatedData(1);
-    }, []);
+    // useEffect(() => {
+    //     fetchPaginatedData(1);
+    // }, []);
 
     return (
         <>

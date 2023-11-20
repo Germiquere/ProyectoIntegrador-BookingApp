@@ -3,7 +3,7 @@ import {
     deleteBike,
     getBikeById,
     getBikes,
-    getBikesByPagination,
+    // getBikesByPagination,
     postBike,
     updateBike,
 } from "../api/bikes";
@@ -75,21 +75,22 @@ export const BikesProvider = ({ children }) => {
             setLoading(false);
         }
     };
-    const fetchPaginatedData = async (page) => {
-        setLoadingPagination(true);
-        try {
-            // LLAMO A LA FUNCION GET DEL ARCHIVO categories.js
-            const data = await getBikesByPagination(page);
-            console.log(data);
-            // TENER EN CUENTA COMO VIENE MI DATA
-            setBikesDataPaginated(data);
-        } catch (err) {
-            setError(err);
-        } finally {
-            // MANEJO EL ESTADO DEL LOADING EN FALSE UNA  VEZ TERMINADO EL FETCH YA SEA EXITOSO O NO
-            setLoadingPagination(false);
-        }
-    };
+    // const fetchPaginatedData = async (page) => {
+    //     setLoadingPagination(true);
+    //     try {
+    //         // LLAMO A LA FUNCION GET DEL ARCHIVO categories.js
+    //         const data = await getBikesByPagination(page);
+    //         console.log(data);
+    //         // TENER EN CUENTA COMO VIENE MI DATA
+    //         setBikesDataPaginated(data);
+    //     } catch (err) {
+    //         setError(err);
+    //     } finally {
+    //         // MANEJO EL ESTADO DEL LOADING EN FALSE UNA  VEZ TERMINADO EL FETCH YA SEA EXITOSO O NO
+    //         setLoadingPagination(false);
+    //     }
+    // };
+
     const bikeByIdGet = async (id) => {
         // MANEJO EL ESTADO  DEL LOADING EN TRUE
         setLoading(true);
@@ -227,7 +228,7 @@ export const BikesProvider = ({ children }) => {
                 setError,
                 updateABike,
                 handleDeleteImages,
-                fetchPaginatedData,
+                // fetchPaginatedData,
             }}
         >
             {children}

@@ -22,7 +22,9 @@ export const Calendar = () => {
 
     const [open, setOpen] = useState(false);
     const calendarRef = useRef(null);
-
+    const [isMobile, setIsMobile] = useState(
+        window.matchMedia("(max-width: 1024px)").matches
+    );
     // funcion para que al abrir se borre el contenido del input
     const handleOpen = () => {
         setOpen(true);
@@ -91,13 +93,27 @@ export const Calendar = () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [open]);
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(max-width: 1024px)");
+        const handleResize = () => {
+            setIsMobile(mediaQuery.matches);
+        };
+
+        // Agrega un listener para la ventana de cambio de tamaño
+        window.addEventListener("resize", handleResize);
+
+        // Limpia el listener al desmontar el componente
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
     return (
         <div className="flex-col ">
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-0">
-                <div className="relative h-11 w-full  sm:min-w-[150px] ">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-0 ">
+                <div className=" h-11 w-full  sm:min-w-[150px] relative lg:static ">
                     {/* input stardate */}
                     <input
-                        className="sm:border-r-[1px]  sm:border-gray-100 rounded-full sm:rounded-none peer h-full w-full flex-1  p-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50 cursor-pointer"
+                        className=" sm:border-r-[1px]  sm:border-gray-100 rounded-full sm:rounded-none peer h-full w-full flex-1  p-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50 cursor-pointer"
                         placeholder="Desde"
                         type="text"
                         onClick={handleOpen}
@@ -117,7 +133,7 @@ export const Calendar = () => {
                                 onChange={handleSelect}
                                 moveRangeOnFirstSelection={false}
                                 ranges={state}
-                                months={1}
+                                months={isMobile ? 1 : 2}
                                 showDateDisplay={false}
                                 minDate={new Date()}
                                 rangeColors={["#0274AE"]}

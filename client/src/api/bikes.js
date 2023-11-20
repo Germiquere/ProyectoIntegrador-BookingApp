@@ -17,13 +17,34 @@ export const getBikes = async () => {
         throw error;
     }
 };
-export const getBikesByPagination = async (page) => {
+export const getBikesByPagination = async (page, query) => {
     try {
         // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
 
         // const res = await fetch(import.meta.env.VITE_URL + "/");
         const res = await fetch(
-            `http://localhost:8080/bike-me-now/bicicletas/page/${page}?limit=3`
+            `http://localhost:8080/bike-me-now/bicicletas/page/${page}/search?query=${query}&limit=12&offset=0`
+        );
+        if (!res.ok) {
+            // Crear un objeto de error personalizado con estado y ok
+            const error = new Error("Error en la solicitud Get");
+            error.status = res.status;
+            error.ok = false;
+            throw error;
+        }
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const getDatesbyBikeId = async (id) => {
+    try {
+        // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
+
+        // const res = await fetch(import.meta.env.VITE_URL + "/");
+        const res = await fetch(
+            `http://localhost:8080/bike-me-now/reservas/bicicletas/${id}`
         );
         if (!res.ok) {
             // Crear un objeto de error personalizado con estado y ok
