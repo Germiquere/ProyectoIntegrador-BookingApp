@@ -90,6 +90,7 @@ export const BikesProvider = ({ children }) => {
             // LLAMO A LA FUNCION GET DEL ARCHIVO categories.js
             const data = await getBikesByPagination(page, query);
             // TENER EN CUENTA COMO VIENE MI DATA
+            console.log(data);
             setBikesDataPaginated(data);
         } catch (err) {
             setError(err);

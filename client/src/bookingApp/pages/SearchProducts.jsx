@@ -40,7 +40,6 @@ export const SearchProducts = () => {
         offset = 0,
     } = queryString.parse(location.search);
     const navigate = useNavigate();
-    const [filteredBicycles, setFilteredBicycles] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [openFilters, setOpenFilters] = useState(false);
     const filtersRef = useRef(null);
@@ -183,6 +182,7 @@ export const SearchProducts = () => {
         }
     }, [offset, selectedCategories]);
     useEffect(() => {
+        console.log(search);
         fetchPaginatedData(0, search);
     }, [search]);
 
