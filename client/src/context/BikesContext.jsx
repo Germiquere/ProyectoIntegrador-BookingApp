@@ -3,7 +3,7 @@ import {
     deleteBike,
     getBikeById,
     getBikes,
-    getBikesByPagination,
+    // getBikesByPagination,
     postBike,
     updateBike,
 } from "../api/bikes";
