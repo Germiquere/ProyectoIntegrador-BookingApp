@@ -30,7 +30,7 @@ export const BikesProvider = ({ children }) => {
     const [bikesDataPaginated, setBikesDataPaginated] = useState([]);
 
     const [loading, setLoading] = useState(false);
-    const [loadingPagination, setLoadingPagination] = useState(false);
+    const [loadingPagination, setLoadingPagination] = useState(true);
 
     const [error, setError] = useState("");
     const [bikeById, setBikeById] = useState([]);
@@ -75,12 +75,11 @@ export const BikesProvider = ({ children }) => {
             setLoading(false);
         }
     };
-    const fetchPaginatedData = async (page) => {
+    const fetchPaginatedData = async (page, query) => {
         setLoadingPagination(true);
         try {
             // LLAMO A LA FUNCION GET DEL ARCHIVO categories.js
-            const data = await getBikesByPagination(page);
-            console.log(data);
+            const data = await getBikesByPagination(page, query);
             // TENER EN CUENTA COMO VIENE MI DATA
             setBikesDataPaginated(data);
         } catch (err) {

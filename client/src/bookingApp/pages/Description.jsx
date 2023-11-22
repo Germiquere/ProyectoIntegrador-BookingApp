@@ -21,7 +21,7 @@ import { LineaBreak } from "../../ui/LineaBreak";
 export const Description = () => {
     const { loading: loadingBikes, bikeByIdGet, bikeById } = useBikesContext();
 
-    const { formState } = useCalendarAndSearchContext();
+    const { formState, fetchDatesByBikeId } = useCalendarAndSearchContext();
     const [total, setTotal] = useState(0);
     const calcPrice = () => {
         if (!formState.endDate || !formState.startDate) {
@@ -58,6 +58,9 @@ export const Description = () => {
     useEffect(() => {
         calcPrice();
     }, [formState.endDate, formState.startDate]);
+    // useEffect(() => {
+    //     fetchDatesByBikeId(id);
+    // }, []);
 
     return (
         <Section>
@@ -175,7 +178,7 @@ export const Description = () => {
                                         <h2 className="text-lg  ">
                                             ¿Cuándo quieres reservar?
                                         </h2>
-                                        <CalendarDescription />
+                                        <CalendarDescription bikeId={id} />
                                         <button
                                             className="mb-5 middle none center mr-3 rounded-full bg-primary py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm  transition-all  hover:shadow-secondary  active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none w-full"
                                             data-ripple-light="true"

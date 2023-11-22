@@ -17,13 +17,14 @@ export const getBikes = async () => {
         throw error;
     }
 };
-export const getBikesByPagination = async (page) => {
+export const getBikesByPagination = async (offset, query) => {
+    console.log(query);
     try {
         // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
 
         // const res = await fetch(import.meta.env.VITE_URL + "/");
         const res = await fetch(
-            `http://localhost:8080/bike-me-now/bicicletas/page/${page}?limit=3`
+            `http://localhost:8080/bike-me-now/bicicletas/page/1/searh?query=${query}&limit=12&offset=${offset}`
         );
         if (!res.ok) {
             // Crear un objeto de error personalizado con estado y ok
