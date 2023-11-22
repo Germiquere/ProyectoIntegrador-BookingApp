@@ -18,7 +18,6 @@ export const getBikes = async () => {
     }
 };
 export const getBikesByPagination = async (offset = 0, query = "") => {
-    console.log(query);
     try {
         // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
 

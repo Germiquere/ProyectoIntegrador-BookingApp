@@ -23,11 +23,18 @@ export const LoginPage = () => {
         email,
         password,
     } = useForm(formData);
-    const { loginUser, loadingUser, fetchUserData, userData, errorAuth } =
-        useUsersContext();
+    const {
+        loginUser,
+        loadingUser,
+        fetchUserData,
+        userData,
+        errorAuth,
+        setErrorAuth,
+    } = useUsersContext();
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
+        setErrorAuth(false);
         e.preventDefault();
 
         try {

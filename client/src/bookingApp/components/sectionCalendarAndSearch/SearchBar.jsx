@@ -1,10 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { CalendarAndSearchContext } from "../../../context/CalendarSearchContext";
 import { useBikesContext } from "../../../context/BikesContext";
 import { Loader } from "../../../ui/Loader";
 export const SearchBar = () => {
     const [openSearch, setOpenSearch] = useState(false);
+    const searchRef = useRef(null);
     const { onInputChange, formState, setFormState } = useContext(
         CalendarAndSearchContext
     );
@@ -26,6 +27,26 @@ export const SearchBar = () => {
         });
         setOpenSearch(false);
     };
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (
+                // la primera validacion es para ver que el componente este montado la segunda es para ver que no se haga  click en la referencia
+                searchRef.current &&
+                !searchRef.current.contains(event.target)
+            ) {
+                setOpenSearch(false);
+            }
+        }
+        if (open) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [openSearch]);
     return (
         <>
             <div className="relative h-11 w-full sm:min-w-[200px] sm:z-20  ">
@@ -41,7 +62,10 @@ export const SearchBar = () => {
                 <BsSearch className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-white sm:hidden bg-primary  rounded-full p-2 text-3xl" />
             </div>
             {openSearch && search.length > 0 && (
-                <div className="absolute top-14 left-0 w-full bg-white z-30 rounded-md p-2 hidden sm:block h-72  overflow-y-auto">
+                <div
+                    ref={searchRef}
+                    className="absolute top-14 left-0 w-full bg-white z-30 rounded-md p-2 hidden sm:block h-72  overflow-y-auto shadow-lg"
+                >
                     {!loadingPagination &&
                         bikesDataPaginated.content?.map((bike) => (
                             <p
