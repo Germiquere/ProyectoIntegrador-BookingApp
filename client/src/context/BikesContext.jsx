@@ -23,6 +23,7 @@ const formData = {
     categorias: [],
     imagenes: [],
     caracteristicas: [],
+    politicas: [],
     // id: "",
 };
 export const BikesProvider = ({ children }) => {
@@ -58,6 +59,14 @@ export const BikesProvider = ({ children }) => {
                 ...formState.caracteristicas,
                 { caracteristicaId: caracteristicaId },
             ],
+        });
+    };
+    const onPolicyChange = ({ target }) => {
+        const { value } = target;
+        const politicaId = value === "" ? "" : parseFloat(value);
+        setFormState({
+            ...formState,
+            politicas: [...formState.politicas, { politicaId: politicaId }],
         });
     };
     const fetchData = async () => {
@@ -216,6 +225,7 @@ export const BikesProvider = ({ children }) => {
                 deleteABike,
                 onCategoryChange,
                 onCaractChange,
+                onPolicyChange,
                 onInputChange,
                 onResetForm,
                 setOpenNewProductModal,
@@ -227,6 +237,7 @@ export const BikesProvider = ({ children }) => {
                 updateABike,
                 handleDeleteImages,
                 fetchPaginatedData,
+                setBikeById,
             }}
         >
             {children}

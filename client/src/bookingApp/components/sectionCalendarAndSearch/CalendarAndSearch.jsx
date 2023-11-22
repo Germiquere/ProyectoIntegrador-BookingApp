@@ -22,9 +22,9 @@ export const CalendarAndSearch = () => {
     };
     return (
         <Section
-            className={`bg-[url('https://enduro-mtb.com/wp-content/uploads/2016/11/Affrodable-bike-group-test-ENDURO-magazine-7685-122-2000x500.jpg')] bg-cover bg-no-repeat bg-center sm:bg-none`}
+            className={`bg-[url('https://enduro-mtb.com/wp-content/uploads/2016/11/Affrodable-bike-group-test-ENDURO-magazine-7685-122-2000x500.jpg')] bg-cover bg-no-repeat bg-center md:bg-none`}
         >
-            <div className="h-48 flex items-center justify-center max-w-[1200px] mx-auto relative  bg-[url('https://enduro-mtb.com/wp-content/uploads/2016/11/Affrodable-bike-group-test-ENDURO-magazine-7685-122-2000x500.jpg')] bg-cover bg-no-repeat bg-center sm:mt-5 sm:rounded-xl  ">
+            <div className="h-48 flex items-center justify-center max-w-[1200px] mx-auto relative  bg-[url('https://enduro-mtb.com/wp-content/uploads/2016/11/Affrodable-bike-group-test-ENDURO-magazine-7685-122-2000x500.jpg')] bg-cover bg-no-repeat bg-center md:mt-3 sm:rounded-xl  ">
                 <form
                     className="flex items-center justify-center absolute bottom-[-22px] shadow-2xl shadow-primary  rounded-full"
                     onSubmit={handleSubmit}

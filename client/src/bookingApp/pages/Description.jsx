@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import Section from "../components/Section";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
+import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import { ImgGallery } from "../components/sectionDescription/ImgGallery";
 import { ImgSwiper } from "../components/sectionDescription/ImgSwiper";
 import { CalendarDescription } from "../components/sectionDescription/CalendarDescription";
@@ -17,11 +18,22 @@ import { useBikesContext } from "../../context/BikesContext";
 import { differenceInDays, parse } from "date-fns";
 import { useCalendarAndSearchContext } from "../../context/CalendarSearchContext";
 import { LineaBreak } from "../../ui/LineaBreak";
+import { useFavoritesContext } from "../../context/FavoritesContext";
+import { useUsersContext } from "../../context/UsersContext";
 
 export const Description = () => {
-    const { loading: loadingBikes, bikeByIdGet, bikeById } = useBikesContext();
+    const {
+        loading: loadingBikes,
+        bikeByIdGet,
+        bikeById,
+        setBikeById,
+    } = useBikesContext();
+    const { formState } = useCalendarAndSearchContext();
+    const { userData, isAuthenticated, rol } = useUsersContext();
+    const { favorites, handleFav } = useFavoritesContext();
+    const [isFav, setIsFav] = useState(false);
+    const [loadingFav, setLoadingFav] = useState(false);
 
-    const { formState, fetchDatesByBikeId } = useCalendarAndSearchContext();
     const [total, setTotal] = useState(0);
     const calcPrice = () => {
         if (!formState.endDate || !formState.startDate) {
@@ -50,18 +62,37 @@ export const Description = () => {
     const handleToggleImgGallery = () => {
         setOpenImgGallery(!openImgGallery);
     };
-
+    // FUNCION PARA PINTAR O DESPINTAR CORAZON
+    const handleIsFav = () => {
+        setIsFav(!isFav);
+    };
+    //FUNCION PARA QUE SE PINTE EL CORAZON FAVORITOS
+    useEffect(() => {
+        if (
+            !loadingFav &&
+            favorites.length > 0 &&
+            Object.keys(bikeById).length > 0
+        ) {
+            const isInFavArray = favorites.some(
+                (item) => item.bicicleta.bicicletaId === bikeById.bicicletaId
+            );
+            isInFavArray && setIsFav(true);
+            setLoadingFav(true);
+        }
+    }, [favorites, bikeById]);
     useEffect(() => {
         bikeByIdGet(id);
+        return () => {};
     }, []);
 
     useEffect(() => {
         calcPrice();
     }, [formState.endDate, formState.startDate]);
-    // useEffect(() => {
-    //     fetchDatesByBikeId(id);
-    // }, []);
-
+    useEffect(() => {
+        return () => {
+            setBikeById([]);
+        };
+    }, []);
     return (
         <Section>
             {loadingBikes ? (
@@ -117,6 +148,28 @@ export const Description = () => {
                                         </button>
                                     </div>
                                 </div>
+                                <div className="flex justify-between">
+                                    {/*  Boton de favoritos */}
+                                    <div className=" text-primary right-6 bottom-1 text-[25px]">
+                                        {isAuthenticated && rol === "user" && (
+                                            <button
+                                                onClick={() => {
+                                                    handleFav(
+                                                        bikeById.bicicletaId,
+                                                        userData
+                                                    );
+                                                    handleIsFav();
+                                                }}
+                                            >
+                                                {isFav ? (
+                                                    <FaHeart />
+                                                ) : (
+                                                    <FaRegHeart />
+                                                )}
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
 
                                 {bikeById &&
                                     bikeById.imagenes &&
@@ -167,6 +220,30 @@ export const Description = () => {
                                                     )
                                                 )}
                                             </div>
+                                        </div>
+                                        <div className="flex flex-col gap-2">
+                                            <h3 className="text-lg sm:text-2xl font-semibold underline underline-offset-1 ">
+                                                Politicas
+                                            </h3>
+                                            <ul className="w-full  flex flex-col gap-2">
+                                                {bikeById?.politicas?.map(
+                                                    (pol) => (
+                                                        <li
+                                                            className="flex flex-col gap-1 "
+                                                            key={pol.politicaId}
+                                                        >
+                                                            <h3 className="text-lg">
+                                                                {pol.titulo}
+                                                            </h3>
+                                                            <p>
+                                                                {
+                                                                    pol.descripcion
+                                                                }
+                                                            </p>
+                                                        </li>
+                                                    )
+                                                )}
+                                            </ul>
                                         </div>
                                     </div>
 

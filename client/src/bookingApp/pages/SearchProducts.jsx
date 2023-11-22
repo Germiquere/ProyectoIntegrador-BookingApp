@@ -4,9 +4,9 @@ import Section from "../components/Section";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Calendar } from "../components/sectionCalendarAndSearch/Calendar/Calendar";
 import { BsSearch } from "react-icons/bs";
-
 import { CgMenuGridO } from "react-icons/cg";
 import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
+import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import { CalendarAndSearchContext } from "../../context/CalendarSearchContext";
 import queryString from "query-string";
 import { useBikesContext } from "../../context/BikesContext";
@@ -15,6 +15,8 @@ import { useCategoriesContext } from "../../context/CategoriesContext";
 import { Pagination } from "../../ui/Pagination";
 import { CategoriesAndRecommended } from "../components/sectionCategoriesAndRecommended/CategoriesAndRecommended";
 import { Products } from "../components/sectionProducts/Products";
+import { useUsersContext } from "../../context/UsersContext";
+import { useFavoritesContext } from "../../context/FavoritesContext";
 export const SearchProducts = () => {
     const { handleOpenCalendarAndSearch, formState, setFormState } = useContext(
         CalendarAndSearchContext
@@ -26,6 +28,10 @@ export const SearchProducts = () => {
         loadingPagination,
     } = useBikesContext();
     const { categoriesData } = useCategoriesContext();
+    const { userData, isAuthenticated, rol } = useUsersContext();
+    const { favorites, handleFav } = useFavoritesContext();
+    const [loadingFav, setLoadingFav] = useState(false);
+    const [favorite, setFavorite] = useState([]);
     const location = useLocation();
     const {
         search,
@@ -140,6 +146,27 @@ export const SearchProducts = () => {
             }&offset=0`
         );
     };
+    // FUNCION PARA PINTAR O DESPINTAR CORAZON
+    const handleToggleFavorite = (id) => {
+        setFavorite((prevState) => {
+            const newStatus = { ...prevState };
+            newStatus[id] = !newStatus[id];
+            console.log(newStatus);
+            return newStatus;
+        });
+    };
+    useEffect(() => {
+        if (!loadingFav && favorites.length > 0) {
+            setFavorite(() => {
+                const initialStatus = favorites.reduce((status, fav) => {
+                    status[fav.bicicleta.bicicletaId] = true;
+                    return status;
+                }, {});
+                return initialStatus;
+            });
+            setLoadingFav(true);
+        }
+    }, [favorites]);
     useEffect(() => {
         setFormState({
             search,
@@ -204,9 +231,9 @@ export const SearchProducts = () => {
         <>
             {/* SECTION HERO */}
             <Section
-                className={`bg-[url('https://enduro-mtb.com/wp-content/uploads/2016/11/Affrodable-bike-group-test-ENDURO-magazine-7685-122-2000x500.jpg')] bg-cover bg-no-repeat bg-center sm:bg-none`}
+                className={`bg-[url('https://enduro-mtb.com/wp-content/uploads/2016/11/Affrodable-bike-group-test-ENDURO-magazine-7685-122-2000x500.jpg')] bg-cover bg-no-repeat bg-center md:bg-none`}
             >
-                <div className=" h-48 flex items-center justify-center max-w-[1200px] mx-auto relative  bg-[url('https://enduro-mtb.com/wp-content/uploads/2016/11/Affrodable-bike-group-test-ENDURO-magazine-7685-122-2000x500.jpg')] bg-cover bg-no-repeat bg-center sm:mt-5 sm:rounded-xl  ">
+                <div className=" h-48 flex items-center justify-center max-w-[1200px] mx-auto relative  bg-[url('https://enduro-mtb.com/wp-content/uploads/2016/11/Affrodable-bike-group-test-ENDURO-magazine-7685-122-2000x500.jpg')] bg-cover bg-no-repeat bg-center md:mt-3 sm:rounded-xl  ">
                     <form
                         className="w-full sm:w-auto flex items-center justify-center absolute bottom-[-22px] shadow-2xl shadow-primary  rounded-full"
                         onSubmit={handleSubmit}
@@ -377,6 +404,33 @@ export const SearchProducts = () => {
                                                                 bike.bicicletaId
                                                             }
                                                         >
+                                                            {/*  Boton de favoritos */}
+                                                            <div className="absolute text-primary right-6 bottom-1 text-[25px]">
+                                                                {isAuthenticated &&
+                                                                    rol ===
+                                                                        "user" && (
+                                                                        <button
+                                                                            onClick={() => {
+                                                                                handleFav(
+                                                                                    bike.bicicletaId,
+                                                                                    userData
+                                                                                );
+                                                                                handleToggleFavorite(
+                                                                                    bike.bicicletaId
+                                                                                );
+                                                                            }}
+                                                                        >
+                                                                            {favorite[
+                                                                                bike
+                                                                                    .bicicletaId
+                                                                            ] ? (
+                                                                                <FaHeart />
+                                                                            ) : (
+                                                                                <FaRegHeart />
+                                                                            )}
+                                                                        </button>
+                                                                    )}
+                                                            </div>
                                                             <Link
                                                                 to={`/description/${bike.bicicletaId}`}
                                                                 className=""
@@ -395,10 +449,16 @@ export const SearchProducts = () => {
                                                                     />
                                                                 </div>
 
-                                                                <p className="pl-4 pt-4 ">
-                                                                    {
-                                                                        bike.nombre
-                                                                    }
+                                                                <p className="p-4">
+                                                                    {bike.nombre
+                                                                        .length >
+                                                                    55
+                                                                        ? bike.nombre.slice(
+                                                                              0,
+                                                                              55
+                                                                          ) +
+                                                                          "..."
+                                                                        : bike.nombre}
                                                                 </p>
                                                                 <p className="p-4 font-bold ">
                                                                     Desde $

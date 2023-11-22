@@ -8,6 +8,7 @@ import { useCategoriesContext } from "../../context/CategoriesContext";
 
 import Select from "react-select";
 import { useCharacteristicsContext } from "../../context/CharacteristicsContext";
+import { usePoliciesContext } from "../../context/PoliciesContext";
 export const CreateProductModal = () => {
     const {
         error,
@@ -23,9 +24,12 @@ export const CreateProductModal = () => {
         setError,
         setFormState,
         onCaractChange,
+        onPolicyChange,
     } = useBikesContext();
     const { categoriesData } = useCategoriesContext();
     const { characteristicsData } = useCharacteristicsContext();
+    const { policies } = usePoliciesContext();
+    console.log(policies);
     const {
         nombre,
         descripcion,
@@ -33,12 +37,14 @@ export const CreateProductModal = () => {
         categorias,
         imagenes,
         caracteristicas,
+        politicas,
     } = formState;
     const [imageChange, setImageChange] = useState([]);
     // const [selectedOption, setSelectedOption] = useState("");
     const fileInputRef = useRef(null);
     const selectRef = useRef(null);
     const selectCatRef = useRef(null);
+    const selectPolRef = useRef(null);
 
     const [erros, setErros] = useState({
         nombre: false,
@@ -47,6 +53,7 @@ export const CreateProductModal = () => {
         imagenes: false,
         caracteristicas: false,
         descripcion: false,
+        policies: false,
     });
     const [hasErrorImg, setHasErrorImg] = useState(false);
     const [hasErrorCat, setHasErrorCat] = useState(false);
@@ -84,11 +91,25 @@ export const CreateProductModal = () => {
         //     //     ...erros,
         //     //     categoria: value.trim() === "",
         //     // });
-        console.log(hasMatch);
         if (!hasMatch && value.trim()) {
             onCaractChange(e);
         }
     };
+    const handlePoliciesChange = (e) => {
+        const { name, value } = e.target;
+        console.log(value);
+        // COMPROBAMOS QUE NO ESTE LA CATEGORIA AGREGADA,
+        const hasMatch = politicas.some((pol) => pol.politicaId == value);
+        //     // setErros({
+        //     //     ...erros,
+        //     //     categoria: value.trim() === "",
+        //     // });
+        console.log(hasMatch);
+        if (!hasMatch && value.trim()) {
+            onPolicyChange(e);
+        }
+    };
+    console.log(formState);
     const handleCategoryDeletefromFormstate = (id) => {
         const updatedCategorias = categorias.filter(
             (category) => category.categoriaId !== id
@@ -108,6 +129,16 @@ export const CreateProductModal = () => {
             caracteristicas: updatedCaracts,
         });
         selectRef.current.value = "";
+    };
+    const handlePoliciesDeletefromFormstate = (id) => {
+        const updatedPolicies = politicas.filter(
+            (pol) => pol.politicaId !== id
+        );
+        setFormState({
+            ...formState,
+            politicas: updatedPolicies,
+        });
+        selectPolRef.current.value = "";
     };
     // FUNCION PARA VALIDACIONES
     const handleValidations = () => {
@@ -586,9 +617,81 @@ export const CreateProductModal = () => {
                                                     </div>
                                                 );
                                             }
-                                            return null; // O puedes devolver un elemento nulo si no hay coincidencia
+                                            return null;
                                         }
                                     )}
+                                </div>
+                            </div>
+                            {/* POLICIES */}
+                            <div>
+                                <label className="text-base font-semibold mb-2">
+                                    Politicas *
+                                </label>
+                                {/* TODO: en base al value del select, cambia el color del texto a text-graty-400 o "" */}
+                                <div
+                                    className={`relative h-11 w-full min-w-[200px]  border-[1px]  border-gray-100 overflow-hidden shadow-md rounded-xl text-gray-400`}
+                                >
+                                    <select
+                                        ref={selectPolRef}
+                                        name="politicas"
+                                        value={politicas.politcaId}
+                                        onChange={handlePoliciesChange}
+                                        className="peer h-full w-full p-2 font-sans text-sm font-normal  outline outline-0 transition-all focus:outline-0 disabled:bg-blue-gray-50"
+                                    >
+                                        <option
+                                            value=""
+                                            className="text-gray-400"
+                                        >
+                                            Selecciona una politica
+                                        </option>
+                                        {/*TODO: hacer el map con los options */}
+
+                                        {policies.map((pol) => (
+                                            <option
+                                                key={pol.politicaId}
+                                                value={pol.politicaId}
+                                                className="text-black"
+                                            >
+                                                {pol.titulo}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <p
+                                    className={`pt-1 text-xs text-red-500 ${
+                                        erros.categoria
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                    }`}
+                                >
+                                    Campo obligatorio
+                                </p>
+
+                                <div className="flex gap-2 flex-wrap">
+                                    {policies.map((pol) => {
+                                        const matchingPolicy = politicas.find(
+                                            (p) =>
+                                                p.politicaId === pol.politicaId
+                                        );
+
+                                        if (matchingPolicy) {
+                                            return (
+                                                <div
+                                                    className="flex gap-2 items-center text-white p-1 bg-primary rounded-md cursor-pointer hover:bg-secondary "
+                                                    key={pol.politicaId}
+                                                    onClick={() =>
+                                                        handlePoliciesDeletefromFormstate(
+                                                            pol.politicaId
+                                                        )
+                                                    }
+                                                >
+                                                    <p>{pol.titulo}</p>
+                                                    <BsX className="text-lg " />
+                                                </div>
+                                            );
+                                        }
+                                        return null;
+                                    })}
                                 </div>
                             </div>
                             {/* PRECIO POR DIA */}

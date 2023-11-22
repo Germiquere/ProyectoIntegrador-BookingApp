@@ -13,10 +13,10 @@ export const Pagination = ({
     const location = useLocation();
     const navigate = useNavigate();
     const [actualPage, setActualPage] = useState(1);
-
+    console.log(actualPage);
     const {
         search,
-        offset,
+        offset = 0,
         startDate = "",
         endDate = "",
     } = queryString.parse(location.search);
