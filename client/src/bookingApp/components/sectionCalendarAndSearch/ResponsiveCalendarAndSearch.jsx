@@ -1,13 +1,51 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { SearchBar } from "./SearchBar";
 import { Calendar } from "./Calendar/Calendar";
 import { BsXCircle } from "react-icons/bs";
 import { CalendarAndSearchContext } from "../../../context/CalendarSearchContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useBikesContext } from "../../../context/BikesContext";
+import queryString from "query-string";
 export const ResponsiveCalendarAndSearch = () => {
-    const { handleOpenCalendarAndSearch } = useContext(
+    const { handleOpenCalendarAndSearch, formState, setFormState } = useContext(
         CalendarAndSearchContext
     );
+
+    const {
+        bikesData,
+        bikesDataPaginated,
+        fetchPaginatedData,
+        loadingPagination,
+    } = useBikesContext();
+    const {
+        search,
+        startDate = "",
+        endDate = "",
+        offset = 0,
+    } = queryString.parse(location.search);
+    const navigate = useNavigate();
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (formState.search.length === 0) return;
+        // const filteredResults = filterBicycles();
+        // setFilteredBicycles(filteredResults);
+        fetchPaginatedData(0, formState.search);
+        handleOpenCalendarAndSearch();
+        navigate(
+            `/items?search=${formState.search}${
+                formState.startDate ? `&startDate=${formState.startDate}` : ""
+            }${
+                formState.endDate ? `&endDate=${formState.endDate}` : ""
+            }&offset=0`
+        );
+    };
+    useEffect(() => {
+        setFormState({
+            search,
+            startDate,
+            endDate,
+        });
+    }, []);
     return (
         <form
             className={`absolute z-40 h-full transform  w-full bg-gray-100 sm:hidden p-3 transition-all duration-500`}
@@ -27,15 +65,13 @@ export const ResponsiveCalendarAndSearch = () => {
                 </div>
                 <div className="flex justify-center w-full">
                     <div className="w-full">
-                        <Link to={`description/1`}>
-                            <button
-                                className="w-full h-11 middle none center  rounded-full bg-primary py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm transition-all  hover:shadow-secondary active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                                data-ripple-light="true"
-                                onClick={handleOpenCalendarAndSearch}
-                            >
-                                Buscar
-                            </button>
-                        </Link>
+                        <button
+                            className="w-full h-11 middle none center  rounded-full bg-primary py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm transition-all  hover:shadow-secondary active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            data-ripple-light="true"
+                            onClick={handleSubmit}
+                        >
+                            Buscar
+                        </button>
                     </div>
                 </div>
             </div>
