@@ -1,5 +1,6 @@
 package com.dh.bmn.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
@@ -74,4 +75,9 @@ public class Bicicleta implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "politica_id")
     )
     private List<Politica> politicas;
+
+    @OneToMany(mappedBy = "bicicleta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Reserva> reservas;
+
 }
