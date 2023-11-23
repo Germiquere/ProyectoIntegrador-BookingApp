@@ -44,7 +44,7 @@ export const ShareModal = ({ setOpenShareModal, bikeById }) => {
                         </Tooltip>
                     </div>
                     <div className="flex gap-2 items-center">
-                        <div className="min-w-[64px] min-h-[64px] bg-red-300 rounded-lg overflow-hidden ">
+                        <div className="min-w-[64px] min-h-[64px] rounded-lg overflow-hidden border border-gray-300 ">
                             <img
                                 className="h-16 w-16"
                                 src={bikeById.imagenes[0].url}
