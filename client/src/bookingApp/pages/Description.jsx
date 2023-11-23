@@ -264,7 +264,7 @@ export const Description = () => {
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <h3 className="text-lg sm:text-2xl font-semibold underline underline-offset-1 ">
-                                            Politicas
+                                            Políticas
                                         </h3>
                                         <ul className="w-full  flex flex-col gap-2">
                                             {bikeById?.politicas?.map((pol) => (
@@ -283,7 +283,7 @@ export const Description = () => {
                                 </div>
 
                                 {/* div de la derecha */}
-                                <div className="flex flex-col w-full sm:w-[300px] gap-3 rounded-xl shadow-xl p-3 border-[1px] border-gray-100">
+                                <div className="flex flex-col w-full sm:w-[300px] gap-3 rounded-xl shadow-xl p-3 border-[1px] border-gray-100 h-full">
                                     <h3 className="text-lg sm:text-2xl font-semibold w-full">
                                         ${bikeById.precioAlquilerPorDia}/dia
                                     </h3>
@@ -297,14 +297,15 @@ export const Description = () => {
                                     >
                                         ALQUILAR
                                     </button>
-                                    <div className="h-[1px] mb-5 bg-gray-200 w-full"></div>
-                                    <div className="flex justify-between">
-                                        <h3 className="text-lg sm:text-2xl font-semibold w-full">
-                                            Total a pagar
-                                        </h3>
-                                        <h3 className="text-lg sm:text-2xl font-semibold">
-                                            {total ? ` $${total}` : ""}
-                                        </h3>
+                                    <div className=" border-t border-gray-200 w-full pt-3">
+                                        <div className="flex justify-between">
+                                            <h3 className="text-lg sm:text-2xl font-semibold w-full">
+                                                Total a pagar
+                                            </h3>
+                                            <h3 className="text-lg sm:text-2xl font-semibold">
+                                                {total ? ` $${total}` : ""}
+                                            </h3>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
