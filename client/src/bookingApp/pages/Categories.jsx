@@ -3,6 +3,7 @@ import { useCategoriesContext } from "../../context/CategoriesContext";
 import Section from "../components/Section";
 import { useBikesContext } from "../../context/BikesContext";
 import { SkeletonGridProducts } from "../components/sectionProducts/SkeletonGridProducts";
+import { Helmet } from "react-helmet";
 
 export const Categories = () => {
     //TRAIGO EL HOOK PERSONALIZADO PARA TRAER LAS BICIS DESDE EL CONTEXT
@@ -46,6 +47,20 @@ export const Categories = () => {
     const filteredCategory = filterCategory(categoriesData, currentPath);
     return (
         <Section>
+            <Helmet>
+                <title>Categorias Bike Me Now</title>
+                {/* <link rel="canonical" href="http://mysite.com/example" /> */}
+
+                <meta
+                    property="og:image"
+                    content="https://res.cloudinary.com/djslo5b3u/image/upload/v1698971497/BikeMeNow_BlueAlpha_svidg9.png"
+                />
+                <meta property="og:title" content="Categorias Bike Me Now" />
+                <meta
+                    property="og:description"
+                    content="Descubre la libertad sobre dos ruedas con nuestro servicio de alquiler de bicicletas. Explora tu ciudad o destinos increíbles mientras reservas la bicicleta perfecta para cada aventura. ¡Siente el viento en tu rostro y pedalea hacia tus próximas experiencias inolvidables!"
+                />
+            </Helmet>
             <div className="max-w-[1200px] mx-auto mt-3">
                 {loading && loadingCategories ? (
                     <div className="grid grid-cols-1  gap-4  ssm:grid-cols-2  sm:grid-cols-3  md:grid-cols-4  lg:grid-cols-5  ">
