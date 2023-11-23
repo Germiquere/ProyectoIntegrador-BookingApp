@@ -108,6 +108,9 @@ export const BikesProvider = ({ children }) => {
             // TENER EN CUENTA COMO VIENE MI DATA
             setBikeById(data);
         } catch (err) {
+            if (err.status === 404) {
+                navigate("/");
+            }
             setError(err);
         } finally {
             // MANEJO EL ESTADO DEL LOADING EN FALSE UNA  VEZ TERMINADO EL FETCH YA SEA EXITOSO O NO

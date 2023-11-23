@@ -17,6 +17,7 @@ import { CategoriesAndRecommended } from "../components/sectionCategoriesAndReco
 import { Products } from "../components/sectionProducts/Products";
 import { useUsersContext } from "../../context/UsersContext";
 import { useFavoritesContext } from "../../context/FavoritesContext";
+import { Helmet } from "react-helmet";
 export const SearchProducts = () => {
     const { handleOpenCalendarAndSearch, formState, setFormState } = useContext(
         CalendarAndSearchContext
@@ -233,6 +234,23 @@ export const SearchProducts = () => {
             <Section
                 className={`bg-[url('https://enduro-mtb.com/wp-content/uploads/2016/11/Affrodable-bike-group-test-ENDURO-magazine-7685-122-2000x500.jpg')] bg-cover bg-no-repeat bg-center md:bg-none`}
             >
+                <Helmet>
+                    <title>Buscar productos Bike Me Now</title>
+                    {/* <link rel="canonical" href="http://mysite.com/example" /> */}
+
+                    <meta
+                        property="og:image"
+                        content="https://res.cloudinary.com/djslo5b3u/image/upload/v1698971497/BikeMeNow_BlueAlpha_svidg9.png"
+                    />
+                    <meta
+                        property="og:title"
+                        content="Buscar productos en Bike Me Now"
+                    />
+                    <meta
+                        property="og:description"
+                        content="Descubre la libertad sobre dos ruedas con nuestro servicio de alquiler de bicicletas. Explora tu ciudad o destinos increíbles mientras reservas la bicicleta perfecta para cada aventura. ¡Siente el viento en tu rostro y pedalea hacia tus próximas experiencias inolvidables!"
+                    />
+                </Helmet>
                 <div className=" h-48 flex items-center justify-center max-w-[1200px] mx-auto relative  bg-[url('https://enduro-mtb.com/wp-content/uploads/2016/11/Affrodable-bike-group-test-ENDURO-magazine-7685-122-2000x500.jpg')] bg-cover bg-no-repeat bg-center md:mt-3 sm:rounded-xl  ">
                     <form
                         className="w-full sm:w-auto flex items-center justify-center absolute bottom-[-22px] shadow-2xl shadow-primary  rounded-full"
@@ -405,7 +423,7 @@ export const SearchProducts = () => {
                                                             }
                                                         >
                                                             {/*  Boton de favoritos */}
-                                                            <div className="absolute text-primary right-6 bottom-1 text-[25px]">
+                                                            <div className="absolute text-primary right-2 top-2 text-[25px]">
                                                                 {isAuthenticated &&
                                                                     rol ===
                                                                         "user" && (
@@ -432,10 +450,25 @@ export const SearchProducts = () => {
                                                                     )}
                                                             </div>
                                                             <Link
-                                                                to={`/description/${bike.bicicletaId}`}
-                                                                className=""
+                                                                to={`/description/${
+                                                                    bike.bicicletaId
+                                                                }${
+                                                                    formState.startDate
+                                                                        ? `?startDate=${formState.startDate}`
+                                                                        : ""
+                                                                }${
+                                                                    formState.endDate
+                                                                        ? `${
+                                                                              formState.startDate
+                                                                                  ? "&"
+                                                                                  : "?"
+                                                                          }endDate=${
+                                                                              formState.endDate
+                                                                          }`
+                                                                        : ""
+                                                                }`}
                                                             >
-                                                                <div>
+                                                                <div className="pb-2">
                                                                     <img
                                                                         className="rounded-t-xl  w-full h-48 object-contain"
                                                                         src={
@@ -448,24 +481,23 @@ export const SearchProducts = () => {
                                                                         }
                                                                     />
                                                                 </div>
-
-                                                                <p className="p-4">
-                                                                    {bike.nombre
-                                                                        .length >
-                                                                    55
-                                                                        ? bike.nombre.slice(
-                                                                              0,
-                                                                              55
-                                                                          ) +
-                                                                          "..."
-                                                                        : bike.nombre}
-                                                                </p>
-                                                                <p className="p-4 font-bold ">
+                                                                <p className="px-4 font-bold ">
                                                                     Desde $
                                                                     {
                                                                         bike.precioAlquilerPorDia
                                                                     }
                                                                     /día
+                                                                </p>
+                                                                <p className="px-4 pb-4">
+                                                                    {bike.nombre
+                                                                        .length >
+                                                                    50
+                                                                        ? bike.nombre.slice(
+                                                                              0,
+                                                                              50
+                                                                          ) +
+                                                                          "..."
+                                                                        : bike.nombre}
                                                                 </p>
                                                             </Link>
                                                         </div>

@@ -11,7 +11,7 @@ export const Header = () => {
                     <Link to="/">
                         <img
                             className="w-full h-[50px] "
-                            src="/src/assets/BikeMeNow_BlueAlpha.png"
+                            src="https://res.cloudinary.com/djslo5b3u/image/upload/v1698971497/BikeMeNow_BlueAlpha_svidg9.png"
                             alt=""
                         />
                     </Link>

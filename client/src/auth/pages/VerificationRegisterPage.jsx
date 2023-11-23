@@ -4,6 +4,7 @@ import { useUsersContext } from "../../context/UsersContext";
 import { SentEmailModal } from "../components/verification/SentEmailModal";
 import { useState } from "react";
 import { Loader } from "../../ui/Loader";
+import { Helmet } from "react-helmet";
 
 export const VerificationRegisterPage = () => {
     const { userEmail, setIsRegistered, sendEmailAgain, loadingAuth } =
@@ -17,6 +18,20 @@ export const VerificationRegisterPage = () => {
     };
     return (
         <Section>
+            <Helmet>
+                <title>Registrase en Bike Me Now</title>
+                {/* <link rel="canonical" href="http://mysite.com/example" /> */}
+
+                <meta
+                    property="og:image"
+                    content="https://res.cloudinary.com/djslo5b3u/image/upload/v1698971497/BikeMeNow_BlueAlpha_svidg9.png"
+                />
+                <meta property="og:title" content="Registrase en Bike Me Now" />
+                <meta
+                    property="og:description"
+                    content="Descubre la libertad sobre dos ruedas con nuestro servicio de alquiler de bicicletas. Explora tu ciudad o destinos increíbles mientras reservas la bicicleta perfecta para cada aventura. ¡Siente el viento en tu rostro y pedalea hacia tus próximas experiencias inolvidables!"
+                />
+            </Helmet>
             <div className="max-w-[1200px] mx-auto flex flex-col items-center gap-8">
                 <div className="flex flex-col items-center gap-4">
                     <img

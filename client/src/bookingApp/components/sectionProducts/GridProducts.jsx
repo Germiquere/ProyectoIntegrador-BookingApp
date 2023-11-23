@@ -70,7 +70,7 @@ export default function GridProducts() {
                           key={item.bicicletaId}
                       >
                           {/*  Boton de favoritos */}
-                          <div className="absolute text-primary right-6 bottom-1 text-[25px]">
+                          <div className="absolute text-primary right-2 top-2 text-[25px]">
                               {isAuthenticated && rol === "user" && (
                                   <button
                                       onClick={() => {
@@ -92,22 +92,23 @@ export default function GridProducts() {
                               to={`/description/${item.bicicletaId}`}
                               className=""
                           >
-                              <div>
+                              <div className="pb-2">
                                   <img
                                       className="rounded-t-xl  w-full h-48 object-contain"
                                       src={item.imagenes[0].url}
                                       alt={item.nombre}
                                   />
                               </div>
-
-                              <p className="p-4">
-                                  {item.nombre.length > 55
-                                      ? item.nombre.slice(0, 55) + "..."
-                                      : item.nombre}
-                              </p>
-                              <p className="p-4 font-bold ">
+                              <p className="px-4 font-bold ">
                                   Desde ${item.precioAlquilerPorDia}/día
                               </p>
+                              <div className="flex justify-between items-center">
+                                  <p className="px-4 pb-4">
+                                      {item.nombre.length > 50
+                                          ? item.nombre.slice(0, 50) + "..."
+                                          : item.nombre}
+                                  </p>
+                              </div>
                           </Link>
                       </div>
                   ))}
