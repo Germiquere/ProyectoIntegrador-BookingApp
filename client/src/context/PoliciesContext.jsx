@@ -88,6 +88,8 @@ export const PoliciesProvider = ({ children }) => {
         setPolicies,
         addNewPolicies,
         removeAPolicies,
+        setError,
+        fetchData,
       }}
     >
       {children}
