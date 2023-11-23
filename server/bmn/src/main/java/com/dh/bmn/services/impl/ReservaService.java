@@ -138,4 +138,17 @@ public class ReservaService implements IService<ReservaResponseDto, ReservaReque
             throw new IllegalDateException("La fecha de fin no puede ser menor a la fecha de inicio", HttpStatus.BAD_REQUEST.value());
         }
     }
+
+    public boolean isConcluida(Reserva reserva) {
+        LocalDate today = LocalDate.now();
+        return reserva.getFechaFin() != null && reserva.getFechaFin().isBefore(today);
+    }
+
+    public List<Reserva> obtenerReservasConcluidasPorUsuario(Long usuarioId) {
+        List<Reserva> reservas = reservaRepository.findReservasByUsuarioId(usuarioId);
+        System.out.println(" las reservas del usuario son: " + reservas);
+        return reservas.stream()
+                .filter(this::isConcluida)
+                .collect(Collectors.toList());
+    }
 }

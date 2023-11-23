@@ -9,10 +9,7 @@ import com.dh.bmn.entity.*;
 import com.dh.bmn.exceptions.RequestValidationException;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
-import com.dh.bmn.repositories.IBicicletaRepository;
-import com.dh.bmn.repositories.ICaracteristicaBicicletaRepository;
-import com.dh.bmn.repositories.ICategoriaBicicletaRepository;
-import com.dh.bmn.repositories.IPoliticaRepository;
+import com.dh.bmn.repositories.*;
 import com.dh.bmn.services.IService;
 import com.dh.bmn.util.MapperClass;
 import com.dh.bmn.pagging.PaginatedResponse;
@@ -44,13 +41,16 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
+    private IValoracionRepository valoracionRepository;
+
     @Autowired
-    public BicicletaService(IBicicletaRepository bicicletaRepository, S3Service s3Service, ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository, ICategoriaBicicletaRepository categoriaBicicletaRepository, IPoliticaRepository politicaRepository) {
+    public BicicletaService(IBicicletaRepository bicicletaRepository, S3Service s3Service, ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository, ICategoriaBicicletaRepository categoriaBicicletaRepository, IPoliticaRepository politicaRepository, IValoracionRepository valoracionRepository) {
         this.bicicletaRepository = bicicletaRepository;
         this.s3Service = s3Service;
         this.caracteristicaBicicletaRepository = caracteristicaBicicletaRepository;
         this.categoriaBicicletaRepository = categoriaBicicletaRepository;
         this.politicaRepository = politicaRepository;
+        this.valoracionRepository = valoracionRepository;
     }
 
     @Override
@@ -256,5 +256,20 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         //paginationData.setPrimary
         return new PaginatedResponse<>(resultadosDto, paginationData);
     }
+    public void actualizarPromedioPuntuacion(Bicicleta bicicleta) {
+        Long bicicletaId = bicicleta.getBicicletaId();
+        List<Valoracion> valoraciones = valoracionRepository.findByBicicletaId(bicicletaId);
 
+        double sumaPuntuaciones = valoraciones.stream()
+                .mapToDouble(Valoracion::getPuntuacion)
+                .sum();
+
+        long cantidadValoraciones = valoraciones.size();
+
+        double promedioPuntuacion = cantidadValoraciones > 0 ? sumaPuntuaciones / cantidadValoraciones : 0.0;
+
+        bicicleta.setCantidadValoraciones(cantidadValoraciones);
+        bicicleta.setPromedioPuntuacion(promedioPuntuacion);
+        bicicletaRepository.save(bicicleta);
+    }
 }

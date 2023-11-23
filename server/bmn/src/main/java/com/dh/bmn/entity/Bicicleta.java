@@ -52,21 +52,6 @@ public class Bicicleta implements Serializable {
     private List<CaracteristicaBicicleta> caracteristicas;
 
 
-//    public void addCaracteristica(CaracteristicaBicicleta caracteristica) {
-//        if (caracteristicas == null) {
-//            caracteristicas = new ArrayList<>();
-//        }
-//        caracteristicas.add(caracteristica);
-//        caracteristica.getBicicletas().add(this);
-//    }
-//
-//    public void removeCaracteristica(CaracteristicaBicicleta caracteristica) {
-//        if (caracteristicas != null) {
-//            caracteristicas.remove(caracteristica);
-//            caracteristica.getBicicletas().remove(this);
-//        }
-//    }
-
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "bicicleta_politica",
@@ -74,4 +59,11 @@ public class Bicicleta implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "politica_id")
     )
     private List<Politica> politicas;
+
+    @Column(name = "promedio_puntuacion")
+    private Double promedioPuntuacion;
+
+    @Column(name = "cantidad_valoraciones")
+    private Long cantidadValoraciones;
+
 }

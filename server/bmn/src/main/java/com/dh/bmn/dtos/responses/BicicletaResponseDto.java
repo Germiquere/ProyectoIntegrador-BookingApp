@@ -19,5 +19,7 @@ public class BicicletaResponseDto {
     private List<ImagenResponseDto> imagenes;
     private List<CaracteristicaBicicletaResponseDto> caracteristicas;
     private List<PoliticaResponseDto> politicas;
+    private Double promedioPuntuacion;
+    private Long cantidadValoraciones;
 
 }
