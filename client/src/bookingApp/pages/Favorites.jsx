@@ -72,7 +72,7 @@ export default function Favorites() {
                                 key={item.bicicleta.bicicletaId}
                             >
                                 {/*  Boton de favoritos */}
-                                <div className="absolute text-primary  right-6 bottom-1 text-[25px]">
+                                <div className="absolute text-primary  right-2 top-2 text-[25px]">
                                     {isAuthenticated && (
                                         <button
                                             onClick={() => {
@@ -99,26 +99,25 @@ export default function Favorites() {
                                     to={`/description/${item.bicicleta.bicicletaId}`}
                                     className=""
                                 >
-                                    <div>
+                                    <div className="pb-2">
                                         <img
                                             className="rounded-t-xl  w-full h-48 object-contain"
                                             src={item.bicicleta.imagenes[0].url}
                                             alt={item.bicicleta.nombre}
                                         />
                                     </div>
-
-                                    <p className="p-4">
-                                        {item.bicicleta.nombre.length > 55
-                                            ? item.bicicleta.nombre.slice(
-                                                  0,
-                                                  55
-                                              ) + "..."
-                                            : item.bicicileta.nombre}
-                                    </p>
-                                    <p className="p-4 font-bold ">
+                                    <p className="px-4 font-bold ">
                                         Desde $
                                         {item.bicicleta.precioAlquilerPorDia}
                                         /día
+                                    </p>
+                                    <p className="px-4 pb-4">
+                                        {item.bicicleta.nombre.length > 50
+                                            ? item.bicicleta.nombre.slice(
+                                                  0,
+                                                  50
+                                              ) + "..."
+                                            : item.bicicleta.nombre}
                                     </p>
                                 </Link>
                             </div>

@@ -4,6 +4,7 @@ import { useUsersContext } from "../../context/UsersContext";
 import { SentEmailModal } from "../components/verification/SentEmailModal";
 import { useState } from "react";
 import { Loader } from "../../ui/Loader";
+import { Helmet } from "react-helmet";
 
 export const VerificationRegisterPage = () => {
     const { userEmail, setIsRegistered, sendEmailAgain, loadingAuth } =
