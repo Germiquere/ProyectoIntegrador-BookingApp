@@ -189,7 +189,6 @@ export const updateBike = async (bike) => {
                 body: JSON.stringify(bike),
             }
         );
-        console.log(res.status);
         if (!res.ok) {
             // Crear un objeto de error personalizado con estado y ok
             const error = new Error("Error en la solicitud PUT");

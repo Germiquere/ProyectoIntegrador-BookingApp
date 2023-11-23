@@ -8,11 +8,13 @@ import { useCategoriesContext } from "../../../context/CategoriesContext";
 export const TableCategories = () => {
     const { categoriesData, deleteACategory, handleDeleteImages, loading } =
         useCategoriesContext();
+    const { fetchData } = useBikesContext();
     const handleDeleteCategory = async (category) => {
         const imageTodelete = [category.imagen];
         console.log(imageTodelete);
         await handleDeleteImages(imageTodelete);
         const deleted = await deleteACategory(category.categoriaId);
+        fetchData();
     };
 
     return (

@@ -214,6 +214,7 @@ export const BikesProvider = ({ children }) => {
         <BikesContext.Provider
             value={{
                 //PROPIEDADES
+                fetchData,
                 bikesData,
                 loading,
                 error,

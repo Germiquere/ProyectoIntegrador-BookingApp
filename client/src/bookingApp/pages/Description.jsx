@@ -272,7 +272,7 @@ export const Description = () => {
                                                     className="flex flex-col gap-1 "
                                                     key={pol.politicaId}
                                                 >
-                                                    <h3 className="text-lg">
+                                                    <h3 className="text-lg font-semibold">
                                                         {pol.titulo}
                                                     </h3>
                                                     <p>{pol.descripcion}</p>

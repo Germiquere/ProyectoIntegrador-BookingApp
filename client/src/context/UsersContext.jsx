@@ -103,7 +103,7 @@ export function UsersProvider({ children }) {
         setTimeout(() => {
             // TODO: EJECUTAR LA FUNCION DE LOGOUT
             logout();
-            alert("token expired");
+            console.log("token expired");
         }, 3600 * 1000);
     };
     const registerUser = async (user) => {

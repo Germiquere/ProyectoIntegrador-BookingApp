@@ -1,11 +1,14 @@
 import { Tooltip } from "@mui/material";
 import { MdDelete } from "react-icons/md";
 import { usePoliciesContext } from "../../../context/PoliciesContext";
+import { useBikesContext } from "../../../context/BikesContext";
 
 export const TablePolicies = () => {
+    const { fetchData } = useBikesContext();
     const { policies, removeAPolicies, loading } = usePoliciesContext();
     const handleDeletePolicy = async (policy) => {
         await removeAPolicies(policy.politicaId);
+        fetchData();
     };
 
     return (

@@ -18,6 +18,7 @@ import { Products } from "../components/sectionProducts/Products";
 import { useUsersContext } from "../../context/UsersContext";
 import { useFavoritesContext } from "../../context/FavoritesContext";
 import { Helmet } from "react-helmet";
+import { SkeletonSearchProducts } from "../components/sectionSearch/SkeletonSearchProducts";
 export const SearchProducts = () => {
     const { handleOpenCalendarAndSearch, formState, setFormState } = useContext(
         CalendarAndSearchContext
@@ -183,7 +184,6 @@ export const SearchProducts = () => {
         }
     }, [offset, selectedCategories]);
     useEffect(() => {
-        console.log(search);
         fetchPaginatedData(0, search);
     }, [search]);
 
@@ -286,7 +286,7 @@ export const SearchProducts = () => {
             <Section className="min-h-[calc(100vh-425px)relative pb-10  max-w-[1200px] mx-auto flex flex-col">
                 <div className="flex-grow">
                     {loadingPagination ? (
-                        <div>Cargando</div>
+                        <SkeletonSearchProducts />
                     ) : (
                         <div>
                             <div>

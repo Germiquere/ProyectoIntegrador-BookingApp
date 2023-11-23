@@ -217,6 +217,7 @@ export const EditProductModal = () => {
                     ...formState,
                     imagenes: [...formState.imagenes, ...imageUrls],
                 };
+                console.log(data);
                 const bike = await updateABike(data);
                 console.log(bike);
 

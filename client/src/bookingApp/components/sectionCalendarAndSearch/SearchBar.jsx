@@ -64,18 +64,25 @@ export const SearchBar = () => {
             {openSearch && search.length > 0 && (
                 <div
                     ref={searchRef}
-                    className="absolute top-14 left-0 w-full bg-white z-30 rounded-md p-2 hidden sm:block h-72  overflow-y-auto shadow-lg"
+                    className="absolute top-14 left-0 w-full bg-white z-30 rounded-md hidden sm:block h-56 overflow-y-auto shadow-lg"
                 >
                     {!loadingPagination &&
-                        bikesDataPaginated.content?.map((bike) => (
-                            <p
-                                key={bike.bicicletaId}
-                                onClick={() => {
-                                    handleClick(bike.nombre);
-                                }}
-                                className="cursor-pointer p-2 text-sm "
-                            >
-                                {bike.nombre}
+                        (bikesDataPaginated.content &&
+                        bikesDataPaginated.content.length > 0 ? (
+                            bikesDataPaginated.content.map((bike) => (
+                                <p
+                                    key={bike.bicicletaId}
+                                    onClick={() => {
+                                        handleClick(bike.nombre);
+                                    }}
+                                    className="cursor-pointer p-2 text-sm hover:bg-primary hover:text-white"
+                                >
+                                    {bike.nombre}
+                                </p>
+                            ))
+                        ) : (
+                            <p className="text-sm p-2">
+                                No se encontraron bicicletas.
                             </p>
                         ))}
                 </div>

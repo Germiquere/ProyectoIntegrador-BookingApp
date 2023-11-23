@@ -26,10 +26,9 @@ export const Manage = () => {
                     <div className=" flex justify-between items-center">
                         <h2 className="text-xl font-semibold flex gap-5 items-center">
                             <p>Administrar Categorías y Politicas</p>
-                            {loadingCategories ||
-                                (loadingPolicies && (
-                                    <Loader className={"text-white"} />
-                                ))}
+                            {loadingCategories || loadingPolicies ? (
+                                <Loader className={"text-white"} />
+                            ) : null}
                         </h2>
                         <Tooltip title="Cerrar">
                             <button

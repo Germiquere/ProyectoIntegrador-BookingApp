@@ -14,7 +14,6 @@ export const getPolicies = async () => {
             throw error;
         }
         const data = await res.json();
-        console.log(data);
         return data;
     } catch (error) {
         throw error;
@@ -35,7 +34,6 @@ export const getPoliciesId = async (id) => {
             throw error;
         }
         const data = await res.json();
-        console.log(data);
         return data;
     } catch (error) {
         throw error;

@@ -107,6 +107,7 @@ export const ManageCategories = () => {
                 const category = await addNewCategory(data);
                 if (category && category.statusCode !== 409) {
                     setImageChange([]);
+
                     onResetForm();
                     setError(false);
                 } else {
