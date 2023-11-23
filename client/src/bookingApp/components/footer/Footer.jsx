@@ -9,8 +9,8 @@ export const Footer = () => {
                     <Link to="/">
                         <img
                             className="w-full h-[50px]"
-                            src="https://res.cloudinary.com/djslo5b3u/image/upload/v1698971497/BikeMeNow_BlueAlpha_svidg9.png"
-                            alt=""
+                            src="https://res.cloudinary.com/djslo5b3u/image/upload/v1700710577/BikeMeNow2_fbsxgq.png"
+                            alt="asds"
                         />
                     </Link>
                     <p className="text-white text-sm">© 2023 BikeMeNow.</p>
