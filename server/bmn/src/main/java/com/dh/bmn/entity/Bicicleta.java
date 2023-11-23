@@ -28,7 +28,7 @@ public class Bicicleta implements Serializable {
     @Column(name = "precio_alquiler_por_dia")
     private Integer precioAlquilerPorDia;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "bicicleta_categoria",
             joinColumns = @JoinColumn(name = "bicicleta_id"),

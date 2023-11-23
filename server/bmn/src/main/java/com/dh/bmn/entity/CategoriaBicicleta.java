@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,7 +33,7 @@ public class CategoriaBicicleta {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "categorias")
-    private List<Bicicleta> bicicletas;
+    private List<Bicicleta> bicicletas = new ArrayList<>();
 
     public CategoriaBicicleta(Long categoriaId, String nombre, String descripcion, Imagen imagen) {
         this.categoriaId = categoriaId;
