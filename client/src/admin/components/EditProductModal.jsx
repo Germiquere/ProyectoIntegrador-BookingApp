@@ -8,6 +8,7 @@ import { ConfirmDelete } from "./ConfirmDelete";
 import { Tooltip } from "@mui/material";
 import { useCategoriesContext } from "../../context/CategoriesContext";
 import { useCharacteristicsContext } from "../../context/CharacteristicsContext";
+import { usePoliciesContext } from "../../context/PoliciesContext";
 
 export const EditProductModal = () => {
     const {
@@ -28,9 +29,11 @@ export const EditProductModal = () => {
         openConfirmDelete,
         setOpenConfirmDelete,
         onCaractChange,
+        onPolicyChange,
     } = useBikesContext();
     const { categoriesData } = useCategoriesContext();
     const { characteristicsData } = useCharacteristicsContext();
+    const { policies } = usePoliciesContext();
     const {
         nombre,
         descripcion,
@@ -39,11 +42,13 @@ export const EditProductModal = () => {
         imagenes,
         bicicletaId,
         caracteristicas,
+        politicas,
     } = formState;
     const [imageChange, setImageChange] = useState([]);
     const fileInputRef = useRef(null);
     const selectRef = useRef(null);
     const selectCatRef = useRef(null);
+    const selectPolRef = useRef(null);
     const [erros, setErros] = useState({
         nombre: false,
         categoria: false,
@@ -51,11 +56,13 @@ export const EditProductModal = () => {
         imagenes: false,
         caracteristicas: false,
         descripcion: false,
+        politicas: false,
     });
     const [imagesToDelete, setImagesToDelete] = useState([]);
     const [hasErrorImg, setHasErrorImg] = useState(false);
     const [hasErrorCat, setHasErrorCat] = useState(false);
     const [hasErrorCaract, setHasErrorCaract] = useState(false);
+    const [hasErrorPol, setHasErrorPol] = useState(false);
     // FUNCION PARA MANEJAR EL CAMBIO DE INPUT Y SUS ERRORES
     const handleInputChange = (e, toNumber = false) => {
         const { name, value } = e.target;
@@ -85,13 +92,19 @@ export const EditProductModal = () => {
         const hasMatch = caracteristicas.some(
             (caract) => caract.caracteristicaId == value
         );
-        //     // setErros({
-        //     //     ...erros,
-        //     //     categoria: value.trim() === "",
-        //     // });
         console.log(hasMatch);
         if (!hasMatch && value.trim()) {
             onCaractChange(e);
+        }
+    };
+    const handlePoliciesChange = (e) => {
+        const { name, value } = e.target;
+        console.log(value);
+        // COMPROBAMOS QUE NO ESTE LA CATEGORIA AGREGADA,
+        const hasMatch = politicas.some((pol) => pol.politicaId == value);
+        console.log(hasMatch);
+        if (!hasMatch && value.trim()) {
+            onPolicyChange(e);
         }
     };
     const handleCategoryDeletefromFormstate = (id) => {
@@ -114,6 +127,16 @@ export const EditProductModal = () => {
         });
         selectRef.current.value = "";
     };
+    const handlePoliciesDeletefromFormstate = (id) => {
+        const updatedPolicies = politicas.filter(
+            (pol) => pol.politicaId !== id
+        );
+        setFormState({
+            ...formState,
+            politicas: updatedPolicies,
+        });
+        selectPolRef.current.value = "";
+    };
     // FUNCION PARA VALIDACIONES
     const handleValidations = () => {
         let hasError = false;
@@ -131,6 +154,15 @@ export const EditProductModal = () => {
                 caracteristicas: true,
             }));
             setHasErrorCaract(true);
+            hasError = true;
+        }
+        if (politicas.length === 0) {
+            console.log("Estoy aca");
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                politicas: true,
+            }));
+            setHasErrorPol(true);
             hasError = true;
         }
         if (nombre.trim() === "") {
@@ -158,7 +190,6 @@ export const EditProductModal = () => {
             }));
             hasError = true;
         }
-        console.log(imagenes);
         if (imageChange.length + imagenes.length < 2) {
             setErros((prevErrors) => ({
                 ...prevErrors,
@@ -167,7 +198,7 @@ export const EditProductModal = () => {
             setHasErrorImg(true);
             hasError = true;
         }
-
+        console.log(hasError);
         return hasError;
     };
     // FUNCION PARA GUARDAR
@@ -291,6 +322,16 @@ export const EditProductModal = () => {
             setHasErrorCaract(false);
         }
     }, [caracteristicas]);
+    useEffect(() => {
+        if (politicas.length !== 0) {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                politicas: false,
+            }));
+            // handleValidations();
+            setHasErrorPol(false);
+        }
+    }, [politicas]);
     return (
         <>
             <div
@@ -527,6 +568,78 @@ export const EditProductModal = () => {
                                             return null; // O puedes devolver un elemento nulo si no hay coincidencia
                                         }
                                     )}
+                                </div>
+                            </div>
+                            {/* POLITICAS */}
+                            <div>
+                                <label className="text-base font-semibold mb-2">
+                                    Politicas *
+                                </label>
+                                {/* TODO: en base al value del select, cambia el color del texto a text-graty-400 o "" */}
+                                <div
+                                    className={`relative h-11 w-full min-w-[200px]  border-[1px]  border-gray-100 overflow-hidden shadow-md rounded-xl text-gray-400`}
+                                >
+                                    <select
+                                        ref={selectPolRef}
+                                        name="politicas"
+                                        value={politicas.politicaId}
+                                        onChange={handlePoliciesChange}
+                                        className="peer h-full w-full p-2 font-sans text-sm font-normal  outline outline-0 transition-all focus:outline-0 disabled:bg-blue-gray-50"
+                                    >
+                                        <option
+                                            value=""
+                                            className="text-gray-400"
+                                        >
+                                            Selecciona una politica
+                                        </option>
+                                        {/*TODO: hacer el map con los options */}
+
+                                        {policies.map((pol) => (
+                                            <option
+                                                key={pol.politicaId}
+                                                value={pol.politicaId}
+                                                className="text-black"
+                                            >
+                                                {pol.titulo}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <p
+                                    className={`pt-1 text-xs text-red-500 ${
+                                        erros.politicas
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                    }`}
+                                >
+                                    Campo obligatorio
+                                </p>
+
+                                <div className="flex gap-2 flex-wrap">
+                                    {policies.map((pol) => {
+                                        const matchingPolicy = politicas.find(
+                                            (p) =>
+                                                p.politicaId === pol.politicaId
+                                        );
+
+                                        if (matchingPolicy) {
+                                            return (
+                                                <div
+                                                    className="flex gap-2 items-center text-white p-1 bg-primary rounded-md cursor-pointer hover:bg-secondary "
+                                                    key={pol.politicaId}
+                                                    onClick={() =>
+                                                        handlePoliciesDeletefromFormstate(
+                                                            pol.politicaId
+                                                        )
+                                                    }
+                                                >
+                                                    <p>{pol.titulo}</p>
+                                                    <BsX className="text-lg " />
+                                                </div>
+                                            );
+                                        }
+                                        return null;
+                                    })}
                                 </div>
                             </div>
                             {/* PRECIO POR DIA */}

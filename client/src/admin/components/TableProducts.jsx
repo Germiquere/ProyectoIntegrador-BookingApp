@@ -27,6 +27,7 @@ export const TableProducts = () => {
                                       categorias: bike.categorias,
                                       imagenes: bike.imagenes,
                                       caracteristicas: bike.caracteristicas,
+                                      politicas: bike.politicas,
                                   });
                                   setOpenEditProductModal(true);
                               }}

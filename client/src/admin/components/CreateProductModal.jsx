@@ -29,7 +29,6 @@ export const CreateProductModal = () => {
     const { categoriesData } = useCategoriesContext();
     const { characteristicsData } = useCharacteristicsContext();
     const { policies } = usePoliciesContext();
-    console.log(policies);
     const {
         nombre,
         descripcion,
@@ -39,6 +38,7 @@ export const CreateProductModal = () => {
         caracteristicas,
         politicas,
     } = formState;
+    console.log(formState);
     const [imageChange, setImageChange] = useState([]);
     // const [selectedOption, setSelectedOption] = useState("");
     const fileInputRef = useRef(null);
@@ -53,11 +53,12 @@ export const CreateProductModal = () => {
         imagenes: false,
         caracteristicas: false,
         descripcion: false,
-        policies: false,
+        politicas: false,
     });
     const [hasErrorImg, setHasErrorImg] = useState(false);
     const [hasErrorCat, setHasErrorCat] = useState(false);
     const [hasErrorCaract, setHasErrorCaract] = useState(false);
+    const [hasErrorPol, setHasErrorPol] = useState(false);
     // FUNCION PARA MANEJAR EL CAMBIO DE INPUT Y SUS ERRORES
     const handleInputChange = (e, toNumber = false) => {
         const { name, value } = e.target;
@@ -109,7 +110,6 @@ export const CreateProductModal = () => {
             onPolicyChange(e);
         }
     };
-    console.log(formState);
     const handleCategoryDeletefromFormstate = (id) => {
         const updatedCategorias = categorias.filter(
             (category) => category.categoriaId !== id
@@ -157,6 +157,14 @@ export const CreateProductModal = () => {
                 caracteristicas: true,
             }));
             setHasErrorCaract(true);
+            hasError = true;
+        }
+        if (politicas.length === 0) {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                politicas: true,
+            }));
+            setHasErrorPol(true);
             hasError = true;
         }
         if (nombre.trim() === "") {
@@ -318,6 +326,16 @@ export const CreateProductModal = () => {
             setHasErrorCaract(false);
         }
     }, [caracteristicas]);
+    useEffect(() => {
+        if (politicas.length !== 0) {
+            setErros((prevErrors) => ({
+                ...prevErrors,
+                politicas: false,
+            }));
+            // handleValidations();
+            setHasErrorPol(false);
+        }
+    }, [politicas]);
     // const options = categoriesData?.map((cat) => ({
     //     value: cat.categoriaId,
     //     label: cat.nombre,
@@ -634,7 +652,7 @@ export const CreateProductModal = () => {
                                     <select
                                         ref={selectPolRef}
                                         name="politicas"
-                                        value={politicas.politcaId}
+                                        value={politicas.politicaId}
                                         onChange={handlePoliciesChange}
                                         className="peer h-full w-full p-2 font-sans text-sm font-normal  outline outline-0 transition-all focus:outline-0 disabled:bg-blue-gray-50"
                                     >
@@ -659,7 +677,7 @@ export const CreateProductModal = () => {
                                 </div>
                                 <p
                                     className={`pt-1 text-xs text-red-500 ${
-                                        erros.categoria
+                                        erros.politicas
                                             ? "opacity-100"
                                             : "opacity-0"
                                     }`}
