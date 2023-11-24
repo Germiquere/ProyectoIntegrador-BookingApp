@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .cors(cors -> cors
                         .configurationSource(request -> {
                             CorsConfiguration config = new CorsConfiguration();
-                            config.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5173"));
+                            config.setAllowedOrigins(Arrays.asList("http://bike-me-now-frontend.s3-website-us-east-1.amazonaws.com"));
                             config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // Especifica los métodos permitidos
                             config.setAllowedHeaders(Arrays.asList("*")); // Especifica los encabezados permitidos
                             config.setAllowCredentials(true);
