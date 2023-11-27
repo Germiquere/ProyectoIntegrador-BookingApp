@@ -111,6 +111,7 @@ public class ValoracionService implements IService<ValoracionResponseDto, Valora
         Valoracion valoracion = objectMapper.convertValue(valoracionRequestDto, Valoracion.class);
         valoracion.setUsuario(usuario);
         valoracion.setBicicleta(bicicleta);
+        valoracion.setReserva(reserva);
 
         valoracionRepository.save(valoracion);
         bicicletaService.actualizarPromedioPuntuacion(bicicleta);

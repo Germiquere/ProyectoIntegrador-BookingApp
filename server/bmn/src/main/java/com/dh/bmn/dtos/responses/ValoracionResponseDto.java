@@ -12,7 +12,6 @@ import java.time.LocalDate;
 public class ValoracionResponseDto {
         private Long valoracionId;
         private UsuarioResponseDto usuario;
-        private BicicletaResponseDto bicicleta;
         private int puntuacion;
         private String comentario;
         private LocalDate fecha;

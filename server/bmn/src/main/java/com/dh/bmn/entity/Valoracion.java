@@ -1,5 +1,6 @@
 package com.dh.bmn.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,10 +41,12 @@ public class Valoracion {
     }
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "bicicleta_id", nullable = false)
     private Bicicleta bicicleta;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "reserva_id")
     private Reserva reserva;
 }

@@ -60,6 +60,9 @@ public class Bicicleta implements Serializable {
     )
     private List<Politica> politicas;
 
+   @OneToMany(mappedBy = "bicicleta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Valoracion> valoraciones;
+
     @Column(name = "promedio_puntuacion")
     private Double promedioPuntuacion;
 
