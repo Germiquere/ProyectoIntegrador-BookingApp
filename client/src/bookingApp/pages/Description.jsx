@@ -26,6 +26,7 @@ import { ShareModal } from "../components/sectionDescription/ShareModal";
 import { Helmet } from "react-helmet";
 import { RatingReviewsCards } from "../components/sectionDescription/RatingReviewsCards";
 import { RatingReviewsModal } from "../components/sectionDescription/RatingReviewsModal";
+import { object } from "prop-types";
 
 export const Description = () => {
     const {
@@ -39,7 +40,8 @@ export const Description = () => {
         handleOpenShareModal,
         setOpenShareModal,
     } = useBikesContext();
-    const { formState } = useCalendarAndSearchContext();
+    const { formState, fetchDatesByBikeId, setDatesData } =
+        useCalendarAndSearchContext();
     const { userData, isAuthenticated, rol } = useUsersContext();
     const { favorites, handleFav } = useFavoritesContext();
     const [isFav, setIsFav] = useState(false);
@@ -104,6 +106,16 @@ export const Description = () => {
             setBikeById([]);
         };
     }, []);
+    useEffect(() => {
+        if (Object.keys(bikeById).length > 0) {
+            fetchDatesByBikeId(bikeById.bicicletaId);
+        }
+
+        return () => {
+            setDatesData([]);
+        };
+    }, [bikeById]);
+
     return (
         <Section>
             {loadingBikes ? (

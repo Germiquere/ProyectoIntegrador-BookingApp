@@ -15,7 +15,7 @@ export function CalendarAndSearchProvider({ children }) {
     const [datesData, setDatesData] = useState([]);
     const [loadingDates, setLoadingDates] = useState(false);
     // TODO: LUEGO DEL SPRINT CAMBIAR EL VALOR A FALSE
-    const [errorDates, setErrorDates] = useState(true);
+    const [errorDates, setErrorDates] = useState(false);
     const { onInputChange, formState, setFormState, onResetForm } =
         useForm(formData);
     const handleOpenCalendarAndSearch = () => {
@@ -54,6 +54,7 @@ export function CalendarAndSearchProvider({ children }) {
                 handleOpenCalendarAndSearch,
                 fetchDatesByBikeId,
                 setErrorDates,
+                setDatesData,
             }}
         >
             {children}

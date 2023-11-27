@@ -58,7 +58,6 @@ export const CalendarDescription = ({ bikeId }) => {
     const handleLoadAgain = async () => {
         const dates = await fetchDatesByBikeId(bikeId);
         if (dates) {
-            console.log("entre aca");
             setErrorDates(false);
         }
     };
@@ -157,7 +156,7 @@ export const CalendarDescription = ({ bikeId }) => {
                         onClick={handleOpen}
                         name="startDate"
                         value={formState.startDate}
-                        disabled={errorDates}
+                        disabled={errorDates || loadingDates}
                     />
 
                     {/* <BsCalendar
@@ -176,7 +175,7 @@ export const CalendarDescription = ({ bikeId }) => {
                         onClick={handleOpen}
                         name="endDate"
                         value={formState.endDate}
-                        disabled={errorDates}
+                        disabled={errorDates || loadingDates}
                     />
                 </div>
 
@@ -216,7 +215,7 @@ export const CalendarDescription = ({ bikeId }) => {
                     >
                         Volver a cargar fechas
                     </p>
-                    {loadingDates && <Loader className={"text-red-500"} />}
+                    {loadingDates && <Loader className={`text-red-500`} />}
                 </div>
             </div>
         </div>
