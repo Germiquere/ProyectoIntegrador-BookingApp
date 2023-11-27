@@ -24,9 +24,9 @@ export const ShareModal = ({ setOpenShareModal, bikeById }) => {
     return (
         <>
             <div
-                className={` sm:rounded-xl h-screen md:h-auto overflow-hidden overflow-y-auto bg-white  fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2   w-full md:max-w-[700px] mx-auto transition-opacity duration-200 z-50 `}
+                className={` md:rounded-xl h-screen md:h-auto overflow-hidden overflow-y-auto bg-white  fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2   w-full md:max-w-[700px] mx-auto transition-opacity duration-200 z-50 `}
             >
-                <div className="flex flex-col gap-2 p-3">
+                <div className="flex flex-col gap-2 p-3 ">
                     <div className="flex justify-between items-center">
                         <h3 className="text-lg sm:text-2xl font-semibold ">
                             Compartí este producto
@@ -57,8 +57,9 @@ export const ShareModal = ({ setOpenShareModal, bikeById }) => {
                                 : bikeById.nombre}
                         </p>
                         <p className="sm:hidden">
-                            {bikeById.nombre.length > 55 &&
-                                bikeById.nombre.slice(0, 55) + "..."}
+                            {bikeById.nombre.length > 55
+                                ? bikeById.nombre.slice(0, 55) + "..."
+                                : bikeById.nombre}
                         </p>
                     </div>
                     {/* TEXT AREA */}

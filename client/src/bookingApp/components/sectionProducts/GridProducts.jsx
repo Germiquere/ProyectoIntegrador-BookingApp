@@ -104,8 +104,8 @@ export default function GridProducts() {
                               </p>
                               <div className="flex justify-between items-center">
                                   <p className="px-4 pb-4">
-                                      {item.nombre.length > 50
-                                          ? item.nombre.slice(0, 50) + "..."
+                                      {item.nombre.length > 45
+                                          ? item.nombre.slice(0, 45) + "..."
                                           : item.nombre}
                                   </p>
                               </div>

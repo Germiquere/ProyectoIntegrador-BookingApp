@@ -39,6 +39,16 @@ export const BikesProvider = ({ children }) => {
     const [openNewProductModal, setOpenNewProductModal] = useState(false);
     const [openEditProductModal, setOpenEditProductModal] = useState(false);
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+    // MODALS
+    const [openShareModal, setOpenShareModal] = useState(false);
+    const [openRatingModal, setOpenRatingModal] = useState(false);
+    const handleOpenRatingModal = () => {
+        setOpenRatingModal(!openRatingModal);
+    };
+    const handleOpenShareModal = () => {
+        setOpenShareModal(!openShareModal);
+    };
+    //
     const { formState, onInputChange, onResetForm, setFormState } =
         useForm(formData);
     const navigate = useNavigate();
@@ -225,6 +235,8 @@ export const BikesProvider = ({ children }) => {
                 openConfirmDelete,
                 bikesDataPaginated,
                 loadingPagination,
+                openShareModal,
+                openRatingModal,
                 //METODOS
                 bikeByIdGet,
                 addNewBike,
@@ -244,6 +256,9 @@ export const BikesProvider = ({ children }) => {
                 handleDeleteImages,
                 fetchPaginatedData,
                 setBikeById,
+                handleOpenRatingModal,
+                handleOpenShareModal,
+                setOpenShareModal,
             }}
         >
             {children}

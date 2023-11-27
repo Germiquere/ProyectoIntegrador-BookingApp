@@ -280,8 +280,8 @@ export const SearchProducts = () => {
                     </form>
                 </div>
             </Section>
-            <CategoriesAndRecommended />
-            <Products />
+            {/* <CategoriesAndRecommended /> */}
+            {/* <Products /> */}
             {/* SECTION PRODUCTS AND FILTER */}
             <Section className="min-h-[calc(100vh-425px)relative pb-10  max-w-[1200px] mx-auto flex flex-col">
                 <div className="flex-grow">

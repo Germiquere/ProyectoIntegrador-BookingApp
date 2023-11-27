@@ -2,11 +2,14 @@
 export const getPolicies = async () => {
     try {
         const { token } = JSON.parse(localStorage.getItem("accessToken"));
-        const res = await fetch(`http://localhost:8080/bike-me-now/politicas`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const res = await fetch(
+            `http://localhost:8080/bike-me-now/api/politicas`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
         if (!res.ok) {
             const error = new Error("Error en la solicitud POST");
             error.status = res.status;

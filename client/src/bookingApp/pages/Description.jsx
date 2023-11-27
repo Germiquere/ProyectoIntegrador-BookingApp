@@ -7,7 +7,7 @@ import {
     Link,
 } from "react-router-dom";
 import Section from "../components/Section";
-import { BsFillShareFill } from "react-icons/bs";
+import { BsFillShareFill, BsFillStarFill } from "react-icons/bs";
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import { ImgGallery } from "../components/sectionDescription/ImgGallery";
@@ -24,6 +24,8 @@ import { useUsersContext } from "../../context/UsersContext";
 import { Tooltip } from "@mui/material";
 import { ShareModal } from "../components/sectionDescription/ShareModal";
 import { Helmet } from "react-helmet";
+import { RatingReviewsCards } from "../components/sectionDescription/RatingReviewsCards";
+import { RatingReviewsModal } from "../components/sectionDescription/RatingReviewsModal";
 
 export const Description = () => {
     const {
@@ -31,16 +33,18 @@ export const Description = () => {
         bikeByIdGet,
         bikeById,
         setBikeById,
+        openShareModal,
+        openRatingModal,
+        handleOpenRatingModal,
+        handleOpenShareModal,
+        setOpenShareModal,
     } = useBikesContext();
     const { formState } = useCalendarAndSearchContext();
     const { userData, isAuthenticated, rol } = useUsersContext();
     const { favorites, handleFav } = useFavoritesContext();
     const [isFav, setIsFav] = useState(false);
     const [loadingFav, setLoadingFav] = useState(false);
-    const [openShareModal, setOpenShareModal] = useState(false);
-    const handleOpenShareModal = () => {
-        setOpenShareModal(!openShareModal);
-    };
+
     const [total, setTotal] = useState(0);
     const calcPrice = () => {
         if (!formState.endDate || !formState.startDate) {
@@ -106,28 +110,6 @@ export const Description = () => {
                 <SkeletonDescription />
             ) : (
                 <>
-                    {/* {Object.keys(bikeById).length === 0 ? (
-                        <div className="flex gap-3 flex-col relative justify-center mt-3 max-w-[1200px] mx-auto  items-center min-h-[calc(100vh-200px)]">
-                            <div>
-                                <img
-                                    src="https://res.cloudinary.com/djslo5b3u/image/upload/v1699495954/404_vegexo_dejgmh.png"
-                                    alt="404 not found"
-                                />
-                            </div>
-
-                            <p className="text-lg sm:text-2xl font-semibold pb-2 ">
-                                No se encontró el producto.
-                            </p>
-                            <Link to="/" className="text-primary">
-                                <button
-                                    className="middle none center mr-3 rounded-full bg-primary py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm  transition-all  hover:shadow-secondary  active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                                    data-ripple-light="true"
-                                >
-                                    Volver al inicio
-                                </button>
-                            </Link>
-                        </div>
-                    ) : ( */}
                     <Helmet>
                         <title>{bikeById.nombre}</title>
                         {/* <link rel="canonical" href="http://mysite.com/example" /> */}
@@ -145,7 +127,9 @@ export const Description = () => {
                             content={bikeById.descripcion}
                         />
                     </Helmet>
-                    <div className="flex gap-3 flex-col relativemd:justify-center mt-3 max-w-[1200px] mx-auto  ">
+                    <div
+                        className={`flex gap-3 flex-col relativemd:justify-center mt-3 max-w-[1200px] mx-auto `}
+                    >
                         {/* seccion del lado izquierdo */}
                         {/* NOTA: with flex-1, it takes up all available spac   e */}
                         <div className="flex-1 p-3 border-[1px] border-gray-200  rounded-xl flex flex-col gap-3">
@@ -172,45 +156,72 @@ export const Description = () => {
                                     </button>
                                 </div>
                             </div>
-                            <div className={`flex gap-3 items-center `}>
+                            <div
+                                className={`flex flex-col sm:flex-row  gap-3 sm:items-center text-sm `}
+                            >
                                 <button
-                                    className="flex gap-2 items-center text-primary"
-                                    onClick={handleOpenShareModal}
+                                    className="flex gap-3 items-center text-primary"
+                                    onClick={handleOpenRatingModal}
                                 >
-                                    <BsFillShareFill className="   cursor-pointer" />
+                                    {bikeById.cantidadValoraciones !== null && (
+                                        <>
+                                            <BsFillStarFill className="   cursor-pointer" />
+                                            <p>
+                                                {parseFloat(
+                                                    bikeById.promedioPuntuacion
+                                                ).toFixed(1)}
+                                            </p>
+                                        </>
+                                    )}
+
                                     <p className="underline underline-offset-1">
-                                        Compartir
+                                        {bikeById.cantidadValoraciones !==
+                                            null &&
+                                            (bikeById.cantidadValoraciones > 1
+                                                ? `${bikeById.cantidadValoraciones} valoraciones`
+                                                : `${bikeById.cantidadValoraciones} valoración`)}
                                     </p>
                                 </button>
-                                {/*  Boton de favoritos */}
-                                <div className=" text-primary  flex items-center">
-                                    {isAuthenticated && rol === "user" && (
-                                        <div
-                                            onClick={() => {
-                                                handleFav(
-                                                    bikeById.bicicletaId,
-                                                    userData
-                                                );
-                                                handleIsFav();
-                                            }}
-                                        >
-                                            {isFav ? (
-                                                <button className="flex gap-2 items-center">
-                                                    <FaHeart />
-                                                    <p className="underline underline-offset-1">
-                                                        Guardados
-                                                    </p>
-                                                </button>
-                                            ) : (
-                                                <button className="flex gap-2  items-center">
-                                                    <FaRegHeart />
-                                                    <p className="underline underline-offset-1">
-                                                        Guardar
-                                                    </p>
-                                                </button>
-                                            )}
-                                        </div>
-                                    )}
+                                <div className="flex gap-2">
+                                    <button
+                                        className="flex gap-2 items-center text-primary"
+                                        onClick={handleOpenShareModal}
+                                    >
+                                        <BsFillShareFill className="   cursor-pointer" />
+                                        <p className="underline underline-offset-1">
+                                            Compartir
+                                        </p>
+                                    </button>
+                                    {/*  Boton de favoritos */}
+                                    <div className=" text-primary  flex items-center">
+                                        {isAuthenticated && rol === "user" && (
+                                            <div
+                                                onClick={() => {
+                                                    handleFav(
+                                                        bikeById.bicicletaId,
+                                                        userData
+                                                    );
+                                                    handleIsFav();
+                                                }}
+                                            >
+                                                {isFav ? (
+                                                    <button className="flex gap-2 items-center">
+                                                        <FaHeart />
+                                                        <p className="underline underline-offset-1">
+                                                            Guardados
+                                                        </p>
+                                                    </button>
+                                                ) : (
+                                                    <button className="flex gap-2  items-center">
+                                                        <FaRegHeart />
+                                                        <p className="underline underline-offset-1">
+                                                            Guardar
+                                                        </p>
+                                                    </button>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
 
@@ -310,8 +321,53 @@ export const Description = () => {
                                 </div>
                             </div>
                         </div>
+                        {/* seccion reviews */}
+                        {bikeById.valoraciones &&
+                            bikeById.valoraciones.length > 0 && (
+                                <div className="flex flex-col   gap-5 p-3 border-[1px] border-gray-200 rounded-xl">
+                                    <div className="flex gap-3 items-center text-lg sm:text-2xl font-semibold  ">
+                                        <BsFillStarFill className="cursor-pointer sm:text-xl" />
+
+                                        <p>
+                                            {parseFloat(
+                                                bikeById.promedioPuntuacion
+                                            ).toFixed(1)}
+                                        </p>
+
+                                        {bikeById.cantidadValoraciones > 1
+                                            ? `${bikeById.cantidadValoraciones} valoraciones`
+                                            : `${bikeById.cantidadValoraciones} valoración`}
+                                    </div>
+                                    <div className=" grid grid-cols-1 gap-5 sm:grid-cols-2">
+                                        {bikeById.valoraciones.length >= 4
+                                            ? bikeById.valoraciones
+                                                  .slice(0, 4)
+                                                  .map((rev) => (
+                                                      <RatingReviewsCards
+                                                          key={rev.valoracionId}
+                                                          {...rev}
+                                                      />
+                                                  ))
+                                            : bikeById.valoraciones.map(
+                                                  (rev) => (
+                                                      <RatingReviewsCards
+                                                          key={rev.valoracionId}
+                                                          {...rev}
+                                                      />
+                                                  )
+                                              )}
+                                    </div>
+                                    {bikeById.valoraciones.length >= 4 && (
+                                        <p
+                                            onClick={handleOpenRatingModal}
+                                            className=" font-semibold flex items-center justify-center max-w-[270px] cursor-pointer border-grayTertiary border-[1px] rounded-md p-1 bg-white hover:bg-gray-100"
+                                        >
+                                            {`Mostrar todo: ${bikeById.cantidadValoraciones} valoraciones`}
+                                        </p>
+                                    )}
+                                </div>
+                            )}
                     </div>
-                    {/* )} */}
                 </>
             )}
 
@@ -339,6 +395,12 @@ export const Description = () => {
                 <ShareModal
                     setOpenShareModal={setOpenShareModal}
                     bikeById={bikeById}
+                />
+            )}
+            {openRatingModal && (
+                <RatingReviewsModal
+                    handleOpenRatingModal={handleOpenRatingModal}
+                    {...bikeById}
                 />
             )}
         </Section>
