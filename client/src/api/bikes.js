@@ -1,42 +1,42 @@
 export const getBikes = async () => {
-    try {
-        // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
+  try {
+    // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
 
-        // const res = await fetch(import.meta.env.VITE_URL + "/");
-        const res = await fetch("http://localhost:8080/bike-me-now/bicicletas");
-        if (!res.ok) {
-            // Crear un objeto de error personalizado con estado y ok
-            const error = new Error("Error en la solicitud Get");
-            error.status = res.status;
-            error.ok = false;
-            throw error;
-        }
-        const data = await res.json();
-        return data;
-    } catch (error) {
-        throw error;
+    // const res = await fetch(import.meta.env.VITE_URL + "/");
+    const res = await fetch('http://localhost:8080/bike-me-now/bicicletas');
+    if (!res.ok) {
+      // Crear un objeto de error personalizado con estado y ok
+      const error = new Error('Error en la solicitud Get');
+      error.status = res.status;
+      error.ok = false;
+      throw error;
     }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 export const getBikesByPagination = async (page) => {
-    try {
-        // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
+  try {
+    // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
 
-        // const res = await fetch(import.meta.env.VITE_URL + "/");
-        const res = await fetch(
-            `http://localhost:8080/bike-me-now/bicicletas/page/${page}?limit=3`
-        );
-        if (!res.ok) {
-            // Crear un objeto de error personalizado con estado y ok
-            const error = new Error("Error en la solicitud Get");
-            error.status = res.status;
-            error.ok = false;
-            throw error;
-        }
-        const data = await res.json();
-        return data;
-    } catch (error) {
-        throw error;
+    // const res = await fetch(import.meta.env.VITE_URL + "/");
+    const res = await fetch(
+      `http://localhost:8080/bike-me-now/bicicletas/page/${page}?limit=3`
+    );
+    if (!res.ok) {
+      // Crear un objeto de error personalizado con estado y ok
+      const error = new Error('Error en la solicitud Get');
+      error.status = res.status;
+      error.ok = false;
+      throw error;
     }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 // export const getBikes = async () => {
 //     try {
@@ -74,111 +74,118 @@ export const getBikesByPagination = async (page) => {
 // };
 
 export const getBikeById = async (id) => {
-    try {
-        // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
+  try {
+    const { token } = JSON.parse(localStorage.getItem('accessToken'));
+    // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
 
-        // const res = await fetch(import.meta.env.VITE_URL + "/");
-        const res = await fetch(
-            `http://localhost:8080/bike-me-now/bicicletas/${id}`
-        );
+    // const res = await fetch(import.meta.env.VITE_URL + "/");
+    const res = await fetch(
+      `http://localhost:8080/bike-me-now/bicicletas/${id}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-        if (!res.ok) {
-            // Crear un objeto de error personalizado con estado y ok
-            const error = new Error("Error en la solicitud POST");
-            error.status = res.status;
-            error.ok = false;
-            throw error;
-        }
-        const data = await res.json();
-        return data;
-    } catch (error) {
-        throw error;
+    if (!res.ok) {
+      // Crear un objeto de error personalizado con estado y ok
+      const error = new Error('Error en la solicitud POST');
+      error.status = res.status;
+      error.ok = false;
+      throw error;
     }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 export const postBike = async (bike) => {
-    const { token } = JSON.parse(localStorage.getItem("accessToken"));
-    try {
-        // PASAR EL ENDPOINT DE NUESTRA API
-        const res = await fetch(
-            "http://localhost:8080/bike-me-now/api/bicicletas",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
+  const { token } = JSON.parse(localStorage.getItem('accessToken'));
+  try {
+    // PASAR EL ENDPOINT DE NUESTRA API
+    const res = await fetch(
+      'http://localhost:8080/bike-me-now/api/bicicletas',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
 
-                body: JSON.stringify(bike),
-            }
-        );
-        if (!res.ok) {
-            // Crear un objeto de error personalizado con estado y ok
-            const error = new Error("Error en la solicitud POST");
-            error.status = res.status;
-            error.ok = false;
-            throw error;
-        }
-        const data = await res.json();
-        return data;
-    } catch (error) {
-        // throw new Error("Error al cargar el producto");
-        throw error;
+        body: JSON.stringify(bike),
+      }
+    );
+    if (!res.ok) {
+      // Crear un objeto de error personalizado con estado y ok
+      const error = new Error('Error en la solicitud POST');
+      error.status = res.status;
+      error.ok = false;
+      throw error;
     }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    // throw new Error("Error al cargar el producto");
+    throw error;
+  }
 };
 export const deleteBike = async (id) => {
-    const { token } = JSON.parse(localStorage.getItem("accessToken"));
-    try {
-        const res = await fetch(
-            `http://localhost:8080/bike-me-now/api/bicicletas/${id}`,
-            {
-                method: "DELETE",
-                headers: {
-                    // "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
-        if (!res.ok) {
-            // Crear un objeto de error personalizado con estado y ok
-            const error = new Error("Error en la solicitud POST");
-            error.status = res.status;
-            error.ok = false;
-            throw error;
-        }
-        console.log(res);
-        const data = await res.json();
-        return data;
-    } catch (error) {
-        console.log(error);
-        throw error;
+  const { token } = JSON.parse(localStorage.getItem('accessToken'));
+  try {
+    const res = await fetch(
+      `http://localhost:8080/bike-me-now/api/bicicletas/${id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          // "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (!res.ok) {
+      // Crear un objeto de error personalizado con estado y ok
+      const error = new Error('Error en la solicitud POST');
+      error.status = res.status;
+      error.ok = false;
+      throw error;
     }
+    console.log(res);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 export const updateBike = async (bike) => {
-    const { token } = JSON.parse(localStorage.getItem("accessToken"));
-    try {
-        // PASAR EL ENDPOINT DE NUESTRA API
-        const res = await fetch(
-            "http://localhost:8080/bike-me-now/api/bicicletas",
-            {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(bike),
-            }
-        );
-        console.log(res.status);
-        if (!res.ok) {
-            // Crear un objeto de error personalizado con estado y ok
-            const error = new Error("Error en la solicitud PUT");
-            error.status = res.status;
-            error.ok = false;
-            throw error;
-        }
-        const data = await res.json();
-        return data;
-    } catch (error) {
-        throw error;
+  const { token } = JSON.parse(localStorage.getItem('accessToken'));
+  try {
+    // PASAR EL ENDPOINT DE NUESTRA API
+    const res = await fetch(
+      'http://localhost:8080/bike-me-now/api/bicicletas',
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(bike),
+      }
+    );
+    console.log(res.status);
+    if (!res.ok) {
+      // Crear un objeto de error personalizado con estado y ok
+      const error = new Error('Error en la solicitud PUT');
+      error.status = res.status;
+      error.ok = false;
+      throw error;
     }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };

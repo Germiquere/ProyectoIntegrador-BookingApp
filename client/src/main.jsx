@@ -10,6 +10,7 @@ import { UsersProvider } from './context/UsersContext.jsx';
 import { CharacteristicsProvider } from './context/CharacteristicsContext.jsx';
 import { FavoritesProvider } from './context/FavoritesContext.jsx';
 import { PoliciesProvider } from './context/PoliciesContext.jsx';
+import { BookingsProvider } from './context/BookingContext.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -21,7 +22,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <CharacteristicsProvider>
                 <FavoritesProvider>
                   <PoliciesProvider>
-                    <App />
+                    <BookingsProvider>
+                      <App />
+                    </BookingsProvider>
                   </PoliciesProvider>
                 </FavoritesProvider>
               </CharacteristicsProvider>

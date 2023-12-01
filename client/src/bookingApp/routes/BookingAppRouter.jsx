@@ -9,7 +9,7 @@ import { useCategoriesContext } from '../../context/CategoriesContext';
 import { SearchProducts } from '../pages/SearchProducts';
 import { useUsersContext } from '../../context/UsersContext';
 import Favorites from '../pages/Favorites';
-
+import { Bookings } from '../components/sectionBooking/Bookings';
 export const BookingAppRouter = () => {
   const { categoriesData } = useCategoriesContext();
   const { isAuthenticated, rol } = useUsersContext();
@@ -30,6 +30,7 @@ export const BookingAppRouter = () => {
           <Route path='admin/*' element={<AdminRouter />} />
         )}
         {isAuthenticated && <Route path='/favorites' element={<Favorites />} />}
+        {isAuthenticated && <Route path='/bookings' element={<Bookings />} />}
 
         <Route path='/description/:id' element={<Description />} />
         <Route path='/items' element={<SearchProducts />} />
