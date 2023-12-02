@@ -12,9 +12,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.http.HttpMethod;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
+import java.util.List;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -29,22 +33,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors
-                        .configurationSource(request -> {
-                            CorsConfiguration config = new CorsConfiguration();
-                            config.setAllowedOrigins(Arrays.asList("http://bike-me-now-frontend.s3-website-us-east-1.amazonaws.com"));
-                            config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // Especifica los métodos permitidos
-                            config.setAllowedHeaders(Arrays.asList("*")); // Especifica los encabezados permitidos
-                            config.setAllowCredentials(true);
-                            return config;
-                        })
-                )
-                .authorizeHttpRequests(authRequest ->
-                        authRequest
-                                //.requestMatchers("/auth/**,").permitAll()
-                                .requestMatchers("/bike-me-now/api/**").authenticated()
-                                .anyRequest().permitAll()
-                )
+                //.cors(withDefaults())
+//                .authorizeHttpRequests(authRequest ->
+//                        authRequest
+//                                .requestMatchers("/bike-me-now/api/**").authenticated()
+//                                .anyRequest().permitAll()
+//                )
+
+                .cors(withDefaults())
+                .authorizeHttpRequests(request -> {
+                    request.requestMatchers("/bike-me-now/api/**").permitAll();
+                    request.anyRequest().authenticated();
+                })
                 .sessionManagement(sessionManager ->
                         sessionManager
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -52,5 +52,41 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+    @Bean
+    CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedHeader("Access-Control-Allow-Origin");
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+//        configuration.setAllowedHeaders(List.of("Origin","Authorization", "Content-Type"));
+        configuration.addAllowedHeader("Authorization");
+        //configuration.addAllowedHeader("Origin");
+        configuration.addAllowedHeader("Content-Type");
+        //configuration.setMaxAge(3600L);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",configuration);
+        return source;
+    }
+
+//    @Bean
+//    public CorsFilter corsFilter() {
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//
+//
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.addAllowedOrigin("*"); // Restringe a los orígenes específicos
+//        //configuration.addAllowedHeader("Access-Control-Allow-Origin"); // Agrega el encabezado requerido
+//        configuration.addAllowedHeader("Authorization");
+//        configuration.addAllowedHeader("Content-Type");
+//        //configuration.addAllowedHeader("Origin");
+////        configuration.addAllowedHeader("Access-Control-Allow-Headers");
+////        configuration.addAllowedHeader("Access-Control-Request-Method");
+////        configuration.addAllowedHeader("Access-Control-Request-Headers");
+//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//
+////        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+////        source.registerCorsConfiguration("/**", configuration);
+//        return new CorsFilter(source);
+//    }
 
 }

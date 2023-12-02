@@ -493,7 +493,7 @@ public class ReservaServiceTest {
         BicicletaRequestDto bicicletaRequestDto =
                 new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaRequestList, imagenes, caracteristicaRequestList,politicaBicicletaRequestList);
         UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com");
-        ReservaRequestDto reservaRequestDto = new ReservaRequestDto(1L, usuarioRequestDto, bicicletaRequestDto, LocalDate.of(2023, 11, 28), LocalDate.of(2023, 11, 20));
+        ReservaRequestDto reservaRequestDto = new ReservaRequestDto(1L, usuarioRequestDto, bicicletaRequestDto, LocalDate.of(2023, 12, 28), LocalDate.of(2023, 11, 20));
         IllegalDateException exception = Assertions.assertThrows(IllegalDateException .class, () -> {
             reservaService.crear(reservaRequestDto);
         });
