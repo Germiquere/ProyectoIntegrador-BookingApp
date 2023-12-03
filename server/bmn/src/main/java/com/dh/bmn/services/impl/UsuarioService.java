@@ -16,7 +16,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +31,9 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
     private final IUsuarioRepository usuarioRepository;
 
     private static final String secretKey = "586E3272357538782F413F4428472B4B6250655368566B597033733676397924";
+
+    @Value("${jwt.secretKey}")
+    private String secretKey;
 
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
