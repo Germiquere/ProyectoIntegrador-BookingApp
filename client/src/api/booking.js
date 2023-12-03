@@ -45,6 +45,7 @@ export const getBookingsId = async (id) => {
 
 // CREAR RESERVA
 export const postBookings = async (userId, bikeId, fechaInicio, fechaFin) => {
+  console.log(fechaInicio, fechaFin);
   try {
     const { token } = JSON.parse(localStorage.getItem('accessToken'));
     const res = await fetch('http://localhost:8080/bike-me-now/api/reservas', {

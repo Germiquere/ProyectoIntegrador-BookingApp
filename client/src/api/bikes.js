@@ -75,18 +75,11 @@ export const getBikesByPagination = async (page) => {
 
 export const getBikeById = async (id) => {
   try {
-    const { token } = JSON.parse(localStorage.getItem('accessToken'));
     // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
 
     // const res = await fetch(import.meta.env.VITE_URL + "/");
     const res = await fetch(
-      `http://localhost:8080/bike-me-now/bicicletas/${id}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      `http://localhost:8080/bike-me-now/bicicletas/${id}`
     );
 
     if (!res.ok) {

@@ -17,6 +17,8 @@ export const BookingsProvider = ({ children }) => {
   const [error, setError] = useState('');
   const [bookingById, setBookingById] = useState([]);
 
+  const [isReserved, setIsReserved] = useState(false);
+
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -88,11 +90,13 @@ export const BookingsProvider = ({ children }) => {
         loading,
         error,
         bookingById,
+        isReserved,
         // METODOS
         bookingByIdGet,
         addNewBooking,
         deleteABooking,
         setError,
+        setIsReserved,
       }}
     >
       {children}

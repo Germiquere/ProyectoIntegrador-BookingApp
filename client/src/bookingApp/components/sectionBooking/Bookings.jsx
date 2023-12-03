@@ -4,41 +4,43 @@ import { useBookingsContext } from '../../../context/BookingContext';
 import { useBikesContext } from '../../../context/BikesContext';
 import { useUsersContext } from '../../../context/UsersContext';
 import { IoIosArrowBack } from 'react-icons/io';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Loader } from '../../../ui/Loader';
+import { useCalendarAndSearchContext } from '../../../context/CalendarSearchContext';
+import { parse, format } from 'date-fns';
 
 export const Bookings = () => {
-  const { addNewBooking, loading } = useBookingsContext();
+  const { addNewBooking, loading, setIsReserved } = useBookingsContext();
+  const { formState } = useCalendarAndSearchContext();
   const { bikeById } = useBikesContext();
   const { userData } = useUsersContext();
+  const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    fechaInicio: '',
-    fechaFin: '',
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  const goBack = () => {
+    navigate(-1);
   };
 
+  console.log(formState.startDate);
+
+  const parsedStartDate = parse(formState.startDate, 'd-MM-yyyy', new Date());
+  const parsedEndDate = parse(formState.endDate, 'd-MM-yyyy', new Date());
+
+  // Maneja el envío del formulario de reserva
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await addNewBooking(
+      // Llamada a la función para agregar una nueva reserva
+
+      const postingBooking = await addNewBooking(
         userData.usuarioId,
         bikeById.bicicletaId,
-        formData.fechaInicio,
-        formData.fechaFin
+        format(parsedStartDate, 'yyyy-MM-dd'),
+        format(parsedEndDate, 'yyyy-MM-dd')
       );
 
-      setFormData({
-        fechaInicio: '',
-        fechaFin: '',
-      });
+      if (postingBooking) {
+        navigate('/bookings/verification');
+      }
     } catch (error) {
       console.error('Error al agregar reserva:', error);
     }
@@ -49,11 +51,9 @@ export const Bookings = () => {
       <div className='max-w-[1200px] mx-auto flex flex-col gap-6 pt-8 '>
         <div className='flex gap-2 items-center'>
           <div>
-            <Link to={{}}>
-              <button>
-                <IoIosArrowBack />
-              </button>
-            </Link>
+            <button onClick={goBack}>
+              <IoIosArrowBack />
+            </button>
           </div>
           <div>
             <h2 className='text-lg sm:text-2xl font-semibold p-4'>
@@ -72,40 +72,57 @@ export const Bookings = () => {
               />
             </div>
 
+            {/* Detalles de la bicicleta */}
             <h3 className='font-extrabold pt-2'>{bikeById.nombre}</h3>
-            <div className='flex flex-col pt-2'>
-              <p className='font-semibold'>Fecha de inicio</p>
-              <p className='font-semibold pb-4'>Fecha de finalizacion</p>
-              <p className='border-t border-gray-200 pt-4 font-semibold'>
-                Total (ARG)
-                <span className='font-light pl-24'>
-                  {bikeById.precioAlquilerPorDia}
-                </span>
+            {
+              <div className='flex flex-col pt-2'>
+                {/* <p className='font-semibold'>
+                Fecha de inicio
+                <span className='font-light pl-2'>{formState.startDate}</span>
               </p>
-            </div>
+              <p className='font-semibold pb-4'>
+                Fecha de finalizacion
+                <span className='font-light pl-2'>{formState.endDate}</span>
+              </p> */}
+                <p className='border-t border-gray-200 pt-4 font-semibold'>
+                  Total (ARG)
+                  <span className='font-light pl-2'>
+                    ${bikeById.precioAlquilerPorDia}
+                  </span>
+                </p>
+              </div>
+            }
           </div>
-          <div className=' flex flex-col w-auto'>
+
+          {/* Formulario de reserva */}
+          <div className=' flex flex-col w-auto relative'>
             <h3 className='font-extrabold p-2'>Datos de la reserva</h3>
             <form onSubmit={handleSubmit}>
               <div className='flex flex-col items-start p-2'>
-                <label htmlFor='fechaInicio'>Fecha de Inicio</label>
+                <label htmlFor='fechaInicio' className='font-semibold'>
+                  Fecha de Inicio
+                  <span className='font-light pl-4'>{formState.startDate}</span>
+                </label>
                 <input
-                  type='date'
+                  type='hidden'
                   id='fechaInicio'
                   name='fechaInicio'
-                  value={formData.fechaInicio}
-                  onChange={handleInputChange}
+                  value={formState.startDate}
                 />
 
-                <label htmlFor='fechaFin'>Fecha de Fin</label>
+                <label htmlFor='fechaFin' className='font-semibold'>
+                  Fecha de Fin
+                  <span className='font-light pl-8'>{formState.endDate}</span>
+                </label>
                 <input
-                  type='date'
+                  type='hidden'
                   id='fechaFin'
                   name='fechaFin'
-                  value={formData.fechaFin}
-                  onChange={handleInputChange}
+                  value={formState.endDate}
                 />
               </div>
+
+              {/* Detalles del usuario */}
               <div className='border-t border-gray-200 p-2'>
                 <p className='font-semibold flex flex-col lg:flex-row lg:gap-16'>
                   Usuario:
@@ -128,6 +145,8 @@ export const Bookings = () => {
                   </span>
                 </p>
               </div>
+
+              {/* Detalles de pago y precio total */}
               <div className='border-t border-gray-200 p-2'>
                 <p className='font-semibold'>
                   Método de pago
@@ -136,14 +155,15 @@ export const Bookings = () => {
                 <p className='font-semibold'>
                   Precio Total
                   <span className='font-light pl-10'>
-                    {bikeById.precioAlquilerPorDia}
+                    ${bikeById.precioAlquilerPorDia}
                   </span>
                 </p>
               </div>
 
               <div className='flex flex-col md:flex-row md:justify-center xl:flex-row xl:justify-evenly items-center gap-2  pt-12'>
                 <button
-                  className='middle none center  rounded-full bg-primary py-2 px-24 font-sans text-xs font-bold uppercase text-white shadow-sm  transition-all  hover:shadow-secondary  active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'
+                  className=' middle none center  rounded-full bg-primary py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm  transition-all  hover:shadow-secondary  active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none w-full self-end
+                  absolute bottom-0'
                   data-ripple-light='true'
                   type='submit'
                   disabled={loading}
@@ -156,12 +176,6 @@ export const Bookings = () => {
                   ) : (
                     'ALQUILAR'
                   )}
-                </button>
-                <button
-                  className='middle none center  rounded-full border border-primary py-2 px-24 font-sans text-xs font-bold uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-tertiary active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'
-                  data-ripple-dark='true'
-                >
-                  CANCELAR
                 </button>
               </div>
             </form>
