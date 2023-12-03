@@ -3,7 +3,9 @@ export const getCategories = async () => {
         // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
 
         // const res = await fetch(import.meta.env.VITE_URL + "/");
-        const res = await fetch("http://localhost:8080/bike-me-now/categorias");
+        const res = await fetch(
+            "http://54.81.150.99:8080/bike-me-now/categorias"
+        );
 
         if (!res.ok) {
             // Crear un objeto de error personalizado con estado y ok
@@ -25,7 +27,7 @@ export const postCategory = async (newBikeCategory) => {
         console.log(newBikeCategory);
         // PASAR EL ENDPOINT DE NUESTRA API
         const res = await fetch(
-            "http://localhost:8080/bike-me-now/api/categorias",
+            "http://54.81.150.99:8080/bike-me-now/api/categorias",
             {
                 method: "POST",
                 headers: {
@@ -54,7 +56,7 @@ export const deleteCategory = async (id) => {
     const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
         const res = await fetch(
-            `http://localhost:8080/bike-me-now/api/categorias/${id}`,
+            `http://54.81.150.99:8080/bike-me-now/api/categorias/${id}`,
             {
                 method: "DELETE",
                 headers: {

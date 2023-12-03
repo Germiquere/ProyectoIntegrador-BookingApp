@@ -3,7 +3,9 @@ export const getBikes = async () => {
         // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
 
         // const res = await fetch(import.meta.env.VITE_URL + "/");
-        const res = await fetch("http://localhost:8080/bike-me-now/bicicletas");
+        const res = await fetch(
+            "http://54.81.150.99:8080/bike-me-now/bicicletas"
+        );
         if (!res.ok) {
             // Crear un objeto de error personalizado con estado y ok
             const error = new Error("Error en la solicitud Get");
@@ -23,7 +25,7 @@ export const getBikesByPagination = async (offset = 0, query = "") => {
 
         // const res = await fetch(import.meta.env.VITE_URL + "/");
         const res = await fetch(
-            `http://localhost:8080/bike-me-now/bicicletas/page/1/search?query=${query}&limit=12&offset=${offset}`
+            `http://54.81.150.99:8080/bike-me-now/bicicletas/page/1/search?query=${query}&limit=12&offset=${offset}`
         );
         if (!res.ok) {
             // Crear un objeto de error personalizado con estado y ok
@@ -44,7 +46,7 @@ export const getDatesbyBikeId = async (id) => {
 
         // const res = await fetch(import.meta.env.VITE_URL + "/");
         const res = await fetch(
-            `http://localhost:8080/bike-me-now/reservas/bicicletas/${id}`
+            `http://54.81.150.99:8080/bike-me-now/reservas/bicicletas/${id}`
         );
         if (!res.ok) {
             // Crear un objeto de error personalizado con estado y ok
@@ -100,7 +102,7 @@ export const getBikeById = async (id) => {
 
         // const res = await fetch(import.meta.env.VITE_URL + "/");
         const res = await fetch(
-            `http://localhost:8080/bike-me-now/bicicletas/${id}`
+            `http://54.81.150.99:8080/bike-me-now/bicicletas/${id}`
         );
 
         if (!res.ok) {
@@ -121,7 +123,7 @@ export const postBike = async (bike) => {
     try {
         // PASAR EL ENDPOINT DE NUESTRA API
         const res = await fetch(
-            "http://localhost:8080/bike-me-now/api/bicicletas",
+            "http://54.81.150.99:8080/bike-me-now/api/bicicletas",
             {
                 method: "POST",
                 headers: {
@@ -150,7 +152,7 @@ export const deleteBike = async (id) => {
     const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
         const res = await fetch(
-            `http://localhost:8080/bike-me-now/api/bicicletas/${id}`,
+            `http://54.81.150.99:8080/bike-me-now/api/bicicletas/${id}`,
             {
                 method: "DELETE",
                 headers: {
@@ -179,7 +181,7 @@ export const updateBike = async (bike) => {
     try {
         // PASAR EL ENDPOINT DE NUESTRA API
         const res = await fetch(
-            "http://localhost:8080/bike-me-now/api/bicicletas",
+            "http://54.81.150.99:8080/bike-me-now/api/bicicletas",
             {
                 method: "PUT",
                 headers: {

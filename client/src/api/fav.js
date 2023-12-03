@@ -3,7 +3,7 @@ export const getFavorite = async (id) => {
         const { token } = JSON.parse(localStorage.getItem("accessToken"));
         // const res = await fetch(import.meta.env.VITE_URL + "/");
         const res = await fetch(
-            `http://localhost:8080/bike-me-now/api/favoritos/usuarios/${id}`,
+            `http://54.81.150.99:8080/bike-me-now/api/favoritos/usuarios/${id}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -30,7 +30,7 @@ export const postFavorites = async (userId, bikeId) => {
         const { token } = JSON.parse(localStorage.getItem("accessToken"));
 
         const res = await fetch(
-            "http://localhost:8080/bike-me-now/api/favoritos",
+            "http://54.81.150.99:8080/bike-me-now/api/favoritos",
             {
                 method: "POST",
                 headers: {
@@ -72,7 +72,7 @@ export const deleteFavorite = async (id) => {
     const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
         const res = await fetch(
-            `http://localhost:8080/bike-me-now/api/favoritos/${id}`,
+            `http://54.81.150.99:8080/bike-me-now/api/favoritos/${id}`,
             {
                 method: "DELETE",
                 headers: {
