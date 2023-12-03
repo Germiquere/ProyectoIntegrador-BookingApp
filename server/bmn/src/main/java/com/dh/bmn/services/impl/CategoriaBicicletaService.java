@@ -102,9 +102,9 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
         return null;
     }
 
-    //AGREGADO
-    @Override
-    public CategoriaBicicletaResponseDto buscarPorToken(String token) {
-        return null;
-    }
+//    //AGREGADO
+//    @Override
+//    public CategoriaBicicletaResponseDto buscarPorToken(String token) {
+//        return null;
+//    }
 }

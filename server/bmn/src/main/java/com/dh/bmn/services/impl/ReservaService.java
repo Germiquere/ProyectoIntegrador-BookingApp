@@ -98,11 +98,11 @@ public class ReservaService implements IService<ReservaResponseDto, ReservaReque
         return null;
     }
 
-    //AGREGADO
-    @Override
-    public ReservaResponseDto buscarPorToken(String token) {
-        return null;
-    }
+//    //AGREGADO
+//    @Override
+//    public ReservaResponseDto buscarPorToken(String token) {
+//        return null;
+//    }
 
     public List<ReservaResponseDto> obtenerReservasPorUsuario(Long usuarioId) {
 

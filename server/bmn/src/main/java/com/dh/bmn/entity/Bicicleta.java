@@ -74,4 +74,17 @@ public class Bicicleta implements Serializable {
     @JsonIgnore
     private List<Reserva> reservas;
 
+    public Bicicleta(Long bicicletaId, String nombre, String descripcion, Integer precioAlquilerPorDia, List<CategoriaBicicleta> categorias, List<Imagen> imagenes, List<CaracteristicaBicicleta> caracteristicas, List<Politica> politicas, List<Valoracion> valoraciones, Double promedioPuntuacion, Long cantidadValoraciones) {
+        this.bicicletaId = bicicletaId;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precioAlquilerPorDia = precioAlquilerPorDia;
+        this.categorias = categorias;
+        this.imagenes = imagenes;
+        this.caracteristicas = caracteristicas;
+        this.politicas = politicas;
+        this.valoraciones = valoraciones;
+        this.promedioPuntuacion = promedioPuntuacion;
+        this.cantidadValoraciones = cantidadValoraciones;
+    }
 }

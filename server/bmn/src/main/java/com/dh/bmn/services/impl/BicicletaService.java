@@ -273,10 +273,10 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         bicicleta.setPromedioPuntuacion(promedioPuntuacion);
         bicicletaRepository.save(bicicleta);
     }
-    //AGREGADO
-    @Override
-    public BicicletaResponseDto buscarPorToken(String token) {
-        return null;
-    }
+//    //AGREGADO
+//    @Override
+//    public BicicletaResponseDto buscarPorToken(String token) {
+//        return null;
+//    }
 
 }

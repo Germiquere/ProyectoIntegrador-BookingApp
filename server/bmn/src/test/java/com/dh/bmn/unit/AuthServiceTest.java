@@ -29,7 +29,7 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 
-@SpringBootTest
+@SpringBootTest(classes = AuthServiceTest.class)
 @ExtendWith(MockitoExtension.class)
 public class AuthServiceTest {
 

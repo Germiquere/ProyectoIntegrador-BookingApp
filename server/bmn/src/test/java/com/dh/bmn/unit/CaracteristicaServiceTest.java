@@ -7,6 +7,7 @@ import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.repositories.IBicicletaRepository;
 import com.dh.bmn.repositories.ICaracteristicaBicicletaRepository;
+import com.dh.bmn.security.user.Rol;
 import com.dh.bmn.services.impl.CaracteristicaBicicletaService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,13 +20,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = CaracteristicaServiceTest.class)
 @ExtendWith(MockitoExtension.class)
 public class CaracteristicaServiceTest {
 
@@ -135,7 +137,10 @@ public class CaracteristicaServiceTest {
         List<CategoriaBicicleta> categoriaList = List.of(categoriaBicicleta);
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaList = List.of(politica);
-        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
+        Usuario usuario = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        Valoracion valoracion = new Valoracion(1L, 5,usuario, "Muy bueno", LocalDate.of(2023, 12, 2));
+        List<Valoracion> valoracionList = List.of(valoracion);
+        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList,valoracionList,4.5,5L);
         List<Bicicleta> bicicletaList = List.of(bicicleta);
 
         //Act

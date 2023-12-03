@@ -25,7 +25,7 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = UsuarioServiceTest.class)
 @ExtendWith(MockitoExtension.class)
 public class UsuarioServiceTest {
 

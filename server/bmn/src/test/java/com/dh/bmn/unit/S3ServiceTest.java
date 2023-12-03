@@ -21,7 +21,7 @@ import java.net.URL;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 
-@SpringBootTest
+@SpringBootTest(classes = S3ServiceTest.class)
 @ExtendWith(MockitoExtension.class)
 public class S3ServiceTest {
 
