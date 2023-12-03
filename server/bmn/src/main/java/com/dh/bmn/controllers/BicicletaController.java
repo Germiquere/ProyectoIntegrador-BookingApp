@@ -9,10 +9,13 @@ import com.dh.bmn.services.impl.BicicletaService;
 import com.dh.bmn.services.impl.CaracteristicaBicicletaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -73,14 +76,24 @@ public class BicicletaController {
         return new ResponseEntity<>(paginatedResponse, HttpStatus.OK);
     }*/
 
-    @GetMapping("/bicicletas/page/{numeroPagina}/search")
+    @GetMapping("/bicicletas/search")
+    public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> buscarBicicletas(
+            @RequestParam String query,
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(defaultValue = "0") int offset,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
+        PaginatedResponse<BicicletaResponseDto> paginatedResponse = bicicletaService.buscarBicicletas(query, fechaInicio, fechaFin, limit, offset);
+        return new ResponseEntity<>(paginatedResponse, HttpStatus.OK);
+    }
+    /*@GetMapping("/bicicletas/page/{numeroPagina}/search")
     public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> buscarBicicletas(
             @RequestParam String query,
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam(defaultValue = "0") int offset) {
         PaginatedResponse<BicicletaResponseDto> paginatedResponse = bicicletaService.buscarBicicletas(query, limit, offset);
         return new ResponseEntity<>(paginatedResponse, HttpStatus.OK);
-    }
+    }*/
     /*public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> buscarBicicletas(
             @PathVariable int numeroPagina,
             @RequestParam String q,

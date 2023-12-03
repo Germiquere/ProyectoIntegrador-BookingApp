@@ -1,5 +1,6 @@
 package com.dh.bmn.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
@@ -68,5 +69,9 @@ public class Bicicleta implements Serializable {
 
     @Column(name = "cantidad_valoraciones")
     private Long cantidadValoraciones;
+    
+    @OneToMany(mappedBy = "bicicleta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Reserva> reservas;
 
 }

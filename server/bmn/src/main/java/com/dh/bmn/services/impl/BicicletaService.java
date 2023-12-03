@@ -20,10 +20,9 @@ import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -222,34 +221,19 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         return new PaginatedResponse<>(bicicletasDtoList, paginationData);
     }
 
-    /*public PaginatedResponse<BicicletaResponseDto> buscarBicicletas(String query, int limit, int offset) {
-        // Realiza la consulta sin paginación
-        List<Bicicleta> resultados = bicicletaRepository.buscarBicicletasPorQuery(query);
-
-        // Aplica la paginación manualmente
-        int totalResultados = resultados.size();
-        int endIndex = Math.min(offset + limit, totalResultados);
-        List<Bicicleta> resultadosPaginados = resultados.subList(offset, endIndex);
-
-        // Convierte la lista paginada de entidades a lista de DTOs
-        List<BicicletaResponseDto> resultadosDto = resultadosPaginados.stream()
-                .map(bicicleta -> objectMapper.convertValue(bicicleta, BicicletaResponseDto.class))
-                .collect(Collectors.toList());
-
-        // Crea y devuelve la respuesta paginada
-        PaginationData paginationData = new PaginationData();
-        paginationData.setTotal(totalResultados);
-        paginationData.setPrimary_results(resultadosPaginados.size());
-        paginationData.setOffset(offset);
-        paginationData.setLimit(limit);
-
-        return new PaginatedResponse<>(resultadosDto, paginationData);
-    }*/
-
     @Transactional(readOnly = true)
-    public PaginatedResponse<BicicletaResponseDto> buscarBicicletas(String query, int limit, int offset) {
+    public PaginatedResponse<BicicletaResponseDto> buscarBicicletas(String query, LocalDate fechaInicio, LocalDate fechaFin, int limit, int offset) {
         List<String> words = Arrays.asList(query.split("\\s+"));
-        List<Bicicleta> resultados = bicicletaRepository.buscarBicicletasPorQuery(query, words);
+        List<Bicicleta> resultados;
+        //List<Bicicleta> resultados = bicicletaRepository.buscarBicicletasPorQuery(query, words);
+
+        if (fechaInicio != null && fechaFin != null) {
+            // Si se proporcionan fechas, realiza la búsqueda teniendo en cuenta las fechas de disponibilidad
+            resultados = bicicletaRepository.buscarBicicletasPorQueryYDisponibilidad(query, words, fechaInicio, fechaFin);
+        } else {
+            // Si no se proporcionan fechas, realiza la búsqueda sin considerar las fechas de disponibilidad
+            resultados = bicicletaRepository.buscarBicicletasPorQuery(query, words);
+        }
 
         // Aplica la paginación manualmente
         int totalResultados = resultados.size();
