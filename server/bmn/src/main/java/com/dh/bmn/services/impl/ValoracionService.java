@@ -8,6 +8,7 @@ import com.dh.bmn.entity.Reserva;
 import com.dh.bmn.entity.Usuario;
 import com.dh.bmn.entity.Valoracion;
 import com.dh.bmn.exceptions.IllegalDateException;
+import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
 import com.dh.bmn.pagging.PaginatedResponse;
 import com.dh.bmn.repositories.IBicicletaRepository;
@@ -92,7 +93,7 @@ public class ValoracionService implements IService<ValoracionResponseDto, Valora
 
         ReservaRequestDto reservaRequestDto = valoracionRequestDto.getReserva();
         if (reservaRequestDto == null || reservaRequestDto.getReservaId() == null) {
-            throw new IllegalDateException("La solicitud no contiene información de reserva válida. No se puede crear la valoración.", HttpStatus.BAD_REQUEST.value());
+            throw new NullPointerException("La solicitud no contiene información de reserva válida. No se puede crear la valoración.");
         }
 
         Reserva reserva = reservaRepository.findById(reservaRequestDto.getReservaId())
@@ -103,7 +104,7 @@ public class ValoracionService implements IService<ValoracionResponseDto, Valora
         }
 
         if (valoracionRepository.existsByUsuarioAndReserva(usuario, reserva)) {
-            throw new IllegalDateException("Ya existe una valoración para esta reserva y usuario.", HttpStatus.BAD_REQUEST.value());
+            throw new ResourceAlreadyExistsException("Ya existe una valoración para esta reserva y usuario.", HttpStatus.BAD_REQUEST.value());
         }
 
         Bicicleta bicicleta = reserva.getBicicleta();

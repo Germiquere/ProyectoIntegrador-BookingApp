@@ -41,7 +41,7 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
-    private IValoracionRepository valoracionRepository;
+    private final IValoracionRepository valoracionRepository;
 
     @Autowired
     public BicicletaService(IBicicletaRepository bicicletaRepository, S3Service s3Service, ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository, ICategoriaBicicletaRepository categoriaBicicletaRepository, IPoliticaRepository politicaRepository, IValoracionRepository valoracionRepository) {

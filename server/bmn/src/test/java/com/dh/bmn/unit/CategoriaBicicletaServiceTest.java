@@ -146,8 +146,8 @@ public class CategoriaBicicletaServiceTest {
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaList = List.of(politica);
 
-
-        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
+        Bicicleta bicicleta = Bicicleta.builder().bicicletaId(1L).nombre("Bike").descripcion("Ideal para montaña").precioAlquilerPorDia(34567).categorias(categoriaList).imagenes(imagenes).caracteristicas(caracteristicaList).politicas(politicaBicicletaList).build();
+        //Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
         List<Bicicleta> bicicletaList = List.of(bicicleta);
         //Act
         Mockito.when(categoriaBicicletaRepository.findById(1L)).thenReturn(Optional.of(categoriaBicicleta));

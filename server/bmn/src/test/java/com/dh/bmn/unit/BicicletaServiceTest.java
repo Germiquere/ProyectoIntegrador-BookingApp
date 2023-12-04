@@ -6,10 +6,7 @@ import com.dh.bmn.entity.*;
 import com.dh.bmn.exceptions.RequestValidationException;
 import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
-import com.dh.bmn.repositories.IBicicletaRepository;
-import com.dh.bmn.repositories.ICaracteristicaBicicletaRepository;
-import com.dh.bmn.repositories.ICategoriaBicicletaRepository;
-import com.dh.bmn.repositories.IPoliticaRepository;
+import com.dh.bmn.repositories.*;
 import com.dh.bmn.services.impl.BicicletaService;
 import com.dh.bmn.services.impl.S3Service;
 import org.junit.jupiter.api.Assertions;
@@ -46,6 +43,10 @@ public class BicicletaServiceTest {
 
     @Mock
     private S3Service s3Service;
+
+    @Mock
+    private IValoracionRepository valoracionRepository;
+
     @InjectMocks
     private BicicletaService bicicletaService;
 
@@ -56,7 +57,8 @@ public class BicicletaServiceTest {
         caracteristicaBicicletaRepository = mock(ICaracteristicaBicicletaRepository.class);
         politicaRepository = mock(IPoliticaRepository.class);
         s3Service = mock(S3Service.class);
-        bicicletaService = new BicicletaService(bicicletaRepository, s3Service, caracteristicaBicicletaRepository, categoriaBicicletaRepository, politicaRepository);
+        valoracionRepository = mock(IValoracionRepository.class);
+        bicicletaService = new BicicletaService(bicicletaRepository, s3Service, caracteristicaBicicletaRepository, categoriaBicicletaRepository, politicaRepository, valoracionRepository);
     }
 
     @Test
@@ -108,8 +110,8 @@ public class BicicletaServiceTest {
         List<CaracteristicaBicicleta> caracteristicas = List.of(caracteristicaBicicleta);
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaEntityList = List.of(politica);
-        Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categorias, imagenes, caracteristicas, politicaBicicletaEntityList);
-
+        //Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categorias, imagenes, caracteristicas, politicaBicicletaEntityList);
+        Bicicleta bicicletaEntity = Bicicleta.builder().bicicletaId(1L).nombre("Bike").descripcion("Ideal para montaña").precioAlquilerPorDia(34567).categorias(categorias).imagenes(imagenes).caracteristicas(caracteristicas).politicas(politicaBicicletaEntityList).build();
         //Act
         when(bicicletaRepository.findByNombre(bicicletaRequestDto.getNombre())).thenReturn(Optional.of(bicicletaEntity));
 
@@ -133,7 +135,9 @@ public class BicicletaServiceTest {
         List<CaracteristicaBicicleta> caracteristicaBicicletaList = List.of(caracteristicaBicicleta);
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaEntityList = List.of(politica);
-        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicaBicicletaList, politicaBicicletaEntityList);
+
+        Bicicleta bicicleta = Bicicleta.builder().bicicletaId(1L).nombre("Bike").descripcion("Ideal para montaña").precioAlquilerPorDia(34567).categorias(categoriaBicicletaList).imagenes(imagenes).caracteristicas(caracteristicaBicicletaList).politicas(politicaBicicletaEntityList).build();
+        //Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicaBicicletaList, politicaBicicletaEntityList);
         List<ImagenResponseDto> imagenesResponse = List.of(imagenResponseDto);
         CategoriaBicicletaResponseDto categoriaBicicletaResponseDto = new CategoriaBicicletaResponseDto(1L, "Montaña", "Bicicleta de montaña", imagenResponseDto);
         List<CategoriaBicicletaResponseDto> categoriaBicicletaResponseDtoList = List.of(categoriaBicicletaResponseDto);
@@ -141,7 +145,10 @@ public class BicicletaServiceTest {
         List<CaracteristicaBicicletaResponseDto> caracteristicasResponse = List.of(caracteristicaBicicletaResponseDto);
         PoliticaResponseDto politicaResponseDto = new PoliticaResponseDto(1L, "Politica", "Descripcion politica");
         List<PoliticaResponseDto> politicaBicicletaResponseList = List.of(politicaResponseDto);
-        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaResponseDtoList, imagenesResponse, caracteristicasResponse, politicaBicicletaResponseList);
+
+
+        List<ValoracionResponseDto> valoracionResponseDtos = List.of(new ValoracionResponseDto());
+        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaResponseDtoList, imagenesResponse, caracteristicasResponse, politicaBicicletaResponseList, valoracionResponseDtos, 5.00, 1L);
 
         //Act
         Mockito.when(bicicletaRepository.findById(1L)).thenReturn(Optional.of(bicicleta));
@@ -171,7 +178,10 @@ public class BicicletaServiceTest {
         List<CaracteristicaBicicleta> caracteristicasList = List.of(caracteristicaBicicleta);
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaEntityList = List.of(politica);
-        Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicasList, politicaBicicletaEntityList);
+
+        Bicicleta bicicletaEntity = Bicicleta.builder().bicicletaId(1L).nombre("Bike").descripcion("Ideal para montaña").precioAlquilerPorDia(34567).categorias(categoriaBicicletaList).imagenes(imagenes).caracteristicas(caracteristicasList).politicas(politicaBicicletaEntityList).build();
+        //Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicasList, politicaBicicletaEntityList);
+
         List<Bicicleta> bicicletas = new ArrayList<>();
         bicicletas.add(bicicletaEntity);
         ImagenResponseDto imagenResponseDto = new ImagenResponseDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
@@ -182,7 +192,11 @@ public class BicicletaServiceTest {
         List<CaracteristicaBicicletaResponseDto> caracteristicasResponseList = List.of(caracteristicaBicicletaResponseDto);
         PoliticaResponseDto politicaResponseDto = new PoliticaResponseDto(1L, "Politica", "Descripcion politica");
         List<PoliticaResponseDto> politicaBicicletaResponseList = List.of(politicaResponseDto);
-        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaResponseDtoList, imagenesResponse, caracteristicasResponseList, politicaBicicletaResponseList);
+
+        List<ValoracionResponseDto> valoracionResponseDtos = List.of(new ValoracionResponseDto());
+        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaResponseDtoList, imagenesResponse, caracteristicasResponseList, politicaBicicletaResponseList, valoracionResponseDtos, 5.00, 1L);
+
+        //BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaResponseDtoList, imagenesResponse, caracteristicasResponseList, politicaBicicletaResponseList);
         List<BicicletaResponseDto> bicicletaResponseLista = new ArrayList<>();
         bicicletaResponseLista.add(bicicletaEsperada);
 
@@ -215,7 +229,9 @@ public class BicicletaServiceTest {
         List<CaracteristicaBicicleta> caracteristicasList = List.of(caracteristicaBicicleta);
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaEntityList = List.of(politica);
-        Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicasList, politicaBicicletaEntityList);
+
+        Bicicleta bicicletaEntity = Bicicleta.builder().bicicletaId(1L).nombre("Bike").descripcion("Ideal para montaña").precioAlquilerPorDia(34567).categorias(categoriaBicicletaList).imagenes(imagenes).caracteristicas(caracteristicasList).politicas(politicaBicicletaEntityList).build();
+        //Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicasList, politicaBicicletaEntityList);
 
         //Act
         Mockito.when(bicicletaRepository.findById(1L)).thenReturn(Optional.of(bicicletaEntity));
@@ -246,7 +262,9 @@ public class BicicletaServiceTest {
         List<CaracteristicaBicicleta> caracteristicasList = List.of(caracteristicaBicicleta);
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaEntityList = List.of(politica);
-        Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicasList, politicaBicicletaEntityList);
+
+        Bicicleta bicicletaEntity = Bicicleta.builder().bicicletaId(1L).nombre("Bike").descripcion("Ideal para montaña").precioAlquilerPorDia(34567).categorias(categoriaBicicletaList).imagenes(imagenes).caracteristicas(caracteristicasList).politicas(politicaBicicletaEntityList).build();
+        //Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaBicicletaList, imagenes, caracteristicasList, politicaBicicletaEntityList);
         ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
         List<CategoriaBicicletaRequestDto> categoriaBicicletaRequestList = List.of(categoriaBicicletaRequestDto);

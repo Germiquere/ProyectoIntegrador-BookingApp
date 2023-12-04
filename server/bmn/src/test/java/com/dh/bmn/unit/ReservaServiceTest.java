@@ -98,7 +98,8 @@ public class ReservaServiceTest {
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaListEntity = List.of(politica);
 
-        Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaListEntity);
+        Bicicleta bicicletaEntity = Bicicleta.builder().bicicletaId(1L).nombre("Bike").descripcion("Ideal para montaña").precioAlquilerPorDia(34567).categorias(categoriaList).imagenes(imagenes).caracteristicas(caracteristicaList).politicas(politicaBicicletaListEntity).build();
+        //Bicicleta bicicletaEntity = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaListEntity);
         Usuario usuarioEntity = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
         Reserva reservaEntity = new Reserva(1L, usuarioEntity, bicicletaEntity, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
         //Act
@@ -120,7 +121,9 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicleta> caracteristicaList = List.of(caracteristicaBicicleta);
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaList = List.of(politica);
-        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
+
+        Bicicleta bicicleta = Bicicleta.builder().bicicletaId(1L).nombre("Bike").descripcion("Ideal para montaña").precioAlquilerPorDia(34567).categorias(categoriaList).imagenes(imagenes).caracteristicas(caracteristicaList).politicas(politicaBicicletaList).build();
+        //Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
         Usuario usuario = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
         Reserva reserva = new Reserva(1L, usuario, bicicleta, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
         ImagenResponseDto imagenResponseDto = new ImagenResponseDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
@@ -131,7 +134,11 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicletaResponseDto> caracteristicaResponseList = List.of(caracteristicaResponse);
         PoliticaResponseDto politicaResponseDto = new PoliticaResponseDto(1L, "Politica", "Descripcion politica");
         List<PoliticaResponseDto> politicaBicicletaResponseList = List.of(politicaResponseDto);
-        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaResponseList, imagenesResponse, caracteristicaResponseList, politicaBicicletaResponseList);
+
+        List<ValoracionResponseDto> valoracionResponseDtos = List.of(new ValoracionResponseDto());
+        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaResponseList, imagenesResponse, caracteristicaResponseList, politicaBicicletaResponseList, valoracionResponseDtos, 5.00, 1L);
+
+       // BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaResponseList, imagenesResponse, caracteristicaResponseList, politicaBicicletaResponseList);
         UsuarioResponseDto usuarioEsperado = new UsuarioResponseDto(1L, "Juan", "Perez", "juan.perez@gmail.com", Rol.USER);
         ReservaResponseDto reservaEsperada = new ReservaResponseDto(1L, usuarioEsperado, bicicletaEsperada, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
 
@@ -163,7 +170,9 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicleta> caracteristicaList = List.of(caracteristicaBicicleta);
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaList = List.of(politica);
-        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
+
+        Bicicleta bicicleta = Bicicleta.builder().bicicletaId(1L).nombre("Bike").descripcion("Ideal para montaña").precioAlquilerPorDia(34567).categorias(categoriaList).imagenes(imagenes).caracteristicas(caracteristicaList).politicas(politicaBicicletaList).build();
+        //Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
         Usuario usuario = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
         Reserva reservaEntity = new Reserva(1L, usuario, bicicleta, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
         List<Reserva> reservas = new ArrayList<>();
@@ -176,7 +185,12 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicletaResponseDto> caracteristicaResponseList = List.of(caracteristicaResponse);
         PoliticaResponseDto politicaResponseDto = new PoliticaResponseDto(1L, "Politica", "Descripcion politica");
         List<PoliticaResponseDto> politicaBicicletaResponseList = List.of(politicaResponseDto);
-        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaResponseList, imagenesResponse, caracteristicaResponseList, politicaBicicletaResponseList);
+
+        List<ValoracionResponseDto> valoracionResponseDtos = List.of(new ValoracionResponseDto());
+        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaResponseList, imagenesResponse, caracteristicaResponseList, politicaBicicletaResponseList, valoracionResponseDtos, 5.00, 1L);
+
+
+        //BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaResponseList, imagenesResponse, caracteristicaResponseList, politicaBicicletaResponseList);
         UsuarioResponseDto usuarioEsperado = new UsuarioResponseDto(1L, "Juan", "Perez", "juan.perez@gmail.com", Rol.USER);
         ReservaResponseDto reservaEsperada = new ReservaResponseDto(1L, usuarioEsperado, bicicletaEsperada, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
         List<ReservaResponseDto> reservaResponseLista = new ArrayList<>();
@@ -210,7 +224,9 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicleta> caracteristicaList = List.of(caracteristicaBicicleta);
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaList = List.of(politica);
-        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
+
+        Bicicleta bicicleta = Bicicleta.builder().bicicletaId(1L).nombre("Bike").descripcion("Ideal para montaña").precioAlquilerPorDia(34567).categorias(categoriaList).imagenes(imagenes).caracteristicas(caracteristicaList).politicas(politicaBicicletaList).build();
+        //Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
         Usuario usuario = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
         Reserva reservaEntity = new Reserva(1L, usuario, bicicleta, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
 
@@ -243,7 +259,9 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicleta> caracteristicaList = List.of(caracteristicaBicicleta);
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaList = List.of(politica);
-        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
+
+        Bicicleta bicicleta = Bicicleta.builder().bicicletaId(1L).nombre("Bike").descripcion("Ideal para montaña").precioAlquilerPorDia(34567).categorias(categoriaList).imagenes(imagenes).caracteristicas(caracteristicaList).politicas(politicaBicicletaList).build();
+        //Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
         Usuario usuario = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
         ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
         CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
@@ -298,7 +316,9 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicleta> caracteristicaList = List.of(caracteristicaBicicleta);
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaList = List.of(politica);
-        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
+
+        Bicicleta bicicleta = Bicicleta.builder().bicicletaId(1L).nombre("Bike").descripcion("Ideal para montaña").precioAlquilerPorDia(34567).categorias(categoriaList).imagenes(imagenes).caracteristicas(caracteristicaList).politicas(politicaBicicletaList).build();
+        //Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
         Usuario usuario = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
         Reserva reservaEntity = new Reserva(1L, usuario, bicicleta, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
         List<Reserva> reservas = new ArrayList<>();
@@ -311,7 +331,11 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicletaResponseDto> caracteristicResponseList = List.of(caracteristicaBicicletaResponseDto);
         PoliticaResponseDto politicaResponseDto = new PoliticaResponseDto(1L, "Politica", "Descripcion politica");
         List<PoliticaResponseDto> politicaBicicletaResponseList = List.of(politicaResponseDto);
-        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaResponseList, imagenesResponse, caracteristicResponseList, politicaBicicletaResponseList);
+
+        List<ValoracionResponseDto> valoracionResponseDtos = List.of(new ValoracionResponseDto());
+        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaResponseList, imagenesResponse, caracteristicResponseList, politicaBicicletaResponseList, valoracionResponseDtos, 5.00, 1L);
+
+        //BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaResponseList, imagenesResponse, caracteristicResponseList, politicaBicicletaResponseList);
         UsuarioResponseDto usuarioEsperado = new UsuarioResponseDto(1L, "Juan", "Perez", "juan.perez@gmail.com", Rol.USER);
         ReservaResponseDto reservaEsperada = new ReservaResponseDto(1L,usuarioEsperado, bicicletaEsperada,LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
         List<ReservaResponseDto> reservaResponseLista = new ArrayList<>();
@@ -349,7 +373,9 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicleta> caracteristicaList = List.of(caracteristicaBicicleta);
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaList = List.of(politica);
-        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
+
+        Bicicleta bicicleta = Bicicleta.builder().bicicletaId(1L).nombre("Bike").descripcion("Ideal para montaña").precioAlquilerPorDia(34567).categorias(categoriaList).imagenes(imagenes).caracteristicas(caracteristicaList).politicas(politicaBicicletaList).build();
+        //Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
         Usuario usuario = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
         Reserva reservaEntity = new Reserva(1L, usuario, bicicleta, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
         List<Reserva> reservas = new ArrayList<>();
@@ -362,7 +388,12 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicletaResponseDto> caracteristicResponseList = List.of(caracteristicaBicicletaResponseDto);
         PoliticaResponseDto politicaResponseDto = new PoliticaResponseDto(1L, "Politica", "Descripcion politica");
         List<PoliticaResponseDto> politicaBicicletaResponseList = List.of(politicaResponseDto);
-        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaResponseList, imagenesResponse, caracteristicResponseList, politicaBicicletaResponseList);
+
+        List<ValoracionResponseDto> valoracionResponseDtos = List.of(new ValoracionResponseDto());
+        BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaResponseList, imagenesResponse, caracteristicResponseList, politicaBicicletaResponseList, valoracionResponseDtos, 5.00, 1L);
+
+
+        //BicicletaResponseDto bicicletaEsperada = new BicicletaResponseDto(1L, "Bike", "Ideal para montaña", 34567, categoriaResponseList, imagenesResponse, caracteristicResponseList, politicaBicicletaResponseList);
         UsuarioResponseDto usuarioEsperado = new UsuarioResponseDto(1L, "Juan", "Perez", "juan.perez@gmail.com", Rol.USER);
         ReservaResponseDto reservaEsperada = new ReservaResponseDto(1L,usuarioEsperado, bicicletaEsperada,LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
         List<ReservaResponseDto> reservaResponseLista = new ArrayList<>();
@@ -407,7 +438,9 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicleta> caracteristicaList = List.of(caracteristicaBicicleta);
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaList = List.of(politica);
-        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
+
+        Bicicleta bicicleta = Bicicleta.builder().bicicletaId(1L).nombre("Bike").descripcion("Ideal para montaña").precioAlquilerPorDia(34567).categorias(categoriaList).imagenes(imagenes).caracteristicas(caracteristicaList).politicas(politicaBicicletaList).build();
+        //Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
         Usuario usuario = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
         Reserva reservaEntity = new Reserva(1L, usuario, bicicleta, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
         Mockito.when(reservaRepository.findByBicicletaAndFechaInicioAndFechaFin(1L, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03))).thenReturn(Optional.of(reservaEntity));
@@ -440,7 +473,9 @@ public class ReservaServiceTest {
         List<CaracteristicaBicicleta> caracteristicaList = List.of(caracteristicaBicicleta);
         Politica politica = new Politica(1L, "Politica", "Descripcion politica");
         List<Politica> politicaBicicletaList = List.of(politica);
-        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
+
+        Bicicleta bicicleta = Bicicleta.builder().bicicletaId(1L).nombre("Bike").descripcion("Ideal para montaña").precioAlquilerPorDia(34567).categorias(categoriaList).imagenes(imagenes).caracteristicas(caracteristicaList).politicas(politicaBicicletaList).build();
+        //Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList);
         Usuario usuario = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
         Reserva reservaEntity = new Reserva(1L, usuario, bicicleta, LocalDate.of(2023, 11, 02), LocalDate.of(2023, 11, 03));
         Mockito.when(reservaRepository.findById(1L)).thenReturn(Optional.of(reservaEntity));
@@ -493,7 +528,7 @@ public class ReservaServiceTest {
         BicicletaRequestDto bicicletaRequestDto =
                 new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaRequestList, imagenes, caracteristicaRequestList,politicaBicicletaRequestList);
         UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com");
-        ReservaRequestDto reservaRequestDto = new ReservaRequestDto(1L, usuarioRequestDto, bicicletaRequestDto, LocalDate.of(2023, 11, 19), LocalDate.of(2023, 11, 10));
+        ReservaRequestDto reservaRequestDto = new ReservaRequestDto(1L, usuarioRequestDto, bicicletaRequestDto, LocalDate.of(2023, 12, 19), LocalDate.of(2023, 12, 10));
         IllegalDateException exception = Assertions.assertThrows(IllegalDateException .class, () -> {
             reservaService.crear(reservaRequestDto);
         });
