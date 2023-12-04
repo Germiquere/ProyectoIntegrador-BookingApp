@@ -98,9 +98,9 @@ public class ValoracionService implements IService<ValoracionResponseDto, Valora
         Reserva reserva = reservaRepository.findById(reservaRequestDto.getReservaId())
                 .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada con ID: " + reservaRequestDto.getReservaId(), HttpStatus.CONFLICT.value()));
 
-        if (!reservaService.isConcluida(reserva)) {
-            throw new IllegalDateException("No se puede crear la valoración, la reserva no esta concluida", HttpStatus.BAD_REQUEST.value());
-        }
+//        if (!reservaService.isConcluida(reserva)) {
+//            throw new IllegalDateException("No se puede crear la valoración, la reserva no esta concluida", HttpStatus.BAD_REQUEST.value());
+//        }
 
         if (valoracionRepository.existsByUsuarioAndReserva(usuario, reserva)) {
             throw new IllegalDateException("Ya existe una valoración para esta reserva y usuario.", HttpStatus.BAD_REQUEST.value());
