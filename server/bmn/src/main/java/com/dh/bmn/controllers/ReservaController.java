@@ -48,13 +48,13 @@ public class ReservaController {
     }
 
     @GetMapping("/api/reservas")
-    @Secured("ADMIN")
+    @Secured({"ADMIN", "USER"})
     public ResponseEntity<List<ReservaResponseDto>> listarReservas () {
         return new ResponseEntity<>(reservaService.listarTodos(),HttpStatus.OK);
     }
 
     @PutMapping("/api/reservas")
-    @Secured({ "ADMIN", "USER" })
+    @Secured({ "ADMIN", "USER"})
     public ResponseEntity<?> actualizarReserva (@RequestBody @Valid ReservaRequestDto reservaRequestDto) {
         reservaService.actualizar(reservaRequestDto);
         return new ResponseEntity<>(new JsonMessageDto("Reserva actualizada exitosamente",HttpStatus.OK.value()), HttpStatus.OK);

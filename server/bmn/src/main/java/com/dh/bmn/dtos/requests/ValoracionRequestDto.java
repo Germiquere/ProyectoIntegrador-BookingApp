@@ -28,4 +28,10 @@ public class ValoracionRequestDto {
     private String comentario;
 
     private BicicletaRequestDto bicicleta;
+
+    public ValoracionRequestDto(Long valoracionId, @NotNull(message = "La puntuación no puede ser nula") int puntuacion, String comentario) {
+        this.valoracionId = valoracionId;
+        this.puntuacion = puntuacion;
+        this.comentario = comentario;
+    }
 }

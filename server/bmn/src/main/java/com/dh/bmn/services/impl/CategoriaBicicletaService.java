@@ -65,11 +65,6 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
         categoriaBicicletaRepository.save(categoria);
     }
 
-    /*@Override
-    public void borrarPorId(Long id){
-        CategoriaBicicleta categoria = categoriaBicicletaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La categoria no existe", HttpStatus.NOT_FOUND.value()));
-        categoriaBicicletaRepository.delete(categoria);
-    }*/
     @Override
     public void borrarPorId(Long id) {
         CategoriaBicicleta categoria = categoriaBicicletaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La categoria no existe", HttpStatus.NOT_FOUND.value()));
@@ -95,11 +90,6 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
         String inicialDescripcion = categoriaBicicletaRequestDto.getDescripcion().substring(0, 1);
         String restoDescripcion = categoriaBicicletaRequestDto.getDescripcion().substring(1);
         categoriaBicicletaRequestDto.setDescripcion(inicialDescripcion.toUpperCase() + restoDescripcion.toLowerCase());
-    }
-
-    @Override
-    public PaginatedResponse<CategoriaBicicletaResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
-        return null;
     }
 
 //    //AGREGADO

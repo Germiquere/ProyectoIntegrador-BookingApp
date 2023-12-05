@@ -83,11 +83,6 @@ public class CaracteristicaBicicletaService implements IService<CaracteristicaBi
         return caracteristicaBicicletas.stream().map(categoria -> objectMapper.convertValue(categoria, CaracteristicaBicicletaResponseDto.class)).collect(Collectors.toList());
     }
 
-    @Override
-    public PaginatedResponse<CaracteristicaBicicletaResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
-        return null;
-    }
-
     private void normalizarNombre(CaracteristicaBicicletaRequestDto caracteristicaBicicletaRequestDto) {
 
         String inicialNombre = caracteristicaBicicletaRequestDto.getNombre().substring(0, 1);
