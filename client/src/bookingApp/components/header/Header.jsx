@@ -31,9 +31,8 @@ export const Header = () => {
 
                     {isDropdownOpen && (
                         <div
-                            className={`absolute top-[55px] right-0 bg-white border border-gray-300 p-2 rounded-lg shadow-lg transition-opacity  ${
-                                isDropdownOpen ? "opacity-100" : "opacity-0"
-                            }duration-300 ease-in-out`}
+                            className={`absolute top-[55px] right-0 bg-white border border-gray-300 p-2 rounded-lg shadow-lg transition-opacity  ${isDropdownOpen ? "opacity-100" : "opacity-0"
+                                }duration-300 ease-in-out`}
                         >
                             <div className="flex flex-col items-center">
                                 {rol === "admin" && (
@@ -56,7 +55,16 @@ export const Header = () => {
                                         </button>
                                     </Link>
                                 )}
-
+                                {rol === "user" && (
+                                    <Link to="/bookingHistory">
+                                        <button
+                                            className="min-w-[180px] middle none center  rounded-full border border-primary py-3 px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-tertiary active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none mt-2"
+                                            data-ripple-dark="true"
+                                        >
+                                            Historial
+                                        </button>
+                                    </Link>
+                                )}
                                 <button
                                     className="min-w-[180px] middle none center  rounded-full border border-primary py-3 px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-tertiary active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none mt-2"
                                     data-ripple-dark="true"

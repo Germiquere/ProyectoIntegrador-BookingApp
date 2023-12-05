@@ -11,6 +11,8 @@ import { useUsersContext } from "../../context/UsersContext";
 import Favorites from "../pages/Favorites";
 import { Bookings } from "../components/sectionBooking/Bookings";
 import { VerificationBookingPage } from "../components/sectionBooking/VerificationBookingPage";
+import { BookingHistory } from "../components/sectionBooking/BookingHistory";
+
 export const BookingAppRouter = () => {
     const { categoriesData } = useCategoriesContext();
     const { isAuthenticated, rol } = useUsersContext();
@@ -42,10 +44,14 @@ export const BookingAppRouter = () => {
                         element={<VerificationBookingPage />}
                     />
                 )}
-
+                {isAuthenticated && (
+                    <Route
+                        path="/bookingHistory"
+                        element={<BookingHistory />}
+                    />
+                )}
                 <Route path="/description/:id" element={<Description />} />
                 <Route path="/items" element={<SearchProducts />} />
-
                 <Route path="/*" element={<Navigate to="/" />} />
             </Route>
         </Routes>
