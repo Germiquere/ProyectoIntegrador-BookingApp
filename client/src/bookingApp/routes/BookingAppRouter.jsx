@@ -9,10 +9,12 @@ import { useCategoriesContext } from "../../context/CategoriesContext";
 import { SearchProducts } from "../pages/SearchProducts";
 import { useUsersContext } from "../../context/UsersContext";
 import Favorites from "../pages/Favorites";
-
+import { Bookings } from "../components/sectionBooking/Bookings";
+import { VerificationBookingPage } from "../components/sectionBooking/VerificationBookingPage";
 export const BookingAppRouter = () => {
     const { categoriesData } = useCategoriesContext();
     const { isAuthenticated, rol } = useUsersContext();
+    // console.log(categoriesData[0].categoriaId);
     return (
         <Routes>
             <Route path="/" element={<BookingLayout />}>
@@ -30,6 +32,15 @@ export const BookingAppRouter = () => {
                 )}
                 {isAuthenticated && (
                     <Route path="/favorites" element={<Favorites />} />
+                )}
+                {isAuthenticated && (
+                    <Route path="/bookings" element={<Bookings />} />
+                )}
+                {isAuthenticated && (
+                    <Route
+                        path="/bookings/verification"
+                        element={<VerificationBookingPage />}
+                    />
                 )}
 
                 <Route path="/description/:id" element={<Description />} />
