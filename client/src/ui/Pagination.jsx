@@ -76,13 +76,18 @@ export const Pagination = ({
 
                 <div className="flex gap-2 items-center justify-center">
                     <p className=" bg-primary text-center w-7 h-7 text-white leading-7 rounded-full">
-                        {actualPage}
+                        {totalPages === 0 ? totalPages : actualPage}
                     </p>
 
                     <p>de</p>
                     <p>{totalPages}</p>
                 </div>
-                {actualPage !== totalPages && (
+                {/* {actualPage !== totalPages && (
+                    <button onClick={handleSum}>
+                        <IoIosArrowDropright className="text-2xl cursor-pointer" />
+                    </button>
+                )} */}
+                {totalPages !== 0 && actualPage !== totalPages && (
                     <button onClick={handleSum}>
                         <IoIosArrowDropright className="text-2xl cursor-pointer" />
                     </button>

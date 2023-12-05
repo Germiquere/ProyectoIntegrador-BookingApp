@@ -11,7 +11,7 @@ export const SkeletonSearchProducts = () => {
             <div className="grid grid-cols-1  gap-4 ssm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 flex-1">
                 {[1, 2, 3, 4].map((item, index) => (
                     <div
-                        className={` mt-8 mb-8 rounded-xl bg-gray-200 
+                        className={` mt-8 mb-8 rounded-xl bg-gray-200
     `}
                         key={index}
                     >

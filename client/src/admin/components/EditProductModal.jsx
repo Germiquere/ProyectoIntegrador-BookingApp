@@ -215,9 +215,21 @@ export const EditProductModal = () => {
                 await handleDeleteImages(imagesToDelete);
                 const data = {
                     ...formState,
+                    // categorias: formState.categorias.map((elemento) => ({
+                    //     categoriaId: elemento.categoriaId,
+                    // })),
                     imagenes: [...formState.imagenes, ...imageUrls],
+                    // caracteristicas: formState.caracteristicas.map(
+                    //     (elemento) => ({
+                    //         caracteristicaId: elemento.caracteristicaId,
+                    //     })
+                    // ),
+                    // politicas: formState.politicas.map((elemento) => ({
+                    //     politicaId: elemento.politicaId,
+                    // })),
                 };
                 console.log(data);
+
                 const bike = await updateABike(data);
                 console.log(bike);
 

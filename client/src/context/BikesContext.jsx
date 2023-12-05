@@ -30,10 +30,13 @@ const formData = {
 export const BikesProvider = ({ children }) => {
     const [bikesData, setBikesData] = useState([]);
     const [bikesDataPaginated, setBikesDataPaginated] = useState([]);
-
+    const [bikesDataPaginatedSearch, setBikesDataPaginatedSearch] = useState(
+        []
+    );
     const [loading, setLoading] = useState(false);
     const [loadingPagination, setLoadingPagination] = useState(true);
-
+    const [loadingPaginationSearch, setLoadingPaginationSearch] =
+        useState(true);
     const [error, setError] = useState("");
     const [bikeById, setBikeById] = useState([]);
     const [openNewProductModal, setOpenNewProductModal] = useState(false);
@@ -95,11 +98,16 @@ export const BikesProvider = ({ children }) => {
             setLoading(false);
         }
     };
-    const fetchPaginatedData = async (page, query) => {
+    const fetchPaginatedData = async (page, query, startDate, endDate) => {
         setLoadingPagination(true);
         try {
             // LLAMO A LA FUNCION GET DEL ARCHIVO categories.js
-            const data = await getBikesByPagination(page, query);
+            const data = await getBikesByPagination(
+                page,
+                query,
+                startDate,
+                endDate
+            );
             // TENER EN CUENTA COMO VIENE MI DATA
             setBikesDataPaginated(data);
         } catch (err) {
@@ -107,6 +115,30 @@ export const BikesProvider = ({ children }) => {
         } finally {
             // MANEJO EL ESTADO DEL LOADING EN FALSE UNA  VEZ TERMINADO EL FETCH YA SEA EXITOSO O NO
             setLoadingPagination(false);
+        }
+    };
+    const fetchPaginatedDataSearch = async (
+        page,
+        query,
+        startDate,
+        endDate
+    ) => {
+        setLoadingPaginationSearch(true);
+        try {
+            // LLAMO A LA FUNCION GET DEL ARCHIVO categories.js
+            const data = await getBikesByPagination(
+                page,
+                query,
+                startDate,
+                endDate
+            );
+            // TENER EN CUENTA COMO VIENE MI DATA
+            setBikesDataPaginatedSearch(data);
+        } catch (err) {
+            setError(err);
+        } finally {
+            // MANEJO EL ESTADO DEL LOADING EN FALSE UNA  VEZ TERMINADO EL FETCH YA SEA EXITOSO O NO
+            setLoadingPaginationSearch(false);
         }
     };
     const bikeByIdGet = async (id) => {
@@ -237,6 +269,8 @@ export const BikesProvider = ({ children }) => {
                 loadingPagination,
                 openShareModal,
                 openRatingModal,
+                bikesDataPaginatedSearch,
+                loadingPaginationSearch,
                 //METODOS
                 bikeByIdGet,
                 addNewBike,
@@ -259,6 +293,8 @@ export const BikesProvider = ({ children }) => {
                 handleOpenRatingModal,
                 handleOpenShareModal,
                 setOpenShareModal,
+                setBikesDataPaginatedSearch,
+                fetchPaginatedDataSearch,
             }}
         >
             {children}

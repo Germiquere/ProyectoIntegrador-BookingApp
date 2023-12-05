@@ -7,15 +7,18 @@ import { Manage } from "../components/manage/Manage";
 import { useUsersContext } from "../../context/UsersContext";
 import { useCharacteristicsContext } from "../../context/CharacteristicsContext";
 import { Helmet } from "react-helmet";
+import { usePoliciesContext } from "../../context/PoliciesContext";
 
 export const AdminLayout = () => {
     const { openManageCategories, setOpenManageCategories } =
         useCategoriesContext();
     const { fetchData: fetchCaractsData } = useCharacteristicsContext();
     const { fetchUsersData } = useUsersContext();
+    const { fetchData: fetchPoliciesData } = usePoliciesContext();
     useEffect(() => {
         fetchUsersData();
         fetchCaractsData();
+        fetchPoliciesData();
     }, []);
 
     return (

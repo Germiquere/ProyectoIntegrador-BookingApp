@@ -431,7 +431,11 @@ import {
 } from "react-router-dom";
 import Section from "../components/Section";
 import { BsFillShareFill, BsFillStarFill } from "react-icons/bs";
-import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
+import {
+    IoIosArrowDropleft,
+    IoIosArrowDropright,
+    IoIosArrowBack,
+} from "react-icons/io";
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import { ImgGallery } from "../components/sectionDescription/ImgGallery";
 import { ImgSwiper } from "../components/sectionDescription/ImgSwiper";
@@ -465,7 +469,13 @@ export const Description = () => {
     } = useBikesContext();
     const { formState, fetchDatesByBikeId, setDatesData } =
         useCalendarAndSearchContext();
-    const { userData, isAuthenticated, rol } = useUsersContext();
+    const {
+        userData,
+        isAuthenticated,
+        rol,
+        loginbyBooking,
+        setLoginbyBooking,
+    } = useUsersContext();
     const { favorites, handleFav } = useFavoritesContext();
     const [isFav, setIsFav] = useState(false);
     const [loadingFav, setLoadingFav] = useState(false);
@@ -486,10 +496,28 @@ export const Description = () => {
             setTotal(newTotal);
         }
     };
-
+    const [errorDates, setErrorDates] = useState(false);
+    const handleErrorDates = () => {
+        let hasError = false;
+        if (!formState.startDate || !formState.endDate) {
+            setErrorDates(true);
+            hasError = true;
+        }
+        return hasError;
+    };
     const { id } = useParams();
     const navigate = useNavigate();
-
+    const goToBooking = () => {
+        if (handleErrorDates()) {
+            return;
+        }
+        if (!isAuthenticated) {
+            setLoginbyBooking(true);
+            return navigate("/auth/login");
+        }
+        setErrorDates(false);
+        navigate("/bookings");
+    };
     const goBack = () => {
         navigate(-1);
     };
@@ -587,7 +615,7 @@ export const Description = () => {
                                         <h3 className="hidden sm:block sm:text-sm">
                                             Volver
                                         </h3>
-                                        <IoIosArrowDropleft className="text-lg text-primary" />
+                                        <IoIosArrowBack className="text-lg text-primary" />
                                     </button>
                                 </div>
                             </div>
@@ -736,15 +764,25 @@ export const Description = () => {
                                     <h2 className="text-lg  ">
                                         ¿Cuándo quieres reservar?
                                     </h2>
-                                    <CalendarDescription bikeId={id} />
-                                    <Link to="/bookings">
-                                        <button
-                                            className="mb-5 middle none center mr-3 rounded-full bg-primary py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm  transition-all  hover:shadow-secondary  active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none w-full"
-                                            data-ripple-light="true"
-                                        >
-                                            ALQUILAR
-                                        </button>
-                                    </Link>
+                                    <CalendarDescription
+                                        bikeId={id}
+                                        setDateErrors={setErrorDates}
+                                    />
+                                    <p
+                                        className={`pt-1 text-xs text-red-500 ${
+                                            errorDates ? "block" : "hidden"
+                                        }`}
+                                    >
+                                        Debes seleccionar una fecha
+                                    </p>
+
+                                    <button
+                                        onClick={goToBooking}
+                                        className="mb-5 middle none center mr-3 rounded-full bg-primary py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-sm  transition-all  hover:shadow-secondary  active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none w-full"
+                                        data-ripple-light="true"
+                                    >
+                                        ALQUILAR
+                                    </button>
 
                                     <div className=" border-t border-gray-200 w-full pt-3">
                                         <div className="flex justify-between">

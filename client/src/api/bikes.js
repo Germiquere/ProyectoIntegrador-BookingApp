@@ -19,13 +19,22 @@ export const getBikes = async () => {
         throw error;
     }
 };
-export const getBikesByPagination = async (offset = 0, query = "") => {
+export const getBikesByPagination = async (
+    offset = 0,
+    query = "",
+    startDate = "",
+    endDate = ""
+) => {
     try {
         // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
-
+        console.log(
+            `search?query=${query}&limit=12&offset=${offset}&fechaInicio=${startDate}&fechaFin=${endDate}`
+        );
+        console.log(startDate);
+        console.log(endDate);
         // const res = await fetch(import.meta.env.VITE_URL + "/");
         const res = await fetch(
-            `http://54.81.150.99:8080/bike-me-now/bicicletas/page/1/search?query=${query}&limit=12&offset=${offset}`
+            `http://54.81.150.99:8080/bike-me-now/bicicletas/search?query=${query}&limit=12&offset=${offset}&fechaInicio=${startDate}&fechaFin=${endDate}`
         );
         if (!res.ok) {
             // Crear un objeto de error personalizado con estado y ok
@@ -149,6 +158,7 @@ export const postBike = async (bike) => {
     }
 };
 export const deleteBike = async (id) => {
+    console.log(id);
     const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
         const res = await fetch(

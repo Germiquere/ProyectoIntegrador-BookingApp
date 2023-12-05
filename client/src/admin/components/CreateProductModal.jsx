@@ -245,6 +245,7 @@ export const CreateProductModal = () => {
                     ...formState,
                     imagenes: imageUrls,
                 };
+                console.log(data);
                 const bike = await addNewBike(data);
                 console.log(bike);
 

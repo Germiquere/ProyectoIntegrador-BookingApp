@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Section from "../../bookingApp/components/Section";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { VscEyeClosed, VscEye } from "react-icons/vsc";
 import { useForm } from "../../hooks/useForm";
 import { useUsersContext } from "../../context/UsersContext";
@@ -31,8 +31,11 @@ export const LoginPage = () => {
         userData,
         errorAuth,
         setErrorAuth,
+        loginbyBooking,
+        setLoginbyBooking,
     } = useUsersContext();
     const [showPassword, setShowPassword] = useState(false);
+
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         setErrorAuth(false);
@@ -41,6 +44,10 @@ export const LoginPage = () => {
         try {
             await loginUser(formState);
             const user = await fetchUserData();
+            if (user && loginbyBooking) {
+                setLoginbyBooking(false);
+                return navigate("/bookings");
+            }
             if (user) {
                 navigate(location.state.prevUrl + location.state.prevSearch);
             }
@@ -48,6 +55,11 @@ export const LoginPage = () => {
             // Maneja errores si ocurren durante la autenticación o la obtención de datos
         }
     };
+    useEffect(() => {
+        return () => {
+            setLoginbyBooking(false);
+        };
+    }, []);
     return (
         <>
             <Helmet>
@@ -69,6 +81,11 @@ export const LoginPage = () => {
                     className="max-w-[1200px] mx-auto flex flex-col items-center gap-11"
                     onSubmit={handleSubmit}
                 >
+                    {loginbyBooking && (
+                        <p className="text-red-500 text-center">
+                            Debes iniciar sesión para realizar una reserva
+                        </p>
+                    )}
                     <h2 className="text-primary font-bold text-2xl">
                         Iniciar sesión
                     </h2>

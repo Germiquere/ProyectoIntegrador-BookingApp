@@ -11,14 +11,14 @@ export const SearchBar = () => {
     );
     const {
         bikesData,
-        bikesDataPaginated,
-        fetchPaginatedData,
+        bikesDataPaginatedSearch,
+        fetchPaginatedDataSearch,
         loadingPagination,
     } = useBikesContext();
     const { search = "" } = formState;
     const handleInputChange = (e) => {
         onInputChange(e);
-        fetchPaginatedData(0, search);
+        fetchPaginatedDataSearch(0, search);
     };
     const handleClick = (bike) => {
         setFormState({
@@ -67,9 +67,9 @@ export const SearchBar = () => {
                     className="absolute top-14 left-0 w-full bg-white z-30 rounded-md hidden sm:block h-56 overflow-y-auto shadow-lg"
                 >
                     {!loadingPagination &&
-                        (bikesDataPaginated.content &&
-                        bikesDataPaginated.content.length > 0 ? (
-                            bikesDataPaginated.content.map((bike) => (
+                        (bikesDataPaginatedSearch.content &&
+                        bikesDataPaginatedSearch.content.length > 0 ? (
+                            bikesDataPaginatedSearch.content.map((bike) => (
                                 <p
                                     key={bike.bicicletaId}
                                     onClick={() => {

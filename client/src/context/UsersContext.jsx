@@ -43,6 +43,7 @@ export function UsersProvider({ children }) {
     // REGISTER
     const [userEmail, setUserEmail] = useState("");
     const [isRegistered, setIsRegistered] = useState(false);
+    const [loginbyBooking, setLoginbyBooking] = useState(false);
     const { isAuthenticated, rol } = authUser;
 
     // -----------USUARIO-----------
@@ -216,6 +217,7 @@ export function UsersProvider({ children }) {
                 userEmail,
                 isRegistered,
                 loadingAuth,
+                loginbyBooking,
                 // METODOS
                 onInputChange,
                 onResetForm,
@@ -231,6 +233,7 @@ export function UsersProvider({ children }) {
                 editUserRole,
                 setUsersFormState,
                 sendEmailAgain,
+                setLoginbyBooking,
             }}
         >
             {children}

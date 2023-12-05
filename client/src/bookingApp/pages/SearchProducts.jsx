@@ -19,6 +19,7 @@ import { useUsersContext } from "../../context/UsersContext";
 import { useFavoritesContext } from "../../context/FavoritesContext";
 import { Helmet } from "react-helmet";
 import { SkeletonSearchProducts } from "../components/sectionSearch/SkeletonSearchProducts";
+import { format, parse } from "date-fns";
 export const SearchProducts = () => {
     const { handleOpenCalendarAndSearch, formState, setFormState } = useContext(
         CalendarAndSearchContext
@@ -49,7 +50,16 @@ export const SearchProducts = () => {
     const handleOpenFilters = () => {
         setOpenFilters(!openFilters);
     };
-
+    // FUNCION PARA FORMATEAR LAS FECHAS
+    const formatDates = (date) => {
+        if (date.length > 0) {
+            const parsedDate = parse(date, "d-MM-yyyy", new Date());
+            const formatedParsedDate = format(parsedDate, "yyyy-MM-dd");
+            console.log(formatedParsedDate);
+            return formatedParsedDate;
+        }
+        return date;
+    };
     // FUSE SEARCH
     // const [fuse, setFuse] = useState(null);
     // const fuseOptions = {
@@ -178,14 +188,29 @@ export const SearchProducts = () => {
     useEffect(() => {
         if (selectedCategories.length > 0) {
             const joinedCategories = selectedCategories.join(" ");
-            fetchPaginatedData(offset, joinedCategories);
+            fetchPaginatedData(
+                offset,
+                joinedCategories,
+                formatDates(startDate),
+                formatDates(endDate)
+            );
         } else {
-            fetchPaginatedData(offset, search);
+            fetchPaginatedData(
+                offset,
+                search,
+                formatDates(startDate),
+                formatDates(endDate)
+            );
         }
     }, [offset, selectedCategories]);
     useEffect(() => {
-        fetchPaginatedData(0, search);
-    }, [search]);
+        fetchPaginatedData(
+            0,
+            search,
+            formatDates(startDate),
+            formatDates(endDate)
+        );
+    }, [search, startDate, endDate]);
 
     // useEffect(() => {
     //     const fuseInstance = new Fuse(bikesData, fuseOptions);
@@ -283,7 +308,7 @@ export const SearchProducts = () => {
             {/* <CategoriesAndRecommended /> */}
             {/* <Products /> */}
             {/* SECTION PRODUCTS AND FILTER */}
-            <Section className="min-h-[calc(100vh-425px)relative pb-10  max-w-[1200px] mx-auto flex flex-col">
+            <Section className="min-h-[calc(100vh-425px)relative pb-10  max-w-[1200px] mx-auto flex flex-col min-h-[555px]">
                 <div className="flex-grow">
                     {loadingPagination ? (
                         <SkeletonSearchProducts />

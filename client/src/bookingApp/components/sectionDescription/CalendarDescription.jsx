@@ -8,7 +8,7 @@ import "../sectionCalendarAndSearch/Calendar/rangeCalendar.css";
 import { compareAsc, format, startOfDay, parseISO, addDays } from "date-fns";
 import { CalendarAndSearchContext } from "../../../context/CalendarSearchContext";
 import { Loader } from "../../../ui/Loader";
-export const CalendarDescription = ({ bikeId }) => {
+export const CalendarDescription = ({ bikeId, setDateErrors }) => {
     const {
         onInputChange,
         formState,
@@ -98,6 +98,7 @@ export const CalendarDescription = ({ bikeId }) => {
                 endDate: end,
             });
             setHasSelected(false);
+            setDateErrors(false);
         }
     };
     // funcion para cerrar el calendar haciendo click outside
