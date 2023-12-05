@@ -33,4 +33,13 @@ public class UsuarioRequestDto {
     @NotBlank(message = "El email no puede estar vacio" )
     private String email;
 
+    @Override
+    public String toString() {
+        return "UsuarioRequestDto{" +
+                "usuarioId=" + usuarioId +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
