@@ -67,15 +67,6 @@ public class BicicletaController {
         return new ResponseEntity<>(new JsonMessageDto("Bicicleta actualizada exitosamente", HttpStatus.OK.value()), HttpStatus.OK);
     }
 
-    /*@GetMapping("/bicicletas/page/{numeroPagina}")
-    public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> obtenerPaginaBicicletas(
-            @PathVariable int numeroPagina,
-            @RequestParam(defaultValue = "10") int limit,
-            @RequestParam(defaultValue = "0") int offset) {
-        PaginatedResponse<BicicletaResponseDto> paginatedResponse = bicicletaService.obtenerPaginacion(numeroPagina, limit, offset);
-        return new ResponseEntity<>(paginatedResponse, HttpStatus.OK);
-    }*/
-
     @GetMapping("/bicicletas/search")
     public ResponseEntity<PaginatedResponse<BicicletaResponseDto>> buscarBicicletas(
             @RequestParam String query,

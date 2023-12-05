@@ -114,11 +114,6 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         bicicletaRepository.delete(bicicleta);
     }
 
-    /*public void borrarPorId(Long id) {
-        Bicicleta bicicleta = bicicletaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La bicicleta no existe", HttpStatus.NOT_FOUND.value()));
-        bicicletaRepository.delete(bicicleta);
-    }*/
-
     @Override
     public List<BicicletaResponseDto> listarTodos() {
         List<Bicicleta> listaBicicletas = Optional.of(bicicletaRepository.findAll()).orElseThrow(() -> new ResourceNotFoundException("No se encontraron bicicletas", HttpStatus.NOT_FOUND.value()));
