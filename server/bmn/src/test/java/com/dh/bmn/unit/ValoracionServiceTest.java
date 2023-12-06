@@ -209,6 +209,49 @@ public class ValoracionServiceTest {
         });
     }
 
+    @Test
+    public void crearValoracionResourceAlreadyExistsException() throws MalformedURLException {
+        //Arrange
+        Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
+        List<Imagen> imagenes = List.of(imagen);
+        CategoriaBicicleta categoriaBicicleta = new CategoriaBicicleta(1L, "Montaña", "Bicicleta de montaña", imagen);
+        List<CategoriaBicicleta> categoriaList = List.of(categoriaBicicleta);
+        CaracteristicaBicicleta caracteristicaBicicleta = new CaracteristicaBicicleta(1L, "electrica", "icono");
+        List<CaracteristicaBicicleta> caracteristicaList = List.of(caracteristicaBicicleta);
+        Politica politica = new Politica(1L, "Politica", "Descripcion politica");
+        List<Politica> politicaBicicletaList = List.of(politica);
+        Usuario usuario = new Usuario(1L, "Juan", "Perez", "juan.perez@gmail.com", "password", Rol.USER);
+        Valoracion valoracion = new Valoracion(1L, 5,usuario, "Muy bueno", LocalDate.of(2023, 12, 2));
+        List<Valoracion> valoracionList = List.of(valoracion);
+        Bicicleta bicicleta = new Bicicleta(1L, "Bike", "Ideal para montaña", 34567, categoriaList, imagenes, caracteristicaList, politicaBicicletaList,valoracionList,4.5,5L);
+        Reserva reserva = new Reserva(1L, usuario, bicicleta, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03), valoracionList);
+        ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
+        CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
+        List<CategoriaBicicletaRequestDto> categoriaRequestList = List.of(categoriaBicicletaRequestDto);
+        CaracteristicaBicicletaRequestDto caracteristicaBicicletaRequestDto = new CaracteristicaBicicletaRequestDto(1L, "electrica", "icono");
+        List<CaracteristicaBicicletaRequestDto> caracteristicaRequestList = List.of(caracteristicaBicicletaRequestDto);
+        PoliticaRequestDto politicaRequestDto = new PoliticaRequestDto(1L, "Politica", "Descripcion politica");
+        List<PoliticaRequestDto> politicaBicicletaRequestList = List.of(politicaRequestDto);
+        BicicletaRequestDto bicicletaRequestDto =
+                new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaRequestList, imagenes, caracteristicaRequestList, politicaBicicletaRequestList);
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com");
+        ReservaRequestDto reservaRequestDto = new ReservaRequestDto(1L, usuarioRequestDto, bicicletaRequestDto, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
+        ValoracionRequestDto valoracionRequestDto = new ValoracionRequestDto(1L,  reservaRequestDto, 5, "Bicicleta en excelente estado", bicicletaRequestDto);
+
+        //Acts
+        Authentication authentication = Mockito.mock(Authentication.class);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Mockito.when(authentication.getName()).thenReturn("correo@ejemplo.com");
+        //when(reservaService.isConcluida(any(Reserva.class))).thenReturn(true);
+        Mockito.when(usuarioRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(usuario));
+        Mockito.when(reservaRepository.findById(reservaRequestDto.getReservaId())).thenReturn(Optional.of(reserva));
+        Mockito.when(valoracionRepository.existsByUsuarioAndReserva(usuario,reserva)).thenReturn(true);
+
+        //Asserts
+        assertThrows(ResourceAlreadyExistsException.class, () -> {
+            valoracionService.crear(valoracionRequestDto);
+        });
+    }
 
     @Test
     public void obtenerValoracionPorId(){
