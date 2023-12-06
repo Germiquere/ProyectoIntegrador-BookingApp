@@ -39,10 +39,8 @@ public class Bicicleta implements Serializable {
     @JoinColumn(name = "categoria_id")
     private List<CategoriaBicicleta> categorias;
 
-
     @OneToMany(mappedBy = "bicicleta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Imagen> imagenes;
-
 
     @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
@@ -50,9 +48,7 @@ public class Bicicleta implements Serializable {
             joinColumns = @JoinColumn(name = "bicicleta_id"),
             inverseJoinColumns = @JoinColumn(name = "id_caracteristica")
     )
-
     private List<CaracteristicaBicicleta> caracteristicas;
-
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -75,17 +71,4 @@ public class Bicicleta implements Serializable {
     @JsonIgnore
     private List<Reserva> reservas = new ArrayList<>();
 
-    public Bicicleta(Long bicicletaId, String nombre, String descripcion, Integer precioAlquilerPorDia, List<CategoriaBicicleta> categorias, List<Imagen> imagenes, List<CaracteristicaBicicleta> caracteristicas, List<Politica> politicas, List<Valoracion> valoraciones, Double promedioPuntuacion, Long cantidadValoraciones) {
-        this.bicicletaId = bicicletaId;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.precioAlquilerPorDia = precioAlquilerPorDia;
-        this.categorias = categorias;
-        this.imagenes = imagenes;
-        this.caracteristicas = caracteristicas;
-        this.politicas = politicas;
-        this.valoraciones = valoraciones;
-        this.promedioPuntuacion = promedioPuntuacion;
-        this.cantidadValoraciones = cantidadValoraciones;
-    }
 }

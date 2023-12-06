@@ -68,10 +68,12 @@ public class CategoriaBicicletaService implements IService<CategoriaBicicletaRes
     @Override
     public void borrarPorId(Long id) {
         CategoriaBicicleta categoria = categoriaBicicletaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La categoria no existe", HttpStatus.NOT_FOUND.value()));
+
         for (Bicicleta bicicleta : bicicletaRepository.findAll()) {
             bicicleta.getCategorias().remove(categoria);
             bicicletaRepository.save(bicicleta);
         }
+
         categoriaBicicletaRepository.delete(categoria);
     }
 

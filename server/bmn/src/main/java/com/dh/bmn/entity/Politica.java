@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -28,11 +29,6 @@ public class Politica {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "politicas")
-    private List<Bicicleta> bicicletas;
+    private List<Bicicleta> bicicletas = new ArrayList<>();
 
-    public Politica(Long politicaId, String titulo, String descripcion) {
-        this.politicaId = politicaId;
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-    }
 }
