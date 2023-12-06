@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -78,6 +79,6 @@ public class Bicicleta implements Serializable {
 
     @OneToMany(mappedBy = "bicicleta", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Reserva> reservas;
+    private List<Reserva> reservas = new ArrayList<>();
 
 }
