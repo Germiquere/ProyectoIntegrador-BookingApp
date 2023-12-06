@@ -44,7 +44,7 @@ export const BookingAppRouter = () => {
                         element={<VerificationBookingPage />}
                     />
                 )}
-                {isAuthenticated && (
+                {!isAuthenticated && (
                     <Route
                         path="/bookingHistory"
                         element={<BookingHistory />}
