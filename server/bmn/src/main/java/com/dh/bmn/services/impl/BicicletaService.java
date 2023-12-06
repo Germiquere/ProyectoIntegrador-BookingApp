@@ -1,9 +1,6 @@
 package com.dh.bmn.services.impl;
 
-import com.dh.bmn.dtos.requests.BicicletaRequestDto;
-import com.dh.bmn.dtos.requests.CaracteristicaBicicletaRequestDto;
-import com.dh.bmn.dtos.requests.CategoriaBicicletaRequestDto;
-import com.dh.bmn.dtos.requests.PoliticaRequestDto;
+import com.dh.bmn.dtos.requests.*;
 import com.dh.bmn.dtos.responses.BicicletaResponseDto;
 import com.dh.bmn.entity.*;
 import com.dh.bmn.exceptions.RequestValidationException;
@@ -66,6 +63,8 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
             guardarPoliticas(bicicletaRequestDto, bicicletaDB);
             validarListaImagenesVacia(bicicletaRequestDto);
             validarYguardarImagenesBicicleta(bicicletaRequestDto, bicicletaDB);
+
+            // Guardar la bicicleta actualizada
             bicicletaRepository.save(bicicletaDB);
         }
     }

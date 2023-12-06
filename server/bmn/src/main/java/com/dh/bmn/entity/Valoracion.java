@@ -35,7 +35,6 @@ public class Valoracion {
     @Column
     private LocalDate fecha;
 
-
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "bicicleta_id", nullable = false)
@@ -45,14 +44,6 @@ public class Valoracion {
     @JsonIgnore
     @JoinColumn(name = "reserva_id")
     private Reserva reserva;
-
-    public Valoracion(Long valoracionId, int puntuacion, Usuario usuario, String comentario, LocalDate fecha) {
-        this.valoracionId = valoracionId;
-        this.puntuacion = puntuacion;
-        this.usuario = usuario;
-        this.comentario = comentario;
-        this.fecha = fecha;
-    }
 
     @PrePersist
     protected void onCreate() {
