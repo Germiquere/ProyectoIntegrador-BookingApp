@@ -74,7 +74,7 @@ public class PoliticaService implements IService<PoliticaResponseDto, PoliticaRe
             bicicleta.getPoliticas().remove(politica);
             bicicletaRepository.save(bicicleta);
         }
-        
+
         politicaRepository.delete(politica);
     }
 

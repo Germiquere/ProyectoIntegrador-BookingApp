@@ -18,8 +18,6 @@ import java.util.List;
 @RequestMapping("/bike-me-now")
 public class ReservaController {
 
-    //private final IService<ReservaResponseDto, ReservaRequestDto> iReservaService;
-
     private final ReservaService reservaService;
 
     @Autowired
@@ -61,7 +59,7 @@ public class ReservaController {
     }
 
     @GetMapping("/api/reservas/usuarios/{id}")
-    @Secured("ADMIN")
+    @Secured({ "ADMIN", "USER"})
     public ResponseEntity<List<ReservaResponseDto>> obtenerReservasPorUsuario(@PathVariable Long id) {
         return new ResponseEntity<>(reservaService.obtenerReservasPorUsuario(id), HttpStatus.OK);
     }
