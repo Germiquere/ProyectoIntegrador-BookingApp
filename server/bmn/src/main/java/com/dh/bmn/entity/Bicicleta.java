@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -62,7 +63,7 @@ public class Bicicleta implements Serializable {
     private List<Politica> politicas;
 
    @OneToMany(mappedBy = "bicicleta", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Valoracion> valoraciones;
+    private List<Valoracion> valoraciones = new ArrayList<>();
 
     @Column(name = "promedio_puntuacion")
     private Double promedioPuntuacion;
@@ -72,7 +73,7 @@ public class Bicicleta implements Serializable {
     
     @OneToMany(mappedBy = "bicicleta", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Reserva> reservas;
+    private List<Reserva> reservas = new ArrayList<>();
 
     public Bicicleta(Long bicicletaId, String nombre, String descripcion, Integer precioAlquilerPorDia, List<CategoriaBicicleta> categorias, List<Imagen> imagenes, List<CaracteristicaBicicleta> caracteristicas, List<Politica> politicas, List<Valoracion> valoraciones, Double promedioPuntuacion, Long cantidadValoraciones) {
         this.bicicletaId = bicicletaId;
