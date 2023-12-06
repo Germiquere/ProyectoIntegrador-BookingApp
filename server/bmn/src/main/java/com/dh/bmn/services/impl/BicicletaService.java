@@ -104,10 +104,28 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         // Obtén las categorías asociadas a la bicicleta
         List<CategoriaBicicleta> categorias = bicicleta.getCategorias();
 
+        // Obtén las políticas asociadas a la bicicleta
+        List<Politica> politicas = bicicleta.getPoliticas();
+
+        // Obtén las características asociadas a la bicicleta
+        List<CaracteristicaBicicleta> caracteristicas = bicicleta.getCaracteristicas();
+
         // Elimina la bicicleta de las categorías asociadas
         for (CategoriaBicicleta categoria : categorias) {
             categoria.getBicicletas().remove(bicicleta);
             categoriaBicicletaRepository.save(categoria);
+        }
+
+        // Elimina la bicicleta de las politicas asociadas
+        for (Politica politica : politicas) {
+            politica.getBicicletas().remove(bicicleta);
+            politicaRepository.save(politica);
+        }
+
+        // Elimina la bicicleta de las características asociadas
+        for (CaracteristicaBicicleta caracteristica : caracteristicas) {
+            caracteristica.getBicicletas().remove(bicicleta);
+            caracteristicaBicicletaRepository.save(caracteristica);
         }
 
         // Elimina la bicicleta
