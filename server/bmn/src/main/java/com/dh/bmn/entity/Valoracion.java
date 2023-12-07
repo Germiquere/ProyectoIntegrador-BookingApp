@@ -40,7 +40,7 @@ public class Valoracion {
     @JoinColumn(name = "bicicleta_id", nullable = false)
     private Bicicleta bicicleta;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
     @JoinColumn(name = "reserva_id")
     private Reserva reserva;
