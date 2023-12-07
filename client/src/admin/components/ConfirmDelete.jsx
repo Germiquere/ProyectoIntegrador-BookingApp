@@ -5,7 +5,7 @@ export const ConfirmDelete = ({
     handleDeleteProduct,
     setOpenConfirmDelete,
 }) => {
-    const { formState } = useBikesContext();
+    const { formState, loading } = useBikesContext();
     return (
         <>
             <div
@@ -31,6 +31,7 @@ export const ConfirmDelete = ({
                         <button
                             className="middle none center rounded-full border border-primary py-2 px-3 font-sans text-[10px] font-bold uppercase text-primary transition-all hover:opacity-75 focus:ring focus:ring-tertiary active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                             data-ripple-dark="true"
+                            disabled={loading}
                             onClick={handleDeleteProduct}
                         >
                             CONFIRMAR
@@ -38,6 +39,7 @@ export const ConfirmDelete = ({
                         <button
                             className="middle none center  rounded-full bg-primary py-2 px-3 font-sans text-[10px] font-bold uppercase text-white shadow-sm  transition-all  hover:shadow-secondary  active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                             data-ripple-light="true"
+                            disabled={loading}
                             onClick={() => setOpenConfirmDelete(false)}
                         >
                             CANCELAR
