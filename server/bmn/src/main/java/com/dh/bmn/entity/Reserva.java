@@ -42,4 +42,6 @@ public class Reserva {
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Valoracion> valoraciones;
 
+    @Column
+    private boolean valoracion = false;
 }

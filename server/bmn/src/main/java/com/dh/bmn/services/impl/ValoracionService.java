@@ -33,8 +33,6 @@ public class ValoracionService implements IService<ValoracionResponseDto, Valora
     private final IReservaRepository reservaRepository;
     private final IUsuarioRepository usuarioRepository;
     private final BicicletaService bicicletaService;
-
-
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
     @Autowired
@@ -104,6 +102,7 @@ public class ValoracionService implements IService<ValoracionResponseDto, Valora
         valoracion.setUsuario(usuario);
         valoracion.setBicicleta(bicicleta);
         valoracion.setReserva(reserva);
+        valoracion.getReserva().setValoracion(true);
 
         valoracionRepository.save(valoracion);
         bicicletaService.actualizarPromedioPuntuacion(bicicleta);
