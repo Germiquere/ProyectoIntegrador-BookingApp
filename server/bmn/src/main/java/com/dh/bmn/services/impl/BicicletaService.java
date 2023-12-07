@@ -1,9 +1,6 @@
 package com.dh.bmn.services.impl;
 
-import com.dh.bmn.dtos.requests.BicicletaRequestDto;
-import com.dh.bmn.dtos.requests.CaracteristicaBicicletaRequestDto;
-import com.dh.bmn.dtos.requests.CategoriaBicicletaRequestDto;
-import com.dh.bmn.dtos.requests.PoliticaRequestDto;
+import com.dh.bmn.dtos.requests.*;
 import com.dh.bmn.dtos.responses.BicicletaResponseDto;
 import com.dh.bmn.entity.*;
 import com.dh.bmn.exceptions.RequestValidationException;
@@ -40,7 +37,7 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
-    private IValoracionRepository valoracionRepository;
+    private final IValoracionRepository valoracionRepository;
 
     @Autowired
     public BicicletaService(IBicicletaRepository bicicletaRepository, S3Service s3Service, ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository, ICategoriaBicicletaRepository categoriaBicicletaRepository, IPoliticaRepository politicaRepository, IValoracionRepository valoracionRepository) {
@@ -59,6 +56,12 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         if (bicicletaDB != null) {
 
             normalizarNombreDescripcion(bicicletaRequestDto);
+            // Guardar las valoraciones actuales
+            List<Valoracion> valoracionesActuales = new ArrayList<>(bicicletaDB.getValoraciones());
+            // Obtener valores actuales de promedio y cantidad desde la base de datos
+            Double promedioActual = bicicletaDB.getPromedioPuntuacion();
+            Long cantidadActual = bicicletaDB.getCantidadValoraciones();
+
             bicicletaDB = objectMapper.convertValue(bicicletaRequestDto, Bicicleta.class);
 
             guardarCategoriasBicicleta(bicicletaRequestDto, bicicletaDB);
@@ -66,6 +69,14 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
             guardarPoliticas(bicicletaRequestDto, bicicletaDB);
             validarListaImagenesVacia(bicicletaRequestDto);
             validarYguardarImagenesBicicleta(bicicletaRequestDto, bicicletaDB);
+
+            // Restaurar las valoraciones después de la actualización
+            bicicletaDB.setValoraciones(valoracionesActuales);
+            // Asignar valores que no están en el DTO
+            bicicletaDB.setPromedioPuntuacion(promedioActual);
+            bicicletaDB.setCantidadValoraciones(cantidadActual);
+
+            // Guardar la bicicleta actualizada
             bicicletaRepository.save(bicicletaDB);
         }
     }
@@ -104,20 +115,33 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         // Obtén las categorías asociadas a la bicicleta
         List<CategoriaBicicleta> categorias = bicicleta.getCategorias();
 
+        // Obtén las políticas asociadas a la bicicleta
+        List<Politica> politicas = bicicleta.getPoliticas();
+
+        // Obtén las características asociadas a la bicicleta
+        List<CaracteristicaBicicleta> caracteristicas = bicicleta.getCaracteristicas();
+
         // Elimina la bicicleta de las categorías asociadas
         for (CategoriaBicicleta categoria : categorias) {
             categoria.getBicicletas().remove(bicicleta);
             categoriaBicicletaRepository.save(categoria);
         }
 
+        // Elimina la bicicleta de las politicas asociadas
+        for (Politica politica : politicas) {
+            politica.getBicicletas().remove(bicicleta);
+            politicaRepository.save(politica);
+        }
+
+        // Elimina la bicicleta de las características asociadas
+        for (CaracteristicaBicicleta caracteristica : caracteristicas) {
+            caracteristica.getBicicletas().remove(bicicleta);
+            caracteristicaBicicletaRepository.save(caracteristica);
+        }
+
         // Elimina la bicicleta
         bicicletaRepository.delete(bicicleta);
     }
-
-    /*public void borrarPorId(Long id) {
-        Bicicleta bicicleta = bicicletaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La bicicleta no existe", HttpStatus.NOT_FOUND.value()));
-        bicicletaRepository.delete(bicicleta);
-    }*/
 
     @Override
     public List<BicicletaResponseDto> listarTodos() {
@@ -273,10 +297,5 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         bicicleta.setPromedioPuntuacion(promedioPuntuacion);
         bicicletaRepository.save(bicicleta);
     }
-//    //AGREGADO
-//    @Override
-//    public BicicletaResponseDto buscarPorToken(String token) {
-//        return null;
-//    }
 
 }

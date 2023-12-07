@@ -18,8 +18,6 @@ import java.util.List;
 @RequestMapping("/bike-me-now")
 public class ReservaController {
 
-    //private final IService<ReservaResponseDto, ReservaRequestDto> iReservaService;
-
     private final ReservaService reservaService;
 
     @Autowired
@@ -48,20 +46,20 @@ public class ReservaController {
     }
 
     @GetMapping("/api/reservas")
-    @Secured("ADMIN")
+    @Secured({"ADMIN", "USER"})
     public ResponseEntity<List<ReservaResponseDto>> listarReservas () {
         return new ResponseEntity<>(reservaService.listarTodos(),HttpStatus.OK);
     }
 
     @PutMapping("/api/reservas")
-    @Secured({ "ADMIN", "USER" })
+    @Secured({ "ADMIN", "USER"})
     public ResponseEntity<?> actualizarReserva (@RequestBody @Valid ReservaRequestDto reservaRequestDto) {
         reservaService.actualizar(reservaRequestDto);
         return new ResponseEntity<>(new JsonMessageDto("Reserva actualizada exitosamente",HttpStatus.OK.value()), HttpStatus.OK);
     }
 
     @GetMapping("/api/reservas/usuarios/{id}")
-    @Secured("ADMIN")
+    @Secured({ "ADMIN", "USER"})
     public ResponseEntity<List<ReservaResponseDto>> obtenerReservasPorUsuario(@PathVariable Long id) {
         return new ResponseEntity<>(reservaService.obtenerReservasPorUsuario(id), HttpStatus.OK);
     }

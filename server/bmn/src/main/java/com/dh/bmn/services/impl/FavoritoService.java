@@ -32,7 +32,6 @@ public class FavoritoService implements IFavoritoService {
         this.bicicletaService = bicicletaService;
     }
 
-
     @Override
     public void agregarFavorito(FavoritoRequestDto favoritoRequestDto) {
 

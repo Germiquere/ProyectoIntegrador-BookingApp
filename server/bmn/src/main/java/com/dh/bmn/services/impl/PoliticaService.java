@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -69,17 +68,13 @@ public class PoliticaService implements IService<PoliticaResponseDto, PoliticaRe
 
     @Override
     public void borrarPorId(Long id) {
-        Politica politica = politicaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("La política solicitada no existe", HttpStatus.NOT_FOUND.value()));
+        Politica politica = politicaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("La política solicitada no existe", HttpStatus.NOT_FOUND.value()));
 
-        List<Bicicleta> bicicletasAsociadas = politica.getBicicletas();
-
-        if (bicicletasAsociadas != null) {
-            for (Bicicleta bicicleta : bicicletasAsociadas) {
-                bicicleta.getPoliticas().remove(politica);
-                bicicletaRepository.save(bicicleta);
-            }
+        for (Bicicleta bicicleta : bicicletaRepository.findAll()) {
+            bicicleta.getPoliticas().remove(politica);
+            bicicletaRepository.save(bicicleta);
         }
+
         politicaRepository.delete(politica);
     }
 
@@ -91,11 +86,6 @@ public class PoliticaService implements IService<PoliticaResponseDto, PoliticaRe
                 .stream()
                 .map(politica -> objectMapper.convertValue(politica, PoliticaResponseDto.class))
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public PaginatedResponse<PoliticaResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
-        return null;
     }
 
     private void normalizarTituloDescripcion(PoliticaRequestDto politicaRequestDto){

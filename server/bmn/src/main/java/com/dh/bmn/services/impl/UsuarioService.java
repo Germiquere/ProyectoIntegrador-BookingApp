@@ -130,13 +130,6 @@ public class UsuarioService implements IService<UsuarioResponseDto, UsuarioReque
 
     }
 
-    @Override
-    public PaginatedResponse<UsuarioResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
-        return null;
-    }
-
-
-    //@Override
     public UsuarioResponseDto buscarUsuarioPorToken(String token) {
 
         // Decodificar el token JWT

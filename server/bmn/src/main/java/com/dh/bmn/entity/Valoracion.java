@@ -35,7 +35,6 @@ public class Valoracion {
     @Column
     private LocalDate fecha;
 
-
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "bicicleta_id", nullable = false)

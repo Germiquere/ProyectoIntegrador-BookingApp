@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,8 +31,8 @@ public class CaracteristicaBicicleta implements Serializable {
     private String icono;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "caracteristicas", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Bicicleta> bicicletas;
+    @ManyToMany(mappedBy = "caracteristicas")
+    private List<Bicicleta> bicicletas = new ArrayList<>();
 
     public CaracteristicaBicicleta(Long caracteristicaId, String nombre, String icono) {
         this.caracteristicaId = caracteristicaId;

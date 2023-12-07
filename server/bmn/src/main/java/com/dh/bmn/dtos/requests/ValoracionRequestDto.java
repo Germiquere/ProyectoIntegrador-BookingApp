@@ -28,4 +28,5 @@ public class ValoracionRequestDto {
     private String comentario;
 
     private BicicletaRequestDto bicicleta;
+
 }

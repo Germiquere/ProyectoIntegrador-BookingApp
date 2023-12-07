@@ -7,10 +7,8 @@ import com.dh.bmn.entity.Bicicleta;
 import com.dh.bmn.entity.Reserva;
 import com.dh.bmn.entity.Usuario;
 import com.dh.bmn.entity.Valoracion;
-import com.dh.bmn.exceptions.IllegalDateException;
+import com.dh.bmn.exceptions.ResourceAlreadyExistsException;
 import com.dh.bmn.exceptions.ResourceNotFoundException;
-import com.dh.bmn.pagging.PaginatedResponse;
-import com.dh.bmn.repositories.IBicicletaRepository;
 import com.dh.bmn.repositories.IReservaRepository;
 import com.dh.bmn.repositories.IUsuarioRepository;
 import com.dh.bmn.repositories.IValoracionRepository;
@@ -24,7 +22,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,24 +31,19 @@ public class ValoracionService implements IService<ValoracionResponseDto, Valora
 
     private final IValoracionRepository valoracionRepository;
     private final IReservaRepository reservaRepository;
-    private final IBicicletaRepository bicicletaRepository;
-    private final UsuarioService usuarioService;
     private final IUsuarioRepository usuarioRepository;
     private final BicicletaService bicicletaService;
-    private final ReservaService reservaService;
 
 
     private static final ObjectMapper objectMapper = MapperClass.objectMapper();
 
     @Autowired
-    public ValoracionService(IValoracionRepository valoracionRepository, IReservaRepository reservaRepository, IBicicletaRepository bicicletaRepository, UsuarioService usuarioService, IUsuarioRepository usuarioRepository, BicicletaService bicicletaService, ReservaService reservaService) {
+    public ValoracionService(IValoracionRepository valoracionRepository, IReservaRepository reservaRepository, IUsuarioRepository usuarioRepository, BicicletaService bicicletaService) {
         this.valoracionRepository = valoracionRepository;
         this.reservaRepository = reservaRepository;
-        this.bicicletaRepository = bicicletaRepository;
-        this.usuarioService = usuarioService;
         this.usuarioRepository = usuarioRepository;
         this.bicicletaService = bicicletaService;
-        this.reservaService = reservaService;
+
     }
 
     public List<ValoracionResponseDto> obtenerValoracionesPorBicicleta(Long bicicletaId) {
@@ -92,18 +84,18 @@ public class ValoracionService implements IService<ValoracionResponseDto, Valora
 
         ReservaRequestDto reservaRequestDto = valoracionRequestDto.getReserva();
         if (reservaRequestDto == null || reservaRequestDto.getReservaId() == null) {
-            throw new IllegalDateException("La solicitud no contiene información de reserva válida. No se puede crear la valoración.", HttpStatus.BAD_REQUEST.value());
+            throw new ResourceNotFoundException("La solicitud no contiene información de reserva válida. No se puede crear la valoración.", HttpStatus.NOT_FOUND.value());
         }
 
         Reserva reserva = reservaRepository.findById(reservaRequestDto.getReservaId())
-                .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada con ID: " + reservaRequestDto.getReservaId(), HttpStatus.CONFLICT.value()));
+                .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada con ID: " + reservaRequestDto.getReservaId(), HttpStatus.NOT_FOUND.value()));
 
 //        if (!reservaService.isConcluida(reserva)) {
 //            throw new IllegalDateException("No se puede crear la valoración, la reserva no esta concluida", HttpStatus.BAD_REQUEST.value());
 //        }
 
         if (valoracionRepository.existsByUsuarioAndReserva(usuario, reserva)) {
-            throw new IllegalDateException("Ya existe una valoración para esta reserva y usuario.", HttpStatus.BAD_REQUEST.value());
+            throw new ResourceAlreadyExistsException("Ya existe una valoración para esta reserva y usuario.", HttpStatus.CONFLICT.value());
         }
 
         Bicicleta bicicleta = reserva.getBicicleta();
@@ -134,8 +126,4 @@ public class ValoracionService implements IService<ValoracionResponseDto, Valora
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public PaginatedResponse<ValoracionResponseDto> obtenerPaginacion(int numeroPagina, int limit, int offset) {
-        return null;
-    }
 }

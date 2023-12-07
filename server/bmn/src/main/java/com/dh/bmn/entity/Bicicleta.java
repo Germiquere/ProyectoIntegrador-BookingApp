@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -38,10 +39,8 @@ public class Bicicleta implements Serializable {
     @JoinColumn(name = "categoria_id")
     private List<CategoriaBicicleta> categorias;
 
-
     @OneToMany(mappedBy = "bicicleta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Imagen> imagenes;
-
 
     @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
@@ -49,9 +48,7 @@ public class Bicicleta implements Serializable {
             joinColumns = @JoinColumn(name = "bicicleta_id"),
             inverseJoinColumns = @JoinColumn(name = "id_caracteristica")
     )
-
     private List<CaracteristicaBicicleta> caracteristicas;
-
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -62,7 +59,7 @@ public class Bicicleta implements Serializable {
     private List<Politica> politicas;
 
    @OneToMany(mappedBy = "bicicleta", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Valoracion> valoraciones;
+    private List<Valoracion> valoraciones = new ArrayList<>();
 
     @Column(name = "promedio_puntuacion")
     private Double promedioPuntuacion;
@@ -70,9 +67,9 @@ public class Bicicleta implements Serializable {
     @Column(name = "cantidad_valoraciones")
     private Long cantidadValoraciones;
     
-    @OneToMany(mappedBy = "bicicleta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "bicicleta", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
     @JsonIgnore
-    private List<Reserva> reservas;
+    private List<Reserva> reservas = new ArrayList<>();
 
     public Bicicleta(Long bicicletaId, String nombre, String descripcion, Integer precioAlquilerPorDia, List<CategoriaBicicleta> categorias, List<Imagen> imagenes, List<CaracteristicaBicicleta> caracteristicas, List<Politica> politicas, List<Valoracion> valoraciones, Double promedioPuntuacion, Long cantidadValoraciones) {
         this.bicicletaId = bicicletaId;
