@@ -1,5 +1,6 @@
 package com.dh.bmn.dtos.requests;
 
+import com.dh.bmn.dtos.responses.ValoracionResponseDto;
 import com.dh.bmn.entity.Imagen;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -40,6 +41,12 @@ public class BicicletaRequestDto {
     private List <CaracteristicaBicicletaRequestDto> caracteristicas;
 
     private List <PoliticaRequestDto> politicas;
+
+    private List<ValoracionResponseDto> valoraciones;
+
+    private Double promedioPuntuacion;
+
+    private Long cantidadValoraciones;
 
 }
 

@@ -72,6 +72,12 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
             // Restaurar las valoraciones después de la actualización
             bicicletaDB.setValoraciones(valoracionesActuales);
+
+            // Actualizar la referencia a la bicicleta en las valoraciones
+            for (Valoracion valoracion : valoracionesActuales) {
+                valoracion.setBicicleta(bicicletaDB);
+            }
+
             // Asignar valores que no están en el DTO
             bicicletaDB.setPromedioPuntuacion(promedioActual);
             bicicletaDB.setCantidadValoraciones(cantidadActual);
