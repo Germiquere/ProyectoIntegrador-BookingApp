@@ -68,7 +68,6 @@ export const postFavorites = async (userId, bikeId) => {
 };
 
 export const deleteFavorite = async (id) => {
-    console.log("ID antes de la solicitud DELETE:", id);
     const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
         const res = await fetch(

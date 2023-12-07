@@ -64,7 +64,6 @@ export const ManagePolicies = () => {
                 const desc = descripcion;
                 // Llamar a la función para agregar una nueva política
                 const newPolicies = await addNewPolicies(titulo, desc);
-                console.log("Nuevas políticas:", newPolicies);
                 // Limpiar los campos después de crear la política
                 onResetForm();
             } catch (error) {

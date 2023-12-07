@@ -11,7 +11,7 @@ export const SkeletonCardsSweiper = () => {
                     <div className="h-12  flex justify-center  items-center ">
                         {/* titulo h-7 - texto h-5 */}
                         {/* titulo */}
-                        <div className="h-7 bg-gray-300 w-24  rounded-2xl "></div>
+                        {/* <div className="h-7 bg-gray-300 w-24  rounded-2xl "></div> */}
                     </div>
                 </div>
             </div>

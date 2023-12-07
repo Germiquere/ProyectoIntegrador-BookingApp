@@ -84,7 +84,6 @@ export const postPolicies = async (titulo, descripcion) => {
 
 // ELIMINAR POLITICA
 export const deletePolicies = async (id) => {
-    console.log("ID antes de la solicitud DELETE:", id);
     const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
         const res = await fetch(

@@ -20,9 +20,7 @@ export const SkeletonDescription = () => {
                     className="flex gap-2 items-center justify-end
                 cursor-pointer
                 absolute top-4  right-3
-                lg:relative
-                lg:top-auto
-                lg:right-auto
+               
             "
                 >
                     <div className="h-5 bg-gray-300 w-10  rounded-2xl mb-3"></div>

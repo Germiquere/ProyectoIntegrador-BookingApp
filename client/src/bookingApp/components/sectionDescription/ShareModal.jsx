@@ -19,8 +19,7 @@ import {
     WhatsappShareButton,
 } from "react-share";
 export const ShareModal = ({ setOpenShareModal, bikeById }) => {
-    const { pathname } = useLocation();
-    // const currentUrl = `${window.location.origin}${pathname}`;
+    const currentUrl = `${window.location.href}${window.location.pathname}`;
     return (
         <>
             <div
@@ -80,7 +79,7 @@ export const ShareModal = ({ setOpenShareModal, bikeById }) => {
                         </div>
                     </div> */}
                     <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                        <FacebookShareButton url="https://www.youtube.com/">
+                        <FacebookShareButton url={currentUrl}>
                             <div
                                 className=" flex gap-2 items-center justify-center middle none center rounded-md   py-3 px-3 sm:px-6 font-sans text-xs font-bold uppercase  text-primary transition-all hover:bg-tertiary active:bg-tertiary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none border border-gray-300 "
                                 data-ripple-dark="true"
@@ -90,7 +89,7 @@ export const ShareModal = ({ setOpenShareModal, bikeById }) => {
                                 <p>facebook</p>
                             </div>
                         </FacebookShareButton>
-                        <WhatsappShareButton url="https://www.youtube.com/">
+                        <WhatsappShareButton url={currentUrl}>
                             <div
                                 className="cursor-pointer flex gap-2 items-center justify-center middle none center rounded-md   py-3 px-3 sm:px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:bg-tertiary active:bg-tertiary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none border border-gray-300 "
                                 data-ripple-dark="true"
@@ -100,7 +99,7 @@ export const ShareModal = ({ setOpenShareModal, bikeById }) => {
                                 <p>whatsapp</p>
                             </div>
                         </WhatsappShareButton>
-                        <TwitterShareButton url="https://www.youtube.com/">
+                        <TwitterShareButton url={currentUrl}>
                             <div
                                 className="cursor-pointer flex gap-2 items-center justify-center middle none center rounded-md   py-3 px-3 sm:px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:bg-tertiary active:bg-tertiary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none border border-gray-300 "
                                 data-ripple-dark="true"
@@ -110,7 +109,7 @@ export const ShareModal = ({ setOpenShareModal, bikeById }) => {
                                 <p>twtitter</p>
                             </div>
                         </TwitterShareButton>
-                        <EmailShareButton url="https://www.youtube.com/">
+                        <EmailShareButton url={currentUrl}>
                             <div
                                 className=" cursor-pointer flex gap-2 items-center justify-center middle none center rounded-md   py-3 px-3 sm:px-6 font-sans text-xs font-bold uppercase text-primary transition-all hover:bg-tertiary active:bg-tertiary disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none border border-gray-300 "
                                 data-ripple-dark="true"

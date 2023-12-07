@@ -99,7 +99,6 @@ export const RegisterPage = () => {
         setErrorAuth(false);
         e.preventDefault();
         if (!handleErrors()) {
-            console.log(formData);
             const userRegistered = await registerUser(formData);
             if (userRegistered) {
                 setIsRegistered(true);

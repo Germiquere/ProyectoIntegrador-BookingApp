@@ -30,7 +30,6 @@ export default function GridProducts() {
         setFavorite((prevState) => {
             const newStatus = { ...prevState };
             newStatus[id] = !newStatus[id];
-            console.log(newStatus);
             return newStatus;
         });
     };

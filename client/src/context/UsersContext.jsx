@@ -64,7 +64,7 @@ export function UsersProvider({ children }) {
             // if (err.status === 403) {
             //     navigate("/auth/login", { replace: true });
             // }
-            console.log("estoy por tirar un error al loguear");
+
             setErrorUser(err);
         } finally {
             setLoadingUser(false);
@@ -104,20 +104,18 @@ export function UsersProvider({ children }) {
         setTimeout(() => {
             // TODO: EJECUTAR LA FUNCION DE LOGOUT
             logout();
-            console.log("token expired");
         }, 3600 * 1000);
     };
     const registerUser = async (user) => {
         setLoadingAuth(true);
         try {
             const data = await register(user);
-            console.log(data);
+
             return data;
         } catch (err) {
             // if (err.status === 403) {
             //     navigate("/auth/login", { replace: true });
             // }
-            console.log(err.status);
             setErrorAuth(err);
         } finally {
             setLoadingAuth(false);
@@ -188,10 +186,8 @@ export function UsersProvider({ children }) {
                 await fetchUserData();
                 setTimeout(() => {
                     logout();
-                    console.log("token expired");
                 }, time * 1000);
             } else {
-                console.log("hice el logout sin estar con tiempo");
                 logout();
             }
         }

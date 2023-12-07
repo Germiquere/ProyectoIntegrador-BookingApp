@@ -24,7 +24,6 @@ export const getCategories = async () => {
 export const postCategory = async (newBikeCategory) => {
     const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
-        console.log(newBikeCategory);
         // PASAR EL ENDPOINT DE NUESTRA API
         const res = await fetch(
             "http://54.81.150.99:8080/bike-me-now/api/categorias",
@@ -52,7 +51,6 @@ export const postCategory = async (newBikeCategory) => {
     }
 };
 export const deleteCategory = async (id) => {
-    console.log("estoy por borrar la categoria");
     const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
         const res = await fetch(

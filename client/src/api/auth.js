@@ -1,3 +1,4 @@
+// http://54.81.150.99:8080
 export const login = async (user) => {
     try {
         const res = await fetch(`http://54.81.150.99:8080/auth/login`, {
@@ -29,9 +30,6 @@ export const login = async (user) => {
     }
 };
 export const register = async (user) => {
-    console.log(user);
-    console.log("estoy pro registrar");
-
     try {
         const res = await fetch(`http://54.81.150.99:8080/auth/registrar`, {
             method: "POST",

@@ -80,7 +80,6 @@ export const EditProductModal = () => {
         const hasMatch = categorias.some(
             (categoria) => categoria.categoriaId == value
         );
-        console.log(hasMatch);
         if (!hasMatch && value.trim()) {
             onCategoryChange(e);
         }
@@ -92,17 +91,16 @@ export const EditProductModal = () => {
         const hasMatch = caracteristicas.some(
             (caract) => caract.caracteristicaId == value
         );
-        console.log(hasMatch);
         if (!hasMatch && value.trim()) {
             onCaractChange(e);
         }
     };
     const handlePoliciesChange = (e) => {
         const { name, value } = e.target;
-        console.log(value);
+
         // COMPROBAMOS QUE NO ESTE LA CATEGORIA AGREGADA,
         const hasMatch = politicas.some((pol) => pol.politicaId == value);
-        console.log(hasMatch);
+
         if (!hasMatch && value.trim()) {
             onPolicyChange(e);
         }
@@ -157,7 +155,6 @@ export const EditProductModal = () => {
             hasError = true;
         }
         if (politicas.length === 0) {
-            console.log("Estoy aca");
             setErros((prevErrors) => ({
                 ...prevErrors,
                 politicas: true,
@@ -198,7 +195,6 @@ export const EditProductModal = () => {
             setHasErrorImg(true);
             hasError = true;
         }
-        console.log(hasError);
         return hasError;
     };
     // FUNCION PARA GUARDAR
@@ -206,12 +202,11 @@ export const EditProductModal = () => {
     const handleSave = async () => {
         if (!handleValidations()) {
             // Cargar las imágenes y esperar a que se completen
-            console.log(imageChange);
+
             const imageUrls = await handlePostImages(imageChange);
 
             // MANEJAR EL ERROR PARA QUE NO SE ROMPA LA APLICACION
             if (imageUrls) {
-                console.log(imagesToDelete);
                 await handleDeleteImages(imagesToDelete);
                 const data = {
                     ...formState,
@@ -228,10 +223,7 @@ export const EditProductModal = () => {
                     //     politicaId: elemento.politicaId,
                     // })),
                 };
-                console.log(data);
-
                 const bike = await updateABike(data);
-                console.log(bike);
 
                 if (bike && bike.statusCode !== 409) {
                     setImageChange([]);
@@ -264,7 +256,6 @@ export const EditProductModal = () => {
     // FUNCION PARA SOLAMENTE AGREGAR IMAGENES,Y QUE LAS MISMAS NO SE REPITAN EN EL CLIENTE
     const onFileInputChange = ({ target }) => {
         const selectedFiles = target.files;
-        console.log(selectedFiles);
         const validImages = [];
 
         for (let i = 0; i < selectedFiles.length; i++) {
@@ -298,7 +289,6 @@ export const EditProductModal = () => {
     const deleteImageFromFormState = (key) => {
         const newFormState = { ...formState };
         newFormState.imagenes = imagenes.filter((imagen) => imagen.key !== key);
-        console.log(newFormState);
         const imageToDelete = imagenes.find((imagen) => imagen.key === key);
         if (imageToDelete) {
             setImagesToDelete([...imagesToDelete, imageToDelete]);
@@ -761,7 +751,6 @@ export const EditProductModal = () => {
                                                         deleteImageChange(
                                                             image.lastModified
                                                         );
-                                                        console.log(image);
                                                     }}
                                                 />
                                             </div>

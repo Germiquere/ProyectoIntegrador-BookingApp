@@ -20,6 +20,7 @@ import { useFavoritesContext } from "../../context/FavoritesContext";
 import { Helmet } from "react-helmet";
 import { SkeletonSearchProducts } from "../components/sectionSearch/SkeletonSearchProducts";
 import { format, parse } from "date-fns";
+import { es } from "date-fns/locale";
 export const SearchProducts = () => {
     const { handleOpenCalendarAndSearch, formState, setFormState } = useContext(
         CalendarAndSearchContext
@@ -54,8 +55,9 @@ export const SearchProducts = () => {
     const formatDates = (date) => {
         if (date.length > 0) {
             const parsedDate = parse(date, "d-MM-yyyy", new Date());
-            const formatedParsedDate = format(parsedDate, "yyyy-MM-dd");
-            console.log(formatedParsedDate);
+            const formatedParsedDate = format(parsedDate, "yyyy-MM-dd", {
+                locale: es,
+            });
             return formatedParsedDate;
         }
         return date;
@@ -147,7 +149,6 @@ export const SearchProducts = () => {
         }
         setSelectedCategories(updatedCategories);
         const concatenatedCategories = updatedCategories.join(" ");
-        console.log(concatenatedCategories);
         fetchPaginatedData(0, concatenatedCategories);
         navigate(
             `/items?search=${formState.search}${
@@ -162,7 +163,6 @@ export const SearchProducts = () => {
         setFavorite((prevState) => {
             const newStatus = { ...prevState };
             newStatus[id] = !newStatus[id];
-            console.log(newStatus);
             return newStatus;
         });
     };

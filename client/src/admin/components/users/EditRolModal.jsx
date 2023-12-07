@@ -14,9 +14,7 @@ export const EditRolModal = () => {
     } = useUsersContext();
     const { usuarioId, rol } = usersFormState;
     const handleSave = async () => {
-        console.log(usersFormState);
         const user = await editUserRole(usersFormState);
-        console.log(user);
         setOpenEditUserModal(false);
     };
     return (

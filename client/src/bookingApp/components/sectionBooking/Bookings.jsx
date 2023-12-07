@@ -10,7 +10,8 @@ import { useCalendarAndSearchContext } from "../../../context/CalendarSearchCont
 import { parse, format, differenceInDays } from "date-fns";
 
 export const Bookings = () => {
-    const { addNewBooking, loading, setIsReserved } = useBookingsContext();
+    const { addNewBooking, loading, setIsReserved, upLoadingBooking } =
+        useBookingsContext();
     const { formState, setFormState } = useCalendarAndSearchContext();
     const { bikeById } = useBikesContext();
     const { userData } = useUsersContext();
@@ -19,9 +20,6 @@ export const Bookings = () => {
     const goBack = () => {
         navigate(-1);
     };
-
-    console.log(formState.startDate);
-
     const parsedStartDate = parse(formState.startDate, "d-MM-yyyy", new Date());
     const parsedEndDate = parse(formState.endDate, "d-MM-yyyy", new Date());
 
@@ -175,9 +173,9 @@ export const Bookings = () => {
                   absolute bottom-0"
                                     data-ripple-light="true"
                                     type="submit"
-                                    disabled={loading}
+                                    disabled={upLoadingBooking}
                                 >
-                                    {loading ? (
+                                    {upLoadingBooking ? (
                                         <div className="flex justify-center">
                                             <Loader />
                                             <p>RESERVANDO ...</p>

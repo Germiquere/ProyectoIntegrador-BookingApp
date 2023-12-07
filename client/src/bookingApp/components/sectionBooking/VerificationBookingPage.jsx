@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 export const VerificationBookingPage = () => {
     const { userData } = useUsersContext();
-    console.log(userData);
     return (
         <Section>
             <div className="max-w-[1200px] mx-auto flex flex-col gap-6 items-center  md:mt-3 pt-40 md:pt-40">
