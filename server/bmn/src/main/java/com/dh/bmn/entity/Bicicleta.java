@@ -67,7 +67,7 @@ public class Bicicleta implements Serializable {
     @Column(name = "cantidad_valoraciones")
     private Long cantidadValoraciones;
     
-    @OneToMany(mappedBy = "bicicleta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "bicicleta", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
     @JsonIgnore
     private List<Reserva> reservas = new ArrayList<>();
 
