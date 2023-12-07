@@ -59,16 +59,14 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         if (bicicletaDB != null) {
 
             normalizarNombreDescripcion(bicicletaRequestDto);
-            //////AGREGADO//////
+
             List<Valoracion> valoracionesExistente = bicicletaDB.getValoraciones();
             List<Reserva> reservasExistente = bicicletaDB.getReservas();
-            ///////////////////
+
             Bicicleta bicicletaActualizada = objectMapper.convertValue(bicicletaRequestDto, Bicicleta.class);
 
-            /////AGREGADO//////
             bicicletaActualizada.setValoraciones(valoracionesExistente);
             bicicletaActualizada.setReservas(reservasExistente);
-            //////////////////
 
             guardarCategoriasBicicleta(bicicletaRequestDto, bicicletaActualizada);
             guardarCaracteriticasBicicleta(bicicletaRequestDto, bicicletaActualizada);
@@ -76,25 +74,20 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
             validarListaImagenesVacia(bicicletaRequestDto);
             validarYguardarImagenesBicicleta(bicicletaRequestDto, bicicletaActualizada);
 
-            //////AGREGADO/////
-            // Obtener las propiedades actuales de la bicicleta antes de la actualización
             Double promedioPuntuacionActual = bicicletaDB.getPromedioPuntuacion();
             Long cantidadValoracionesActual = bicicletaDB.getCantidadValoraciones();
 
-            // Copiar las propiedades actuales a la entidad actualizada
             bicicletaActualizada.setPromedioPuntuacion(promedioPuntuacionActual);
             bicicletaActualizada.setCantidadValoraciones(cantidadValoracionesActual);
 
             // Guardar la bicicleta actualizada
             bicicletaRepository.save(bicicletaActualizada);
 
-            //////AGREGADO///////
             // Volver a asociar las reservas a la bicicleta
             reattachReservas(bicicletaActualizada, reservasExistente);
         }
     }
 
-    // Método para volver a asociar las reservas a la bicicleta
     private void reattachReservas(Bicicleta bicicleta, List<Reserva> reservas) {
         if (reservas != null) {
             for (Reserva reserva : reservas) {
