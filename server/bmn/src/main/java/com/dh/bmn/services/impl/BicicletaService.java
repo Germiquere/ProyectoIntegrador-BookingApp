@@ -56,11 +56,6 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         if (bicicletaDB != null) {
 
             normalizarNombreDescripcion(bicicletaRequestDto);
-            // Guardar las valoraciones actuales
-            List<Valoracion> valoracionesActuales = new ArrayList<>(bicicletaDB.getValoraciones());
-            // Obtener valores actuales de promedio y cantidad desde la base de datos
-            Double promedioActual = bicicletaDB.getPromedioPuntuacion();
-            Long cantidadActual = bicicletaDB.getCantidadValoraciones();
 
             bicicletaDB = objectMapper.convertValue(bicicletaRequestDto, Bicicleta.class);
 
@@ -69,12 +64,6 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
             guardarPoliticas(bicicletaRequestDto, bicicletaDB);
             validarListaImagenesVacia(bicicletaRequestDto);
             validarYguardarImagenesBicicleta(bicicletaRequestDto, bicicletaDB);
-
-            // Restaurar las valoraciones después de la actualización
-            bicicletaDB.setValoraciones(valoracionesActuales);
-            // Asignar valores que no están en el DTO
-            bicicletaDB.setPromedioPuntuacion(promedioActual);
-            bicicletaDB.setCantidadValoraciones(cantidadActual);
 
             // Guardar la bicicleta actualizada
             bicicletaRepository.save(bicicletaDB);
