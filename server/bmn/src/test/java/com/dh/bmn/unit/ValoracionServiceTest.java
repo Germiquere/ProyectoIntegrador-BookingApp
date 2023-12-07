@@ -185,7 +185,7 @@ public class ValoracionServiceTest {
 //    }
 
     @Test
-    public void crearValoracionResourceNotFoundException() {
+    public void crearValoracionResourceNotFoundException() throws MalformedURLException {
 
         //Arrange
         //when(reservaService.isConcluida(any(Reserva.class))).thenReturn(true);
@@ -193,15 +193,27 @@ public class ValoracionServiceTest {
         Usuario usuarioMock = new Usuario();
         usuarioMock.setEmail("correo@ejemplo.com");
 
+        Imagen imagen = new Imagen("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
+        List<Imagen> imagenes = List.of(imagen);
+        ImagenRequestDto imagenRequestDto = new ImagenRequestDto("imagenesS3/1698617780205_34039.jpg", new URL("https://s3.amazonaws.com//bikemenowbucket/imagenesS3/1698617780205_34039.jpg"));
+        CategoriaBicicletaRequestDto categoriaBicicletaRequestDto = new CategoriaBicicletaRequestDto(1L, "Montaña", "Bicicleta de montaña", imagenRequestDto);
+        List<CategoriaBicicletaRequestDto> categoriaRequestList = List.of(categoriaBicicletaRequestDto);
+        CaracteristicaBicicletaRequestDto caracteristicaBicicletaRequestDto = new CaracteristicaBicicletaRequestDto(1L, "electrica", "icono");
+        List<CaracteristicaBicicletaRequestDto> caracteristicaRequestList = List.of(caracteristicaBicicletaRequestDto);
+        PoliticaRequestDto politicaRequestDto = new PoliticaRequestDto(1L, "Politica", "Descripcion politica");
+        List<PoliticaRequestDto> politicaBicicletaRequestList = List.of(politicaRequestDto);
+        BicicletaRequestDto bicicletaRequestDto =
+                new BicicletaRequestDto(1L, "Bike", "Ideal para montaña", 34567, categoriaRequestList, imagenes, caracteristicaRequestList, politicaBicicletaRequestList);
+        UsuarioRequestDto usuarioRequestDto = new UsuarioRequestDto(1L, "Juan", "Perez", "juan.perez@gmail.com");
+        ReservaRequestDto reservaRequestDto = new ReservaRequestDto(1L, usuarioRequestDto, bicicletaRequestDto, LocalDate.of(2023, 07, 02), LocalDate.of(2023, 07, 03));
+        ValoracionRequestDto valoracionRequestDto = new ValoracionRequestDto(1L,  reservaRequestDto, 5, "Bicicleta en excelente estado", bicicletaRequestDto);
+
         Authentication authentication = Mockito.mock(Authentication.class);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         Mockito.when(authentication.getName()).thenReturn("correo@ejemplo.com");
 
         Optional<Usuario> usuarioOptional = Optional.of(usuarioMock);
-
         Mockito.when(usuarioRepository.findByEmail(Mockito.anyString())).thenReturn(usuarioOptional);
-
-        ValoracionRequestDto valoracionRequestDto = new ValoracionRequestDto(1L,  5, "Bicicleta en excelente estado");
 
         // Act y Asserts
         assertThrows(ResourceNotFoundException.class, () -> {

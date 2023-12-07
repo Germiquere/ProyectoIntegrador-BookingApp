@@ -34,4 +34,9 @@ public class CaracteristicaBicicleta implements Serializable {
     @ManyToMany(mappedBy = "caracteristicas")
     private List<Bicicleta> bicicletas = new ArrayList<>();
 
+    public CaracteristicaBicicleta(Long caracteristicaId, String nombre, String icono) {
+        this.caracteristicaId = caracteristicaId;
+        this.nombre = nombre;
+        this.icono = icono;
+    }
 }

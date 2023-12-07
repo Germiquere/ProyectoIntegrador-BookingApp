@@ -37,4 +37,10 @@ public class CategoriaBicicleta {
     @ManyToMany(mappedBy = "categorias")
     private List<Bicicleta> bicicletas = new ArrayList<>();
 
+    public CategoriaBicicleta(Long categoriaId, String nombre, String descripcion, Imagen imagen) {
+        this.categoriaId = categoriaId;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.imagen = imagen;
+    }
 }

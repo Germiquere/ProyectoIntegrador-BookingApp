@@ -49,4 +49,12 @@ public class Valoracion {
     protected void onCreate() {
         fecha = LocalDate.now();
     }
+
+    public Valoracion(Long valoracionId, int puntuacion, Usuario usuario, String comentario, LocalDate fecha) {
+        this.valoracionId = valoracionId;
+        this.puntuacion = puntuacion;
+        this.usuario = usuario;
+        this.comentario = comentario;
+        this.fecha = fecha;
+    }
 }
