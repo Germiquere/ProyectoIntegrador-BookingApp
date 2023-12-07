@@ -68,7 +68,7 @@ public class EmailService {
         context.setVariable("bicicleta", bicicleta);
         context.setVariable("fechaInicio", fechaInicio);
         context.setVariable("fechaFin", fechaFin);
-        context.setVariable("actualizarReserva", "http://54.146.13.35/bike-me-now/api/reservas"); //TODO modificar a la url de la modificacion
+        //context.setVariable("actualizarReserva", "http://54.146.13.35/bike-me-now/api/reservas"); //TODO modificar a la url de la modificacion
         return templateEngine.process("reservation-email", context);
     }
 }

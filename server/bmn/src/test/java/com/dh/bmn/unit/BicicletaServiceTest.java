@@ -44,7 +44,13 @@ public class BicicletaServiceTest {
     private IPoliticaRepository politicaRepository;
 
     @Mock
+    private IFavoritoRepository favoritoRepository;
+
+    @Mock
     private IValoracionRepository valoracionRepository;
+
+    @Mock
+    private IReservaRepository reservaRepository;
 
     @Mock
     private S3Service s3Service;
@@ -59,7 +65,7 @@ public class BicicletaServiceTest {
         politicaRepository = mock(IPoliticaRepository.class);
         valoracionRepository = mock(IValoracionRepository.class);
         s3Service = mock(S3Service.class);
-        bicicletaService = new BicicletaService(bicicletaRepository, s3Service, caracteristicaBicicletaRepository, categoriaBicicletaRepository, politicaRepository, valoracionRepository);
+        bicicletaService = new BicicletaService(bicicletaRepository, reservaRepository, favoritoRepository, s3Service, caracteristicaBicicletaRepository, categoriaBicicletaRepository, politicaRepository, valoracionRepository);
     }
 
     @Test

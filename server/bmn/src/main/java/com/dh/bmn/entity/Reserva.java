@@ -42,4 +42,15 @@ public class Reserva {
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Valoracion> valoraciones;
 
+    @Column
+    private boolean valoracion = false;
+
+    public Reserva(Long reservaId, Usuario usuario, Bicicleta bicicleta, LocalDate fechaInicio, LocalDate fechaFin, boolean valoracion) {
+        this.reservaId = reservaId;
+        this.usuario = usuario;
+        this.bicicleta = bicicleta;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.valoracion = valoracion;
+    }
 }

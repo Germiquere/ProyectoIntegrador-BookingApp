@@ -15,7 +15,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/bike-me-now/caracteristicas")
+@RequestMapping("/bike-me-now/api/caracteristicas")
 
 public class CaracteristicaBicicletaController {
 
