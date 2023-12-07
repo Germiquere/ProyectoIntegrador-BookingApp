@@ -43,5 +43,5 @@ public class Reserva {
     private List<Valoracion> valoraciones;
 
     @Column
-    private boolean valoracion = false;//Agregado
+    private boolean valoracion = false;
 }

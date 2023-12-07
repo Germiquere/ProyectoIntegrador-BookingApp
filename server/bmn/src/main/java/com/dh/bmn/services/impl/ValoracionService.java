@@ -102,7 +102,7 @@ public class ValoracionService implements IService<ValoracionResponseDto, Valora
         valoracion.setUsuario(usuario);
         valoracion.setBicicleta(bicicleta);
         valoracion.setReserva(reserva);
-        valoracion.getReserva().setValoracion(true);//Agregado
+        valoracion.getReserva().setValoracion(true);
 
         valoracionRepository.save(valoracion);
         bicicletaService.actualizarPromedioPuntuacion(bicicleta);
