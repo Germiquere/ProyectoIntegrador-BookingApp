@@ -23,4 +23,6 @@ public class ReservaResponseDto {
 
     @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     private LocalDate fechaFin;
+
+    private boolean valoracion;//Agregado
 }
