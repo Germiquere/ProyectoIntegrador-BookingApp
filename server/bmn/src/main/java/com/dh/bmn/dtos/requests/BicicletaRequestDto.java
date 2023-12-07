@@ -42,11 +42,5 @@ public class BicicletaRequestDto {
 
     private List <PoliticaRequestDto> politicas;
 
-    private List<ValoracionResponseDto> valoraciones;
-
-    private Double promedioPuntuacion;
-
-    private Long cantidadValoraciones;
-
 }
 
