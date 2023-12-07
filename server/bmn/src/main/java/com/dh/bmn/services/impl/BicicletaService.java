@@ -27,6 +27,8 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
     private final IBicicletaRepository bicicletaRepository;
 
+    private final IReservaRepository reservaRepository;
+
     private final S3Service s3Service;
 
     private final ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository;
@@ -40,8 +42,9 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
     private final IValoracionRepository valoracionRepository;
 
     @Autowired
-    public BicicletaService(IBicicletaRepository bicicletaRepository, S3Service s3Service, ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository, ICategoriaBicicletaRepository categoriaBicicletaRepository, IPoliticaRepository politicaRepository, IValoracionRepository valoracionRepository) {
+    public BicicletaService(IBicicletaRepository bicicletaRepository, IReservaRepository reservaRepository, S3Service s3Service, ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository, ICategoriaBicicletaRepository categoriaBicicletaRepository, IPoliticaRepository politicaRepository, IValoracionRepository valoracionRepository) {
         this.bicicletaRepository = bicicletaRepository;
+        this.reservaRepository = reservaRepository;
         this.s3Service = s3Service;
         this.caracteristicaBicicletaRepository = caracteristicaBicicletaRepository;
         this.categoriaBicicletaRepository = categoriaBicicletaRepository;
@@ -56,7 +59,16 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         if (bicicletaDB != null) {
 
             normalizarNombreDescripcion(bicicletaRequestDto);
+            //////AGREGADO//////
+            List<Valoracion> valoracionesExistente = bicicletaDB.getValoraciones();
+            List<Reserva> reservasExistente = bicicletaDB.getReservas();
+            ///////////////////
             bicicletaDB = objectMapper.convertValue(bicicletaRequestDto, Bicicleta.class);
+
+            /////AGREGADO//////
+            bicicletaDB.setValoraciones(valoracionesExistente);
+            bicicletaDB.setReservas(reservasExistente);
+            //////////////////
 
             guardarCategoriasBicicleta(bicicletaRequestDto, bicicletaDB);
             guardarCaracteriticasBicicleta(bicicletaRequestDto, bicicletaDB);
@@ -66,6 +78,20 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
             // Guardar la bicicleta actualizada
             bicicletaRepository.save(bicicletaDB);
+
+            //////AGREGADO///////
+            // Volver a asociar las reservas a la bicicleta
+            reattachReservas(bicicletaDB, reservasExistente);
+        }
+    }
+
+    // Método para volver a asociar las reservas a la bicicleta
+    private void reattachReservas(Bicicleta bicicleta, List<Reserva> reservas) {
+        if (reservas != null) {
+            for (Reserva reserva : reservas) {
+                reserva.setBicicleta(bicicleta);
+            }
+            reservaRepository.saveAll(reservas);
         }
     }
 

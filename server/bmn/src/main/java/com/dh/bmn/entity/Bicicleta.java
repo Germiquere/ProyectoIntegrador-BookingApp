@@ -50,7 +50,7 @@ public class Bicicleta implements Serializable {
     )
     private List<CaracteristicaBicicleta> caracteristicas;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "bicicleta_politica",
             joinColumns = @JoinColumn(name = "bicicleta_id"),
