@@ -29,6 +29,8 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
 
     private final IReservaRepository reservaRepository;
 
+    private final IFavoritoRepository favoritoRepository;
+
     private final S3Service s3Service;
 
     private final ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository;
@@ -42,9 +44,10 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
     private final IValoracionRepository valoracionRepository;
 
     @Autowired
-    public BicicletaService(IBicicletaRepository bicicletaRepository, IReservaRepository reservaRepository, S3Service s3Service, ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository, ICategoriaBicicletaRepository categoriaBicicletaRepository, IPoliticaRepository politicaRepository, IValoracionRepository valoracionRepository) {
+    public BicicletaService(IBicicletaRepository bicicletaRepository, IReservaRepository reservaRepository, IFavoritoRepository favoritoRepository, S3Service s3Service, ICaracteristicaBicicletaRepository caracteristicaBicicletaRepository, ICategoriaBicicletaRepository categoriaBicicletaRepository, IPoliticaRepository politicaRepository, IValoracionRepository valoracionRepository) {
         this.bicicletaRepository = bicicletaRepository;
         this.reservaRepository = reservaRepository;
+        this.favoritoRepository = favoritoRepository;
         this.s3Service = s3Service;
         this.caracteristicaBicicletaRepository = caracteristicaBicicletaRepository;
         this.categoriaBicicletaRepository = categoriaBicicletaRepository;
@@ -154,6 +157,9 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
             caracteristica.getBicicletas().remove(bicicleta);
             caracteristicaBicicletaRepository.save(caracteristica);
         }
+
+        // Eliminar los favoritos asociados a la bicicleta
+        eliminarFavoritosPorBicicleta(bicicleta);
 
         // Elimina la bicicleta
         bicicletaRepository.delete(bicicleta);
@@ -312,6 +318,14 @@ public class BicicletaService implements IService<BicicletaResponseDto, Biciclet
         bicicleta.setCantidadValoraciones(cantidadValoraciones);
         bicicleta.setPromedioPuntuacion(promedioPuntuacion);
         bicicletaRepository.save(bicicleta);
+    }
+
+    private void eliminarFavoritosPorBicicleta(Bicicleta bicicleta) {
+        List<Favorito> favoritos = favoritoRepository.findFavoritosByBicicletaId(bicicleta.getBicicletaId());
+
+        for (Favorito favorito : favoritos) {
+            favoritoRepository.delete(favorito);
+        }
     }
 
 }
