@@ -4,7 +4,7 @@ export const getCategories = async () => {
 
         // const res = await fetch(import.meta.env.VITE_URL + "/");
         const res = await fetch(
-            "http://54.81.150.99:8080/bike-me-now/categorias"
+            "https://bikemenowapi.3utilities.com/bike-me-now/categorias"
         );
 
         if (!res.ok) {
@@ -26,7 +26,7 @@ export const postCategory = async (newBikeCategory) => {
     try {
         // PASAR EL ENDPOINT DE NUESTRA API
         const res = await fetch(
-            "http://54.81.150.99:8080/bike-me-now/api/categorias",
+            "https://bikemenowapi.3utilities.com/bike-me-now/api/categorias",
             {
                 method: "POST",
                 headers: {
@@ -54,7 +54,7 @@ export const deleteCategory = async (id) => {
     const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
         const res = await fetch(
-            `http://54.81.150.99:8080/bike-me-now/api/categorias/${id}`,
+            `https://bikemenowapi.3utilities.com/bike-me-now/api/categorias/${id}`,
             {
                 method: "DELETE",
                 headers: {

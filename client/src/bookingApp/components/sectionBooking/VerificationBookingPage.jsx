@@ -7,7 +7,7 @@ export const VerificationBookingPage = () => {
     const { userData } = useUsersContext();
     return (
         <Section>
-            <div className="max-w-[1200px] mx-auto flex flex-col gap-6 items-center  md:mt-3 pt-40 md:pt-40">
+            <div className="max-w-[1200px] mx-auto flex flex-col gap-6 items-center  md:mt-3 justify-center pt-3 md:pt-0">
                 <BsCheck2 className="text-9xl text-primary bg-blue-100 rounded-full p-2" />
                 <h2 className="text-primary text-5xl text-center">
                     ¡Tu reserva está confirmada!

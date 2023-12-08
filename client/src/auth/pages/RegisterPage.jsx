@@ -16,20 +16,20 @@ export const RegisterPage = () => {
         loadingAuth,
     } = useUsersContext();
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        nombre: "german",
-        apellido: "miquere",
-        email: "german150703.miquere@gmail.com",
-        password: "asdasd123A",
-        confirmPassword: "asdasd123A",
-    });
     // const [formData, setFormData] = useState({
-    //     nombre: "",
-    //     apellido: "",
-    //     email: "",
-    //     password: "",
-    //     confirmPassword: "",
+    //     nombre: "german",
+    //     apellido: "miquere",
+    //     email: "german150703.miquere@gmail.com",
+    //     password: "asdasd123A",
+    //     confirmPassword: "asdasd123A",
     // });
+    const [formData, setFormData] = useState({
+        nombre: "",
+        apellido: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
 
     const [fieldErrors, setFieldErrors] = useState({
         name: "",
@@ -184,7 +184,7 @@ export const RegisterPage = () => {
                             type="email"
                             required
                             className="shadow-md rounded-lg peer h-full  p-2 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all  focus:outline-0  disabled:bg-blue-gray-50"
-                            placeholder="BikeMeNow@mail.com"
+                            placeholder="BikeMeNow@gmail.com"
                             value={formData.email}
                             onChange={handleInputChange}
                         />

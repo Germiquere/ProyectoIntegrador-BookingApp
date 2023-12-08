@@ -3,7 +3,7 @@ export const getUser = async () => {
     try {
         const { token } = JSON.parse(localStorage.getItem("accessToken"));
         const res = await fetch(
-            "http://54.81.150.99:8080/bike-me-now/api/usuarios/buscar-por-token",
+            "https://bikemenowapi.3utilities.com/bike-me-now/api/usuarios/buscar-por-token",
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -35,7 +35,7 @@ export const getUsers = async () => {
     try {
         const { token } = JSON.parse(localStorage.getItem("accessToken"));
         const res = await fetch(
-            "http://54.81.150.99:8080/bike-me-now/api/usuarios",
+            "https://bikemenowapi.3utilities.com/bike-me-now/api/usuarios",
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -66,7 +66,7 @@ export const updateUser = async (user) => {
     try {
         const { token } = JSON.parse(localStorage.getItem("accessToken"));
         const res = await fetch(
-            `http://54.81.150.99:8080/bike-me-now/bicicletas/`,
+            `https://bikemenowapi.3utilities.com/bike-me-now/bicicletas/`,
             {
                 method: "PUT",
                 headers: {
@@ -101,7 +101,7 @@ export const deleteUser = async (id) => {
     try {
         const { token } = JSON.parse(localStorage.getItem("accessToken"));
         const res = await fetch(
-            `http://54.81.150.99:8080/bike-me-now/bicicletas/${id}`,
+            `https://bikemenowapi.3utilities.com/bike-me-now/bicicletas/${id}`,
             {
                 method: "DELETE",
                 headers: {
@@ -136,7 +136,7 @@ export const putUserRol = async (user) => {
     try {
         const { token } = JSON.parse(localStorage.getItem("accessToken"));
         const res = await fetch(
-            `http://54.81.150.99:8080/bike-me-now/api/usuarios/${user.usuarioId}/cambiar-rol?rol=${user.rol}`,
+            `https://bikemenowapi.3utilities.com/bike-me-now/api/usuarios/${user.usuarioId}/cambiar-rol?rol=${user.rol}`,
             {
                 method: "PUT",
                 headers: {

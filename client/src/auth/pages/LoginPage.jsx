@@ -6,14 +6,14 @@ import { useForm } from "../../hooks/useForm";
 import { useUsersContext } from "../../context/UsersContext";
 import { Loader } from "../../ui/Loader";
 import { Helmet } from "react-helmet";
-const formData = {
-    email: "admin@example.com",
-    password: "contraseña",
-};
 // const formData = {
-//     email: "",
-//     password: "",
+//     email: "admin@example.com",
+//     password: "contraseña",
 // };
+const formData = {
+    email: "",
+    password: "",
+};
 export const LoginPage = () => {
     const location = useLocation();
     const {

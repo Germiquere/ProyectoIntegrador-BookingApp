@@ -1,13 +1,16 @@
 // http://54.81.150.99:8080
 export const login = async (user) => {
     try {
-        const res = await fetch(`http://54.81.150.99:8080/auth/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(user),
-        });
+        const res = await fetch(
+            `https://bikemenowapi.3utilities.com/auth/login`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(user),
+            }
+        );
 
         if (!res.ok) {
             let error = {
@@ -31,13 +34,16 @@ export const login = async (user) => {
 };
 export const register = async (user) => {
     try {
-        const res = await fetch(`http://54.81.150.99:8080/auth/registrar`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(user),
-        });
+        const res = await fetch(
+            `https://bikemenowapi.3utilities.com/auth/registrar`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(user),
+            }
+        );
 
         if (!res.ok) {
             let error = {
@@ -65,7 +71,7 @@ export const sendEmail = async (email) => {
     // `http://localhost:8080/auth/reenviar-confirmacion?email=${email}`
     try {
         const res = await fetch(
-            `http://54.81.150.99:8080/auth/reenviar-email?email=${email}`,
+            `https://bikemenowapi.3utilities.com/auth/reenviar-email?email=${email}`,
             {
                 method: "POST",
                 headers: {

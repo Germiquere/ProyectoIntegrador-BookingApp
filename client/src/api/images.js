@@ -8,7 +8,7 @@ export const postImage = async (file) => {
     formData.append("file", file);
     try {
         const res = await fetch(
-            `http://54.81.150.99:8080/bike-me-now/api/s3/uploadFile`,
+            `https://bikemenowapi.3utilities.com/bike-me-now/api/s3/uploadFile`,
             {
                 method: "POST",
                 headers: {
@@ -36,7 +36,7 @@ export const deleteImage = async (key) => {
 
     try {
         const res = await fetch(
-            `http://54.81.150.99:8080/bike-me-now/api/s3/deleteFile?bucketName=bikemenowbucket&fileName=${key}`,
+            `https://bikemenowapi.3utilities.com/bike-me-now/api/s3/deleteFile?bucketName=bikemenowbucket&fileName=${key}`,
             {
                 method: "DELETE",
                 headers: {
