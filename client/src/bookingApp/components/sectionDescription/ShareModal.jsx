@@ -19,7 +19,8 @@ import {
     WhatsappShareButton,
 } from "react-share";
 export const ShareModal = ({ setOpenShareModal, bikeById }) => {
-    const currentUrl = `${window.location.href}${window.location.pathname}`;
+    const currentUrl = `${window.location.href}`;
+    console.log(currentUrl);
     return (
         <>
             <div
