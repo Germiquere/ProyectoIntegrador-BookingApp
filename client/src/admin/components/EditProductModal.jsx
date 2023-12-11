@@ -338,7 +338,7 @@ export const EditProductModal = () => {
     return (
         <>
             <div
-                className={` rounded-xl max-h-[600px] overflow-hidden bg-white  fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-[1200px] min-w-[700px] mx-auto transition-opacity duration-200 z-50 `}
+                className={` rounded-xl max-h-[600px] overflow-hidden bg-white  fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[700px] mx-auto transition-opacity duration-200 z-50 `}
             >
                 {openConfirmDelete && (
                     <ConfirmDelete
