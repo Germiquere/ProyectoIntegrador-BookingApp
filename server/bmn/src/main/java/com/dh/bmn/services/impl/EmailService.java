@@ -44,7 +44,7 @@ public class EmailService {
     private String processWelcomeEmail(String username) {
         Context context = new Context();
         context.setVariable("username", username);
-        context.setVariable("loginUrl", "http://54.146.13.35/auth/login"); //TODO cambiar el localhost por el dominio o ip del server
+        context.setVariable("loginUrl", "https://bikemenow.sytes.net/auth/login"); //TODO cambiar el localhost por el dominio o ip del server
         return templateEngine.process("welcome-email", context);
     }
 
@@ -64,7 +64,7 @@ public class EmailService {
     private String processReservationEmail(String username, String bicicleta, LocalDate fechaInicio, LocalDate fechaFin) {
         Context context = new Context();
         context.setVariable("username", username);
-        context.setVariable("home", "http://54.146.13.35");
+        context.setVariable("home", "https://bikemenow.sytes.net");
         context.setVariable("bicicleta", bicicleta);
         context.setVariable("fechaInicio", fechaInicio);
         context.setVariable("fechaFin", fechaFin);
