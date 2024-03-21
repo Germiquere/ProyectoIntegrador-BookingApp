@@ -3,7 +3,7 @@ export const getPolicies = async () => {
     try {
         const { token } = JSON.parse(localStorage.getItem("accessToken"));
         const res = await fetch(
-            `https://bikemenowapi.3utilities.com/bike-me-now/api/politicas`,
+            `https://tasteless-hope-production.up.railway.app/bike-me-now/api/politicas`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -26,7 +26,7 @@ export const getPolicies = async () => {
 export const getPoliciesId = async (id) => {
     try {
         const res = await fetch(
-            `https://bikemenowapi.3utilities.com/bike-me-now/politicas/${id}`
+            `https://tasteless-hope-production.up.railway.app/bike-me-now/politicas/${id}`
         );
 
         if (!res.ok) {
@@ -49,7 +49,7 @@ export const postPolicies = async (titulo, descripcion) => {
         const { token } = JSON.parse(localStorage.getItem("accessToken"));
 
         const res = await fetch(
-            "https://bikemenowapi.3utilities.com/bike-me-now/api/politicas",
+            "https://tasteless-hope-production.up.railway.app/bike-me-now/api/politicas",
             {
                 method: "POST",
                 headers: {
@@ -87,7 +87,7 @@ export const deletePolicies = async (id) => {
     const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
         const res = await fetch(
-            `https://bikemenowapi.3utilities.com/bike-me-now/api/politicas/${id}`,
+            `https://tasteless-hope-production.up.railway.app/bike-me-now/api/politicas/${id}`,
             {
                 method: "DELETE",
                 headers: {

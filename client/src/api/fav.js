@@ -71,7 +71,7 @@ export const deleteFavorite = async (id) => {
     const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
         const res = await fetch(
-            `https://bikemenowapi.3utilities.com/bike-me-now/api/favoritos/${id}`,
+            `https://tasteless-hope-production.up.railway.app/bike-me-now/api/favoritos/${id}`,
             {
                 method: "DELETE",
                 headers: {

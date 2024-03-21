@@ -2,7 +2,7 @@
 export const login = async (user) => {
     try {
         const res = await fetch(
-            `https://bikemenowapi.3utilities.com/auth/login`,
+            `https://tasteless-hope-production.up.railway.app/auth/login`,
             {
                 method: "POST",
                 headers: {
@@ -35,7 +35,7 @@ export const login = async (user) => {
 export const register = async (user) => {
     try {
         const res = await fetch(
-            `https://bikemenowapi.3utilities.com/auth/registrar`,
+            `https://tasteless-hope-production.up.railway.app/auth/registrar`,
             {
                 method: "POST",
                 headers: {
@@ -71,7 +71,7 @@ export const sendEmail = async (email) => {
     // `http://localhost:8080/auth/reenviar-confirmacion?email=${email}`
     try {
         const res = await fetch(
-            `https://bikemenowapi.3utilities.com/auth/reenviar-email?email=${email}`,
+            `https://tasteless-hope-production.up.railway.app/auth/reenviar-email?email=${email}`,
             {
                 method: "POST",
                 headers: {

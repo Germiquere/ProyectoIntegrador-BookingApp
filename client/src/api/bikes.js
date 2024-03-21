@@ -4,7 +4,7 @@ export const getBikes = async () => {
 
         // const res = await fetch(import.meta.env.VITE_URL + "/");
         const res = await fetch(
-            "https://bikemenowapi.3utilities.com/bike-me-now/bicicletas"
+            "https://tasteless-hope-production.up.railway.app/bike-me-now/bicicletas"
         );
         if (!res.ok) {
             // Crear un objeto de error personalizado con estado y ok
@@ -28,7 +28,7 @@ export const getBikesByPagination = async (
     try {
         // TODO: PASAR EL ENDPOINT DE NUESTRA API POR MEDIO DE LAS VARIABLES DE ENTORNO
         const res = await fetch(
-            `https://bikemenowapi.3utilities.com/bike-me-now/bicicletas/search?query=${query}&limit=12&offset=${offset}&fechaInicio=${startDate}&fechaFin=${endDate}`
+            `https://tasteless-hope-production.up.railway.app/bike-me-now/bicicletas/search?query=${query}&limit=12&offset=${offset}&fechaInicio=${startDate}&fechaFin=${endDate}`
         );
         if (!res.ok) {
             // Crear un objeto de error personalizado con estado y ok
@@ -49,7 +49,7 @@ export const getDatesbyBikeId = async (id) => {
 
         // const res = await fetch(import.meta.env.VITE_URL + "/");
         const res = await fetch(
-            `https://bikemenowapi.3utilities.com/bike-me-now/reservas/bicicletas/${id}`
+            `https://tasteless-hope-production.up.railway.app/bike-me-now/reservas/bicicletas/${id}`
         );
         if (!res.ok) {
             // Crear un objeto de error personalizado con estado y ok
@@ -105,7 +105,7 @@ export const getBikeById = async (id) => {
 
         // const res = await fetch(import.meta.env.VITE_URL + "/");
         const res = await fetch(
-            `https://bikemenowapi.3utilities.com/bike-me-now/bicicletas/${id}`
+            `https://tasteless-hope-production.up.railway.app/bike-me-now/bicicletas/${id}`
         );
 
         if (!res.ok) {
@@ -126,7 +126,7 @@ export const postBike = async (bike) => {
     try {
         // PASAR EL ENDPOINT DE NUESTRA API
         const res = await fetch(
-            "https://bikemenowapi.3utilities.com/bike-me-now/api/bicicletas",
+            "https://tasteless-hope-production.up.railway.app/bike-me-now/api/bicicletas",
             {
                 method: "POST",
                 headers: {
@@ -155,7 +155,7 @@ export const deleteBike = async (id) => {
     const { token } = JSON.parse(localStorage.getItem("accessToken"));
     try {
         const res = await fetch(
-            `https://bikemenowapi.3utilities.com/bike-me-now/api/bicicletas/${id}`,
+            `https://tasteless-hope-production.up.railway.app/bike-me-now/api/bicicletas/${id}`,
             {
                 method: "DELETE",
                 headers: {
@@ -184,7 +184,7 @@ export const updateBike = async (bike) => {
     try {
         // PASAR EL ENDPOINT DE NUESTRA API
         const res = await fetch(
-            "https://bikemenowapi.3utilities.com/bike-me-now/api/bicicletas",
+            "https://tasteless-hope-production.up.railway.app/bike-me-now/api/bicicletas",
             {
                 method: "PUT",
                 headers: {

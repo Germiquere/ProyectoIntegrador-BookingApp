@@ -3,12 +3,12 @@ export const postImage = async (file) => {
 
     if (!file) throw new Error("No hay ningúna imagen para subir");
     const formData = new FormData();
-    formData.append("bucketName", "bikemenowbucket");
+    formData.append("bucketName", "bucket-bikemenow");
     formData.append("filePath", "bikemenowImages/");
     formData.append("file", file);
     try {
         const res = await fetch(
-            `https://bikemenowapi.3utilities.com/bike-me-now/api/s3/uploadFile`,
+            `https://tasteless-hope-production.up.railway.app/bike-me-now/api/s3/uploadFile`,
             {
                 method: "POST",
                 headers: {
@@ -36,7 +36,7 @@ export const deleteImage = async (key) => {
 
     try {
         const res = await fetch(
-            `https://bikemenowapi.3utilities.com/bike-me-now/api/s3/deleteFile?bucketName=bikemenowbucket&fileName=${key}`,
+            `https://tasteless-hope-production.up.railway.app/bike-me-now/api/s3/deleteFile?bucketName=bikemenowbucket&fileName=${key}`,
             {
                 method: "DELETE",
                 headers: {

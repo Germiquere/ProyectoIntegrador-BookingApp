@@ -2,7 +2,7 @@ export const getCharacteristics = async () => {
     try {
         const { token } = JSON.parse(localStorage.getItem("accessToken"));
         const res = await fetch(
-            "https://bikemenowapi.3utilities.com/bike-me-now/api/caracteristicas",
+            "https://tasteless-hope-production.up.railway.app/bike-me-now/api/caracteristicas",
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
