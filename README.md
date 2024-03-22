@@ -15,6 +15,7 @@ The team consisted of 6 members:
 - Context api
 - Java
 - Springboot
+- Elastic mail
 - Mysql
 - HTML
 - AWS-s3
