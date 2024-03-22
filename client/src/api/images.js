@@ -36,7 +36,7 @@ export const deleteImage = async (key) => {
 
     try {
         const res = await fetch(
-            `https://tasteless-hope-production.up.railway.app/bike-me-now/api/s3/deleteFile?bucketName=bikemenowbucket&fileName=${key}`,
+            `https://tasteless-hope-production.up.railway.app/bike-me-now/api/s3/deleteFile?bucketName=bucket-bikemenow&fileName=${key}`,
             {
                 method: "DELETE",
                 headers: {
