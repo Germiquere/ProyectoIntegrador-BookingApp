@@ -1,5 +1,5 @@
 # BIKEMENOW
-Introducing: BikeMeNow! A website that allows registered users to easily, quickly, and seamlessly reserve a bicycle.
+Introducing: BikeMeNow!A capstone project at Digital House, that allows registered users to easily, quickly, and seamlessly reserve a bicycle.
 The team consisted of 6 members:
 - German Miqure led the front-end team, with Joaquin Braincovich and Laura Blandon contributing to both the front-end and UX/UI aspects.
 - Alberto Arce led the back-end and infrastructure team, supported by Laura Toda and Luciana Salinardi.
